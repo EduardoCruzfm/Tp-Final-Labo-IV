@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Auth,signInWithEmailAndPassword, onAuthStateChanged, User, UserCredential, signOut, createUserWithEmailAndPassword} from '@angular/fire/auth';
+import { Auth,signInWithEmailAndPassword, onAuthStateChanged,createUserWithEmailAndPassword, sendEmailVerification , User, UserCredential, signOut} from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
 import { DatabaseService } from './database.service';
-import { firstValueFrom } from 'rxjs';
-import { DocumentSnapshot } from '@angular/fire/firestore'; 
+
 
 
 @Injectable({
@@ -59,13 +58,13 @@ export class AuthService {
   }
   
   // Método para verificar la aprobación del usuario por administrador
-  async verificarAprobacion(uid: string): Promise<boolean> {
+  async verificarAprobacion(uid: string, tipoUsuario: 'especialistas' | 'pacientes'): Promise<boolean> {
     try {
-      const especialista = await this.db.obtenerUsuarioPorId(uid, 'especialistas');
-      console.log(especialista);
-      console.log(especialista.aprobado);
-      
-      if (especialista && especialista.aprobado == true) {
+      const usuario = await this.db.obtenerUsuarioPorId(uid, tipoUsuario);
+      console.log(usuario);
+      console.log(usuario.aprobado);
+
+      if (usuario && usuario.aprobado === true) {
         return true;
       }
     } catch (error) {
@@ -74,15 +73,48 @@ export class AuthService {
 
     return false;
   }
-  
+
   // Método para verificar la aprobación del usuario autenticado actual
-  async verificarAprobacionUsuarioActual(): Promise<boolean> {
+  async verificarAprobacionUsuarioActual(tipoUsuario: string): Promise<{ aprobado: boolean; tipo: 'especialistas' | 'pacientes' | null }> {
     const currentUser = this.getCurrentUser();
     if (currentUser) {
-      return this.verificarAprobacion(currentUser.uid);
+
+      switch (tipoUsuario) {
+        case 'paciente':
+          const esPaciente = await this.verificarAprobacion(currentUser.uid, 'pacientes');
+          if (esPaciente) {
+            return { aprobado: true, tipo: 'pacientes' };
+          }
+          break;
+        case 'especialista':
+          const esEspecialista = await this.verificarAprobacion(currentUser.uid, 'especialistas');
+          if (esEspecialista) {
+            return { aprobado: true, tipo: 'especialistas' };
+          }
+          break;      
+      }
+    }
+    return { aprobado: false, tipo: null };
+  }
+
+  // Envia verificacion al correo
+  async sendVerificationEmail(user: User): Promise<void> {
+    try {
+      await sendEmailVerification(user);
+      console.log('Correo de verificación enviado');
+    } catch (error) {
+      console.error('Error al enviar el correo de verificación:', error);
+      throw error; // Lanza el error para manejarlo en el componente si es necesario
+    }
+  }
+
+  // Verifica el correo
+  async isEmailVerified(): Promise<boolean> {
+    const currentUser: User | null = this.auth.currentUser;
+    if (currentUser) {
+      await currentUser.reload(); // Recargar datos del usuario actual
+      return currentUser.emailVerified;
     }
     return false;
   }
-
-  
 }

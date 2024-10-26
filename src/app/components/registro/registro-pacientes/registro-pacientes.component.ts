@@ -43,23 +43,31 @@ export class RegistroPacientesComponent {
           const fotoUrl = await this.db.subirImagen(this.selectedFile);
           const fotoUrl2 = await this.db.subirImagen(this.selectedFileDos);
           
-          await this.authService.register(email,password).then((userCredential) => {
+          // Registrar al usuario y enviar el correo de verificación
+            const userCredential = await this.authService.register(email, password);
             const userId = userCredential.user?.uid;
             
-            // Agregar el nombre y otros detalles a Firestore
-            if (userId) {
-
-              const paciente: Paciente = new Paciente( userId,nombre,apellido,edad,dni,obraSocial,email,fotoUrl,fotoUrl2);
-              this.db.agregarUsuario(paciente,'pacientes');
+             // Enviar el correo de verificación utilizando el método del servicio
+            if (userCredential.user) {
+              await this.authService.sendVerificationEmail(userCredential.user);
             }
-          });
+  
+            if (userId) {
+              const paciente: Paciente = new Paciente( userId,nombre,apellido,edad,dni,obraSocial,email,fotoUrl,fotoUrl2,true);
+              await this.db.agregarUsuario(paciente,'pacientes');
+            }
+  
+            // Mostrar mensaje de éxito en el registro
+            await Swal.fire({
+              title: 'Registro exitoso!',
+              text: 'Te hemos enviado un correo de verificación. Por favor, verifica tu correo electrónico antes de iniciar sesión.',
+              icon: 'success',
+            });
+  
+            // Redirigir al inicio de sesión (opcional)
+            this.router.navigate(['/login']);
           
-          await Swal.fire({
-            title: 'Éxito!',
-            text: 'Registro exitoso!',
-            icon: 'success',
-          });
-          this.router.navigate(['/bienvenida']);
+
         } catch (error: any) {
           if (error.code === 'auth/email-already-in-use') {
             // Manejo específico cuando el correo ya está registrado

@@ -35,17 +35,14 @@
         <label for="floatingPassword">Password</label>
       </div>
 
-      <div class="form-check text-start my-3">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          value="remember-me"
-          id="flexCheckDefault"
-        />
-        <label class="form-check-label" for="flexCheckDefault">
-          Remember me
-        </label>
+      <div class="btn-group w-100 py-2 mt-2" role="group" aria-label="Selecciona tu tipo de usuario">
+        <input type="radio" class="btn-check" name="tipoUsuario" id="especialista" value="especialista" autocomplete="off" checked (change)="onTipoUsuarioChange('especialista')">
+        <label class="btn btn-outline-primary w-100" for="especialista">Especialista</label>
+    
+        <input type="radio" class="btn-check" name="tipoUsuario" id="paciente" value="paciente" autocomplete="off" (change)="onTipoUsuarioChange('paciente')">
+        <label class="btn btn-outline-primary w-100" for="paciente">Paciente</label>
       </div>
+      
       <button
         class="btn btn-primary w-100 py-2"
         type="submit"

@@ -1,0 +1,4 @@
+.btn-group .btn {
+    flex: 1; /* Asegura que ambos botones ocupen el mismo espacio */
+  }
+  

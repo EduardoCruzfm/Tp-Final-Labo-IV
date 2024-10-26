@@ -13,6 +13,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  tipoUsuario: 'especialista' | 'paciente' = 'especialista'; 
+
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
@@ -52,34 +54,47 @@ async handleLogin() {
         await this.authService.login(email, password);
 
         if (email == 'admin@example.com') {
-          this.router.navigate(['/bienvenida']);
-          
+          this.router.navigate(['/bienvenida']);   
         }
         else{
-
-        
-
+          // Verificar si el correo está verificado
+          const emailVerified = await this.authService.isEmailVerified();
+          if (!emailVerified) {
+            await Swal.fire({
+              icon: 'info',
+              title: 'Verificación requerida',
+              text: 'Por favor, verifica tu correo electrónico antes de continuar.',
+            });
+            return;
+          }
         // Verificar si el usuario está aprobado
-        const aprobado = await this.authService.verificarAprobacionUsuarioActual();
+          const resultado = await this.authService.verificarAprobacionUsuarioActual(this.tipoUsuario);
 
-        if (aprobado) {
-          this.form.get('email')?.setValue('');
-          this.form.get('password')?.setValue('');
+          if (resultado.aprobado) {
+            this.form.get('email')?.setValue('');
+            this.form.get('password')?.setValue('');
 
-          await Swal.fire({
-            title: 'Éxito!',
-            text: 'Inicio de sesión exitoso!',
-            icon: 'success',
-          });
-          this.router.navigate(['/bienvenida']);
-        } else {
-          await Swal.fire({
-            icon: 'warning',
-            title: 'Acceso denegado',
-            text: 'Su cuenta no ha sido aprobada aún.',
-          });
+            await Swal.fire({
+              title: 'Éxito!',
+              text: 'Inicio de sesión exitoso!',
+              icon: 'success',
+            });
+            
+            //Temporamente
+            if (resultado.tipo === 'especialistas') {
+              this.router.navigate(['/bienvenida']); 
+            } else if (resultado.tipo === 'pacientes') {
+              this.router.navigate(['/bienvenida']);
+            }
+
+          } else {
+            await Swal.fire({
+              icon: 'warning',
+              title: 'Acceso denegado',
+              text: 'Su cuenta no ha sido aprobada aún.',
+            });
+          }
         }
-      }
       } catch (error) {
         // Mostrar alerta en caso de error de autenticación
         await Swal.fire({
@@ -106,6 +121,11 @@ async handleLogin() {
       footer: '<a href="#">Why do I have this issue?</a>',
     });
   }
+}
+
+  // Método para manejar el cambio de tipo de usuario
+  onTipoUsuarioChange(tipo: 'especialista' | 'paciente') {
+    this.tipoUsuario = tipo;
 }
 
 }
