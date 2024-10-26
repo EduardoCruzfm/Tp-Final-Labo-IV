@@ -1,0 +1,48 @@
+<div class="container mt-3">
+    <h2>Lista de Especialistas Pendientes de Aprobación</h2>
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Edad</th>
+          <th>DNI</th>
+          <th>Especialidades</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let especialista of listaEspecialistas">
+          <td>{{ especialista.nombre }}</td>
+          <td>{{ especialista.apellido }}</td>
+          <td>{{ especialista.email }}</td>
+          <td>{{ especialista.edad }}</td>
+          <td>{{ especialista.dni }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let esp of especialista.especialidad">{{ esp }}</li>
+            </ul>
+          </td>
+          <td>
+            <button 
+              class="btn btn-success" 
+              (click)="aprobarEspecialista(especialista, true)" 
+              [disabled]="especialista.aprobado"
+              >
+              {{ especialista.aprobado ? 'Aprobado' : 'Aprobar' }}
+            </button>
+            <button 
+              class="btn btn-danger" 
+              (click)="aprobarEspecialista(especialista, false)" 
+              [disabled]="!especialista.aprobado"
+              >
+              {{ especialista.aprobado ? 'Cancelar' : 'Cancelado' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

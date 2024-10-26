@@ -1,0 +1,35 @@
+.file-label {
+    padding-left: 12px; /* Alineación similar a otros labels flotantes */
+  }
+  
+  .file-input {
+    height: 3.5rem; /* Ajusta la altura para hacerla uniforme */
+    padding-top: 1.5rem; /* Espacio para acomodar la etiqueta */
+    padding-left: 12px; /* Alineación del contenido dentro del campo */
+  }
+  
+  /* En tu archivo de estilos CSS o en el archivo de estilos del componente */
+.select-height {
+  height: 50px; /* Ajusta la altura según tus necesidades */
+  overflow-y: auto; /* Habilita el desplazamiento vertical si es necesario */
+}
+
+.selected-option {
+  background-color: blue !important; /* Cambia a un color que prefieras */
+  color: white; /* Cambia el color del texto si es necesario */
+}
+
+.checkbox-container {
+  max-height: 107px; /* Altura máxima para el contenedor */
+  overflow-y: auto; /* Desplazamiento si hay muchas especialidades */
+  border: 1px solid #ced4da; /* Borde similar a otros inputs */
+  border-radius: 0.375rem; /* Bordes redondeados */
+  padding: 10px; /* Espaciado interno */
+  background-color: #ffffff; /* Fondo blanco para el contenedor */
+  margin-top: 5px; /* Espaciado superior para separarlo del label */
+}
+
+.form-check {
+  margin-bottom: 0.5rem; /* Espaciado entre los checkboxes */
+}
+

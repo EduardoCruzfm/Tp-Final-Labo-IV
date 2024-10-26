@@ -9,6 +9,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,6 +20,6 @@ export const appConfig: ApplicationConfig = {
       provideFirestore(() => getFirestore()), 
       provideStorage(() => getStorage()),
       provideHttpClient(withFetch()),
-      { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }
+      { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }, provideAnimationsAsync()
     ]
 };

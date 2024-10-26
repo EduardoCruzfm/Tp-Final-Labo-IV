@@ -1,1 +1,148 @@
-<p>bienvenida works!</p>
+<app-navbar id="nav"></app-navbar>
+
+<main>
+
+  <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+    </div>
+    
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="image/medico-1.jpg" class="d-block w-100" alt="Descripción de la imagen">
+        <div class="container">
+          <div class="carousel-caption text-start">
+            <h1>El Ahorcado.</h1>
+            <p class="opacity-75">Demuestra tu habilidad adivinando las palabras. ¿Puedes salvar al ahorcado?</p>
+            <p><button class="btn btn-lg btn-primary"  (click)="scrollToSection('Ahorcado')">Facil de Jugar</button></p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="carousel-item">
+        <img src="image/medico-2.jpg" class="d-block w-100" alt="Descripción de la imagen">
+        <div class="container">
+          <div class="carousel-caption">
+            <h1>Preguntados.</h1>
+            <p>Pon a prueba tu conocimiento en diferentes categorías y reta a tus amigos.</p>
+            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('Preguntados')">Comienza el Desafío</button></p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="carousel-item">
+        <img src="image/medico-3.jpg" class="d-block w-100" alt="Descripción de la imagen">
+        <div class="container">
+          <div class="carousel-caption text-end">
+            <h1>Mayor o Menor.</h1>
+            <p>Acierta si la siguiente carta será mayor o menor.</p>
+            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('MayorMenor')">Apostar Ya</button></p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Cuarta imagen agregada -->
+      <div class="carousel-item">
+        <img src="image/medico-4.jpg" class="d-block w-100" alt="Descripción de la cuarta imagen">
+        <div class="container">
+          <div class="carousel-caption text-center">
+            <h1>Street Craps.</h1>
+            <p>Tira los dados y gana a lo grande en este juego callejero.</p>
+            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('Dados')">Aprende a Jugar</button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  
+
+
+<!-- Marketing messaging and featurettes
+================================================== -->
+<!-- Wrap the rest of the page in another container to center all the content. -->
+
+<div class="container marketing">
+
+  <!-- Four columns of text below the carousel -->
+   <!-- Botón gigante para redirigir al chat -->
+   <div class="row justify-content-center">
+    <div class="col-12">
+      <button class="btn btn-lg btn-success w-100 p-5" (click)="navigateToChat()">
+        <h1>Ir al Chat</h1>
+      </button>
+    </div>
+  </div>
+  <!-- /.row -->
+
+
+  <!-- START THE FEATURETTES -->
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7" id="Preguntados">
+      <h2 class="featurette-heading fw-normal lh-1">P<span class="text-body-secondary">reguntados </span></h2>
+      <p class="lead">Es un juego de preguntas y respuestas de diferentes categorías, donde los jugadores giran una ruleta para obtener preguntas 
+        al azar y competir por coleccionar personajes que representan cada categoría.</p>
+    </div>
+    <div class="col-md-5 position-relative">
+      <a (click)="onLinkClick($event,'/menu_preguntados')" [href]="'/quien-soy'">
+      <!-- <img src="image/Trivial.jpg" alt="Preguntados" class="img-fluid w-100 centered-img"> -->
+      <div class="overlay d-flex justify-content-center align-items-center">
+        <span class="text">Jugar</span>
+      </div>
+    </a>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7 order-md-2 " id="MayorMenor">
+      <h2 class="featurette-heading fw-normal lh-1">Mayor <span class="text-body-secondary">o Menor</span></h2>
+      <p class="lead">En este juego, se muestran cartas españolas y los jugadores deben adivinar si la próxima 
+        carta será mayor o menor que la actual, probando su intuición y suerte.</p>
+    </div>
+    <div class="col-md-5 order-md-1 position-relative">
+      <a (click)="onLinkClick($event,'/mayor-menor')" [href]="'/mayor-menor'">
+      <!-- <img src="image/mayor_menor.jpeg" alt="MayorMenor" class="img-fluid  centered-img"> -->
+      <div class="overlay d-flex justify-content-center align-items-center">
+        <span class="text">Jugar</span>
+      </div>
+    </a>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+ 
+  
+
+
+  
+
+  <!-- /END THE FEATURETTES -->
+
+</div><!-- /.container -->
+
+
+<!-- FOOTER -->
+<footer class="container">
+  <p class="float-end"><a href="#">Back to top</a></p>
+  <p>&copy; 2017–2024 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+</footer>
+</main>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQ93/DAyyDnkL5v3E1wC8s26IkZ5EZhY6F+j6/GgDA4U78zQ9+Gf4tF3cl+R2R8y" crossorigin="anonymous"></script> -->
+
