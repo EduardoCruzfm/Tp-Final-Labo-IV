@@ -31,12 +31,17 @@
               </button>
             </li>
             <li class="nav-item">
-              <button class="nav-link" (click)="quienSoy()">Quien Soy</button>
+              <button class="nav-link" (click)="quienSoy()">Quienes somos</button>
+            </li>
+            <li *ngIf="esAdministrador === 'administrador'" class="nav-item">
+              <button class="nav-link" (click)="seccionUsuarios()">Usuarios</button>
             </li>
           </ul>
-          <ul class="navbar-nav ms-auto mb-2 mb-md-0"> <!-- Alinea a la derecha -->
+          <ul class="navbar-nav ms-auto mb-2 mb-md-0"> <!-- Alinea a la derecha href="" --> 
             <li class="nav-item" *ngIf="userLoggedIn">
-              <a class="nav-link" href="">Usuario: {{ userEmail }}</a>
+              <a class="nav-link" 
+              
+              >Usuario: {{ userEmail }}</a>
             </li>
           </ul>
           <form class="d-flex ms-auto"> <!-- Alinea los botones de autenticación a la derecha -->

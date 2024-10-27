@@ -6,12 +6,13 @@ export class Paciente {
     dni: string;
     obraSocial: string;
     email: string;
-    imagenPerfil1: string; 
+    imagenPerfil: string; 
     imagenPerfil2: string; 
     aprobado: boolean;
+    perfil:string;
     
     constructor(id: string,nombre: string,apellido: string,edad: number,dni: string,obraSocial: string,email: string, 
-        imagenPerfil1: string,imagenPerfil2: string,aprobado: boolean) {
+        imagenPerfil: string,imagenPerfil2: string,aprobado: boolean, perfil:string) {
             
         this.id = id;
         this.nombre = nombre;
@@ -20,9 +21,10 @@ export class Paciente {
         this.dni = dni;
         this.obraSocial = obraSocial;
         this.email = email;
-        this.imagenPerfil1 = imagenPerfil1;
+        this.imagenPerfil = imagenPerfil;
         this.imagenPerfil2 = imagenPerfil2;
         this.aprobado = aprobado;
+        this.perfil = perfil;
     }
       
       

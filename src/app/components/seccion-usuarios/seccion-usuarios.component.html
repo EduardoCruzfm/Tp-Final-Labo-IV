@@ -1,17 +1,38 @@
 <div class="menu-container"> 
-    <div class="row">
-      <div class="col-6 category-col">
-        <div class="category-card" (click)="seleccionarPerfiles()">
-          <img src="image/paciente.jpg" alt="Paciente" class="category-image">
-          <p>Usuarios</p>
-        </div>
+  <div class="row">
+    <div class="col-6 category-col">
+      <div class="category-card" (click)="seleccionarPerfiles()">
+        <img src="image/usuarios.jpg" alt="Usuarios" class="category-image">
+        <p>Usuarios</p>
       </div>
-      <div class="col-6 category-col">
-        <div class="category-card" (click)="seleccionarPendientes()">
-          <img src="image/especialista.jpg" alt="Especialista" class="category-image">
-          <p>Pendientes</p>
-        </div>
+    </div>
+    <div class="col-6 category-col">
+      <div class="category-card" (click)="seleccionarPendientes()">
+        <img src="image/pendientes.jpg" alt="Pendientes" class="category-image">
+        <p>Pendientes</p>
       </div>
     </div>
   </div>
-  
+
+  <!-- Nueva fila de tarjetas para los registros -->
+  <div class="row">
+    <div class="col-4 category-col">
+      <div class="category-card" (click)="registrarPacientes()">
+        <img src="image/paciente.jpg" alt="Registrar Pacientes" class="category-image">
+        <p>Registrar Pacientes</p>
+      </div>
+    </div>
+    <div class="col-4 category-col">
+      <div class="category-card" (click)="registrarEspecialistas()">
+        <img src="image/especialista.jpg" alt="Registrar Especialistas" class="category-image">
+        <p>Registrar Especialistas</p>
+      </div>
+    </div>
+    <div class="col-4 category-col">
+      <div class="category-card" (click)="registrarAdministradores()">
+        <img src="image/administrador.jpg" alt="Registrar Administradores" class="category-image">
+        <p>Registrar Administradores</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,20 +1,22 @@
 export class Administrador {
+    id: string;
     nombre: string;
     apellido: string;
     edad: number;
     dni: string;
-    mail: string;
-    password: string;
+    email: string;
     imagenPerfil: string;
+    perfil:string;
   
-    constructor(nombre: string,apellido: string,edad: number,dni: string, mail: string,password: string,imagenPerfil: string) {
+    constructor(id: string,nombre: string,apellido: string,edad: number,dni: string, email: string,imagenPerfil: string,perfil:string) {
+      this.id = id;
       this.nombre = nombre;
       this.apellido = apellido;
       this.edad = edad;
       this.dni = dni;
-      this.mail = mail;
-      this.password = password;
+      this.email = email;
       this.imagenPerfil = imagenPerfil;
+      this.perfil = perfil;
     }
   }
   

@@ -1,4 +1,4 @@
-<app-navbar id="nav"></app-navbar>
+<app-navbar id="nav"  [esAdministrador]="tipoUsuario"></app-navbar>
 
 <main>
 
@@ -68,19 +68,14 @@
   </div>
   
 
-
-<!-- Marketing messaging and featurettes
-================================================== -->
-<!-- Wrap the rest of the page in another container to center all the content. -->
-
 <div class="container marketing">
 
   <!-- Four columns of text below the carousel -->
    <!-- Botón gigante para redirigir al chat -->
    <div class="row justify-content-center">
     <div class="col-12">
-      <button class="btn btn-lg btn-success w-100 p-5" (click)="navigateToChat()">
-        <h1>Ir al Chat</h1>
+      <button class="btn btn-lg btn-success w-100 p-5" (click)="navigateTo()">
+        <h1>Solicitar Turno</h1>
       </button>
     </div>
   </div>
@@ -127,13 +122,6 @@
 
   <hr class="featurette-divider">
 
- 
-  
-
-
-  
-
-  <!-- /END THE FEATURETTES -->
 
 </div><!-- /.container -->
 
@@ -144,5 +132,4 @@
   <p>&copy; 2017–2024 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
 </footer>
 </main>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQ93/DAyyDnkL5v3E1wC8s26IkZ5EZhY6F+j6/GgDA4U78zQ9+Gf4tF3cl+R2R8y" crossorigin="anonymous"></script> -->
 

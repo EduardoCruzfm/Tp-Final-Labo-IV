@@ -5,25 +5,27 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { DatabaseService } from '../../../services/database.service'; 
-import { Paciente } from '../../../classes/paciente';
+import { Administrador } from '../../../classes/administrador';
+
 
 @Component({
-  selector: 'app-registro-pacientes',
+  selector: 'app-registro-administrador',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, SweetAlert2Module],
-  templateUrl: './registro-pacientes.component.html',
-  styleUrl: './registro-pacientes.component.css'
+  templateUrl: './registro-administrador.component.html',
+  styleUrl: './registro-administrador.component.css'
 })
-export class RegistroPacientesComponent {
+export class RegistroAdministradorComponent {
+  
+  // ver como agregamos un nuevo admin ala bd y leerlo antes del login
+
   selectedFile: File | null = null;
-  selectedFileDos: File | null = null;
 
   form = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
     apellido: new FormControl('', [Validators.required]),
     edad: new FormControl('', [Validators.required]),
     dni: new FormControl('', [Validators.required]),
-    obraSocial: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
@@ -32,16 +34,15 @@ export class RegistroPacientesComponent {
 
   // Registrar
   async handleRegister() {
-    if (this.form.valid  && this.selectedFile && this.selectedFileDos)  {
-      const { nombre,apellido,edad,dni,obraSocial,email,password } = this.form.value;
+    if (this.form.valid  && this.selectedFile)  {
+      const { nombre,apellido,edad,dni,email,password } = this.form.value;
 
       if (typeof nombre === 'string' && typeof apellido === 'string' &&  typeof edad === 'number' && 
-          typeof dni === 'number' && typeof obraSocial === 'string' && typeof email === 'string' && 
+          typeof dni === 'number' && typeof email === 'string' && 
           typeof password === 'string') {
         try {
 
           const fotoUrl = await this.db.subirImagen(this.selectedFile);
-          const fotoUrl2 = await this.db.subirImagen(this.selectedFileDos);
           
           // Registrar al usuario y enviar el correo de verificación
             const userCredential = await this.authService.register(email, password);
@@ -53,14 +54,14 @@ export class RegistroPacientesComponent {
             }
   
             if (userId) {
-              const paciente: Paciente = new Paciente( userId,nombre,apellido,edad,dni,obraSocial,email,fotoUrl,fotoUrl2,true,"paciente");
-              await this.db.agregarUsuario(paciente,'pacientes');
+              const administrador: Administrador = new Administrador( userId,nombre,apellido,edad,dni,email,fotoUrl,"administrador");
+              await this.db.agregarUsuario(administrador,'administradores');
             }
   
             // Mostrar mensaje de éxito en el registro
             await Swal.fire({
               title: 'Registro exitoso!',
-              text: 'Te hemos enviado un correo de verificación. Por favor, verifica tu correo electrónico antes de iniciar sesión.',
+              text: 'Hemos enviado un correo de verificación. Por favor, verifica el correo electrónico antes de iniciar sesión.',
               icon: 'success',
             });
   
@@ -110,14 +111,5 @@ export class RegistroPacientesComponent {
       console.log('Archivo seleccionado:', this.selectedFile);
     }
   }
-
-  onFileSelectedPortada(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFileDos = input.files[0];
-      console.log('Archivo seleccionado:', this.selectedFileDos);
-    }
-  }
-
 
 }

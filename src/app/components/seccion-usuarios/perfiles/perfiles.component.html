@@ -1,1 +1,31 @@
-<p>perfiles works!</p>
+<div class="container mt-3">
+    <h2>Lista de Usuarios</h2>
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Edad</th>
+          <th>DNI</th>
+          <th>Imagen</th>
+          <th>Perfil</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of listaUsuarios" (click)="verDetalleUsuario(usuario)" style="cursor: pointer;">
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.apellido }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.edad }}</td>
+          <td>{{ usuario.dni }}</td>
+          <td>
+            <img *ngIf="usuario.imagenPerfil" [src]="usuario.imagenPerfil" alt="Imagen de usuario" width="50" height="50" class="rounded-circle" />
+          </td>
+          <td>{{ usuario.perfil }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

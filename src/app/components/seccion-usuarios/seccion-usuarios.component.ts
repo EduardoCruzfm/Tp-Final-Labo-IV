@@ -21,4 +21,16 @@ export class SeccionUsuariosComponent {
     this.router.navigate(['/perfiles']);
   }
 
+  registrarPacientes() {
+    this.router.navigate(['/registro-pacientes']);
+  }
+
+  registrarEspecialistas() {
+    this.router.navigate(['/registro-especialistas']);
+  }
+
+  registrarAdministradores() {
+    this.router.navigate(['/registro-administrador']);
+  }
+
 }

@@ -1,0 +1,37 @@
+<div class="container mt-3" *ngIf="usuario">
+    <h2>Detalles del Usuario</h2>
+    <div class="card">
+      <div class="card-body">
+        <!-- Portada del usuario -->
+        <div *ngIf="usuario.imagenPerfil2">
+          <img [src]="usuario.imagenPerfil2" alt="Imagen de portada" class="img-fluid w-100 rounded" style="height: 200px; object-fit: cover;">
+        </div>
+        
+        <!-- Imagen de perfil centrada -->
+        <div class="text-center mt-n5" *ngIf="usuario.imagenPerfil">
+          <img [src]="usuario.imagenPerfil" alt="Imagen de perfil" class="img-fluid rounded-circle border border-white" width="150" style="margin-top: -75px;">
+        </div>
+  
+        <!-- Información general -->
+        <h5 class="card-title text-center mt-3">{{ usuario.nombre }} {{ usuario.apellido }}</h5>
+        <p class="card-text mb-3"><strong>Email:</strong> {{ usuario.email }}</p>
+        <p class="card-text mb-3"><strong>Edad:</strong> {{ usuario.edad }}</p>
+        <p class="card-text mb-3"><strong>DNI:</strong> {{ usuario.dni }}</p>
+        <p class="card-text mb-3"><strong>Perfil:</strong> {{ usuario.perfil }}</p>
+        <!-- Especialidad para especialistas -->
+        <div *ngIf="usuario.perfil === 'especialista' && usuario.especialidad">
+          <p class="card-text mb-3"><strong>Especialidad:</strong> {{ usuario.especialidad }}</p>
+        </div>
+        <!-- Obra social para pacientes -->
+        <div *ngIf="usuario.perfil === 'paciente' && usuario.obraSocial">
+          <p class="card-text mb-3"><strong>Obra Social:</strong> {{ usuario.obraSocial }}</p>
+        </div>
+        <!-- Estado -->
+        <div *ngIf="usuario.perfil !== 'administrador' && usuario.aprobado">
+          <p class="card-text mb-3"><strong>Estado:</strong> {{ usuario.aprobado }}</p>
+        </div>        
+
+      </div>
+    </div>
+  </div>
+  

@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service'; 
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-bienvenida',
@@ -15,10 +16,12 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './bienvenida.component.css'
 })
 export class BienvenidaComponent {
-  userLoggedIn: boolean = false; // Estado de autenticación
+  userLoggedIn: boolean = false; 
   userEmail: string | null = null; 
+  tipoUsuario: string | null = null;
 
-  constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router) {
+
+  constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router, private route: ActivatedRoute) {
     // Suscribirse a los cambios de estado de autenticación
     this.authService.userLoggedIn$.subscribe((isLoggedIn) => {
       this.userLoggedIn = isLoggedIn;
@@ -31,15 +34,21 @@ export class BienvenidaComponent {
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.viewportScroller.scrollToPosition([0, 0]); // Desplaza al inicio de la página
+        this.viewportScroller.scrollToPosition([0, 0]);
       }
     });
   } 
 
+    ngOnInit(): void {
+      // Recuperar los parámetros de la ruta
+      this.route.queryParams.subscribe(params => {
+        this.tipoUsuario = params['tipo'];
+      });
+    }
+
   async onLinkClick(event: MouseEvent, path: string) {
     event.preventDefault(); // Evita la acción predeterminada del enlace
 
-    // La validación
     const isValid = this.validateUser();
 
     if (isValid) {
@@ -53,7 +62,7 @@ export class BienvenidaComponent {
         footer: `
         <div style="display: flex; flex-direction: column;">
           <a href="/login">Iniciar Sesión</a>
-          <a href="/register">Registrarse</a>
+          <a href="/registro">Registrarse</a>
         </div>
       `
       });
@@ -65,7 +74,7 @@ export class BienvenidaComponent {
     return this.userLoggedIn;
   }
 
-  async navigateToChat() {
+  async navigateTo() {
       // La validación
       const isValid = this.validateUser();
 
@@ -76,11 +85,11 @@ export class BienvenidaComponent {
         await Swal.fire({
           icon: 'warning',
           title: 'Oops...',
-          text: 'Debe registrarse para poder chatear!',
+          text: 'Debe registrarse para poder solicitar un turno!',
           footer: `
           <div style="display: flex; flex-direction: column;">
             <a href="/login">Iniciar Sesión</a>
-            <a href="/register">Registrarse</a>
+            <a href="/registro">Registrarse</a>
           </div>
         `
         });

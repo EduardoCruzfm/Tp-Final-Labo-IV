@@ -79,7 +79,7 @@ export class RegistroEspecialistasComponent {
             }
   
             if (userId) {
-              const especialista: Especialista = new Especialista(userId, nombre, apellido, edad, dni, especialidadesSeleccionadas, email, fotoUrl, false);
+              const especialista: Especialista = new Especialista(userId, nombre, apellido, edad, dni, especialidadesSeleccionadas, email, fotoUrl, false,"especialista");
               await this.db.agregarUsuario(especialista, 'especialistas');
             }
   

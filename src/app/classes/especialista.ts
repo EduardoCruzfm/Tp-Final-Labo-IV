@@ -8,8 +8,9 @@ export class Especialista {
     email: string;
     imagenPerfil: string;
     aprobado: boolean;
+    perfil:string;
   
-    constructor(id: string,nombre: string,apellido: string,edad: number,dni: string,especialidad: string[],email: string, imagenPerfil: string, aprobado: boolean) {
+    constructor(id: string,nombre: string,apellido: string,edad: number,dni: string,especialidad: string[],email: string, imagenPerfil: string, aprobado: boolean, perfil:string) {
       this.id = id;
       this.nombre = nombre;
       this.apellido = apellido;
@@ -19,6 +20,7 @@ export class Especialista {
       this.email = email;
       this.imagenPerfil = imagenPerfil;
       this.aprobado = aprobado;
+      this.perfil = perfil;
     }
   
     // Método para agregar una nueva especialidad si no se encuentra en la lista

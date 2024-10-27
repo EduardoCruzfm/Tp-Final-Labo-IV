@@ -1,0 +1,99 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <main class="form-signin w-100">
+      <form [formGroup]="form">
+        <div class="text-center mb-4">
+          <img
+            class="mb-4"
+            src="image/logo.jpg"
+            alt=""
+            width="150rem"
+            height="150rem"
+          />
+        </div>
+        <h1 class="h3 mb-3 fw-normal text-center">Registrar nuevo administrador</h1>
+  
+        <div class="form-floating">
+          <input
+            type="name"
+            class="form-control"
+            id="floatingInput"
+            placeholder="nombre"
+            formControlName="nombre"
+          />
+          <label for="floatingInput">Nombre</label>
+        </div>
+        <div class="form-floating">
+          <input
+            type="name"
+            class="form-control"
+            id="floatingInput"
+            placeholder="apellido"
+            formControlName="apellido"
+          />
+          <label for="floatingInput">Apellido</label>
+        </div>
+        <div class="form-floating">
+          <input
+            type="number"
+            class="form-control"
+            id="floatingInput"
+            placeholder="edad"
+            formControlName="edad"
+          />
+          <label for="floatingInput">Edad</label>
+        </div>
+        <div class="form-floating">
+          <input
+            type="number"
+            class="form-control"
+            id="floatingInput"
+            placeholder="dni"
+            formControlName="dni"
+          />
+          <label for="floatingInput">DNI</label>
+        </div>
+        
+        <div class="form-floating">
+          <input
+            type="email"
+            class="form-control"
+            id="floatingInput"
+            placeholder="name@example.com"
+            formControlName="email"
+          />
+          <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input
+            type="password"
+            class="form-control"
+            id="floatingPassword"
+            placeholder="Password"
+            formControlName="password"
+          />
+          <label for="floatingPassword">Password</label>
+        </div>
+
+          <!-- Campo para Foto -->
+      <div class="form-floating ">
+        <input
+          type="file"
+          class="form-control file-input"
+          id="fileInput"
+          (change)="onFileSelected($event)"
+        />
+        <label for="fileInput" class="file-label">Foto</label>
+      </div>
+
+     <button
+          class="btn btn-primary w-100 py-2"
+          type="submit"
+          (click)="handleRegister()"
+        >
+        Registrase
+        </button>
+        <!-- <p class="mt-5 mb-3 text-body-secondary text-center">&copy; 2017–2024</p> -->
+      </form>
+    </main>
+  </div>
+  

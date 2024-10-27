@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service'; 
@@ -12,7 +12,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent {
   userLoggedIn: boolean = false;      
-  userEmail: string | null = null;    
+  userEmail: string | null = null; 
+  @Input() esAdministrador: string | null = null; 
 
   constructor(private authService: AuthService, private router: Router) {
     // Suscribirse a los cambios de estado de autenticación
@@ -27,13 +28,17 @@ export class NavbarComponent {
   }
 
   home() {
-    this.router.navigate(['/home']).then(() => {
+    this.router.navigate(['/bienvenida']).then(() => {
       this.scrollToSection('nav');
     });
   }
 
   quienSoy() {
     this.router.navigate(['/quien-soy']);
+  }
+
+  seccionUsuarios() {
+    this.router.navigate(['/seccion-usuarios']);
   }
 
   scrollToSection(sectionId: string) {

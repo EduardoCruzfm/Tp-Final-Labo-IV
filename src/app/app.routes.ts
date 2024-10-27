@@ -38,6 +38,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'registro-administrador',
+    loadComponent: () =>
+      import('./components/registro/registro-administrador/registro-administrador.component').then(
+        (m) => m.RegistroAdministradorComponent
+      ),
+  },
+  {
     path: 'seccion-usuarios',
     loadComponent: () =>
       import('./components/seccion-usuarios/seccion-usuarios.component').then(
@@ -56,6 +63,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/seccion-usuarios/perfiles/perfiles.component').then(
         (m) => m.PerfilesComponent
+      ),
+  },
+  {
+    path: 'usuario-detalle',
+    loadComponent: () =>
+      import('./components/seccion-usuarios/perfiles/usuario-detalle/usuario-detalle.component').then(
+        (m) => m.UsuarioDetalleComponent
       ),
   },
 ];

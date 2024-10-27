@@ -3,7 +3,9 @@ import {FormControl,FormGroup,FormsModule,ReactiveFormsModule,Validators} from '
 import { Router, RouterModule } from '@angular/router';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
-import { AuthService } from '../../services/auth.service'; 
+import { AuthService } from '../../services/auth.service';
+import { DatabaseService } from '../../services/database.service';
+ 
 
 @Component({
   selector: 'app-login',
@@ -14,18 +16,24 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent {
   tipoUsuario: 'especialista' | 'paciente' = 'especialista'; 
+  listaAdministradores :any;
 
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
 
-  constructor(private router: Router, private authService: AuthService) {} // Inyectar el Router
+  constructor(private router: Router, private authService: AuthService, private db: DatabaseService) {
+    this.db.traerUsuario('administradores').subscribe((response) => {
+      this.listaAdministradores = response;
+      console.log('Lista de Administradores:', this.listaAdministradores);
+    });
+  } 
 
   usuarioAdmin() {
     this.form.patchValue({
-      email: 'admin@example.com',
-      password: 'admin123',
+      email: 'eduardocruz.fm@gmail.com',
+      password: '450253',
     });
   }
 
@@ -53,8 +61,14 @@ async handleLogin() {
         // Usar el AuthService para manejar el inicio de sesión
         await this.authService.login(email, password);
 
-        if (email == 'admin@example.com') {
-          this.router.navigate(['/bienvenida']);   
+        // Verificar si el usuario es un administrador basado en la lista
+        const esAdmin = this.listaAdministradores.some((admin: any) => 
+          admin.email == email && admin.perfil == 'administrador'
+        );
+
+
+        if (esAdmin) {
+          this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'administrador' } });   
         }
         else{
           // Verificar si el correo está verificado
