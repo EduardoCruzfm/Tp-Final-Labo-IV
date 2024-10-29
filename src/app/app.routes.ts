@@ -72,4 +72,18 @@ export const routes: Routes = [
         (m) => m.UsuarioDetalleComponent
       ),
   },
+  {
+    path: 'turnos',
+    loadComponent: () =>
+      import('./components/turnos/turnos.component').then(
+        (m) => m.TurnosComponent
+      ),
+  },
+  {
+    path: 'mis-turnos',
+    loadComponent: () =>
+      import('./components/mis-turnos/mis-turnos.component').then(
+        (m) => m.MisTurnosComponent
+      ),
+  }
 ];

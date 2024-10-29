@@ -39,15 +39,15 @@ export class LoginComponent {
 
   usuarioEspecialista(){
     this.form.patchValue({
-      email: 'especialista@example.com',
-      password: 'especialista123'
+      email: 'eduardofrankcruzmendez@gmail.com',
+      password: '450253'
     });
   }
 
   usuarioPaciente(){
     this.form.patchValue({
-      email: 'paciente@example.com',
-      password: 'paciente123'
+      email: 'educacionflash@gmail.com',
+      password: '450253'
     });
   }
 
@@ -68,7 +68,7 @@ async handleLogin() {
 
 
         if (esAdmin) {
-          this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'administrador' } });   
+          this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'administradores' } });   
         }
         else{
           // Verificar si el correo está verificado
@@ -96,9 +96,9 @@ async handleLogin() {
             
             //Temporamente
             if (resultado.tipo === 'especialistas') {
-              this.router.navigate(['/bienvenida']); 
+              this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'especialistas' } }); 
             } else if (resultado.tipo === 'pacientes') {
-              this.router.navigate(['/bienvenida']);
+              this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'pacientes' } });
             }
 
           } else {

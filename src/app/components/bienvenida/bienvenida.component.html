@@ -1,4 +1,4 @@
-<app-navbar id="nav"  [esAdministrador]="tipoUsuario"></app-navbar>
+<app-navbar id="nav" [tipoUsuario]="tipoUsuario"></app-navbar>
 
 <main>
 
@@ -12,46 +12,45 @@
     
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="image/medico-1.jpg" class="d-block w-100" alt="Descripción de la imagen">
+        <img src="image/medico-1.jpg" class="d-block w-100" alt="Consultas Médicas">
         <div class="container">
           <div class="carousel-caption text-start">
-            <h1>El Ahorcado.</h1>
-            <p class="opacity-75">Demuestra tu habilidad adivinando las palabras. ¿Puedes salvar al ahorcado?</p>
-            <p><button class="btn btn-lg btn-primary"  (click)="scrollToSection('Ahorcado')">Facil de Jugar</button></p>
+            <h1>Consultas Médicas</h1>
+            <p class="opacity-75">Ofrecemos consultas personalizadas con médicos especializados para cuidar de tu salud.</p>
+            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('Consultas')">Ver Consultas</button></p>
           </div>
         </div>
       </div>
       
       <div class="carousel-item">
-        <img src="image/medico-2.jpg" class="d-block w-100" alt="Descripción de la imagen">
+        <img src="image/medico-2.jpg" class="d-block w-100" alt="Chequeos Generales">
         <div class="container">
           <div class="carousel-caption">
-            <h1>Preguntados.</h1>
-            <p>Pon a prueba tu conocimiento en diferentes categorías y reta a tus amigos.</p>
-            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('Preguntados')">Comienza el Desafío</button></p>
+            <h1>Chequeos Generales</h1>
+            <p>Realiza un chequeo preventivo completo y conoce el estado de tu salud.</p>
+            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('Chequeos')">Más Información</button></p>
           </div>
         </div>
       </div>
   
       <div class="carousel-item">
-        <img src="image/medico-3.jpg" class="d-block w-100" alt="Descripción de la imagen">
+        <img src="image/medico-3.jpg" class="d-block w-100" alt="Especialidades">
         <div class="container">
           <div class="carousel-caption text-end">
-            <h1>Mayor o Menor.</h1>
-            <p>Acierta si la siguiente carta será mayor o menor.</p>
-            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('MayorMenor')">Apostar Ya</button></p>
+            <h1>Especialidades Médicas</h1>
+            <p>Accede a una amplia gama de especialistas para tus necesidades específicas.</p>
+            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('Especialidades')">Ver Especialidades</button></p>
           </div>
         </div>
       </div>
   
-      <!-- Cuarta imagen agregada -->
       <div class="carousel-item">
-        <img src="image/medico-4.jpg" class="d-block w-100" alt="Descripción de la cuarta imagen">
+        <img src="image/medico-4.jpg" class="d-block w-100" alt="Emergencias">
         <div class="container">
           <div class="carousel-caption text-center">
-            <h1>Street Craps.</h1>
-            <p>Tira los dados y gana a lo grande en este juego callejero.</p>
-            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('Dados')">Aprende a Jugar</button></p>
+            <h1>Emergencias</h1>
+            <p>Atención inmediata para emergencias médicas, disponible las 24 horas.</p>
+            <p><button class="btn btn-lg btn-primary" (click)="scrollToSection('Emergencias')">Contáctanos</button></p>
           </div>
         </div>
       </div>
@@ -67,69 +66,59 @@
     </button>
   </div>
   
+  <div class="container marketing">
 
-<div class="container marketing">
-
-  <!-- Four columns of text below the carousel -->
-   <!-- Botón gigante para redirigir al chat -->
-   <div class="row justify-content-center">
-    <div class="col-12">
-      <button class="btn btn-lg btn-success w-100 p-5" (click)="navigateTo()">
-        <h1>Solicitar Turno</h1>
-      </button>
-    </div>
-  </div>
-  <!-- /.row -->
-
-
-  <!-- START THE FEATURETTES -->
-
-  <hr class="featurette-divider">
-
-  <div class="row featurette">
-    <div class="col-md-7" id="Preguntados">
-      <h2 class="featurette-heading fw-normal lh-1">P<span class="text-body-secondary">reguntados </span></h2>
-      <p class="lead">Es un juego de preguntas y respuestas de diferentes categorías, donde los jugadores giran una ruleta para obtener preguntas 
-        al azar y competir por coleccionar personajes que representan cada categoría.</p>
-    </div>
-    <div class="col-md-5 position-relative">
-      <a (click)="onLinkClick($event,'/menu_preguntados')" [href]="'/quien-soy'">
-      <!-- <img src="image/Trivial.jpg" alt="Preguntados" class="img-fluid w-100 centered-img"> -->
-      <div class="overlay d-flex justify-content-center align-items-center">
-        <span class="text">Jugar</span>
+    <!-- Botón de Solicitar Turno para administradores -->
+    <div class="row justify-content-center" *ngIf="tipoUsuario === 'administradores'">
+      <div class="col-12">
+        <button class="btn btn-lg btn-success w-100 p-5" (click)="navigateTo()">
+          <h1>Solicitar Turno</h1>
+        </button>
       </div>
-    </a>
     </div>
-  </div>
+    <!-- /.row -->
 
-  <hr class="featurette-divider">
+    <!-- START THE FEATURETTES -->
 
-  <div class="row featurette">
-    <div class="col-md-7 order-md-2 " id="MayorMenor">
-      <h2 class="featurette-heading fw-normal lh-1">Mayor <span class="text-body-secondary">o Menor</span></h2>
-      <p class="lead">En este juego, se muestran cartas españolas y los jugadores deben adivinar si la próxima 
-        carta será mayor o menor que la actual, probando su intuición y suerte.</p>
-    </div>
-    <div class="col-md-5 order-md-1 position-relative">
-      <a (click)="onLinkClick($event,'/mayor-menor')" [href]="'/mayor-menor'">
-      <!-- <img src="image/mayor_menor.jpeg" alt="MayorMenor" class="img-fluid  centered-img"> -->
-      <div class="overlay d-flex justify-content-center align-items-center">
-        <span class="text">Jugar</span>
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7" id="Consultas">
+        <h2 class="featurette-heading fw-normal lh-1">C<span class="text-body-secondary">onsultas Médicas</span></h2>
+        <p class="lead">Programe una cita con uno de nuestros médicos especializados y reciba la mejor atención médica.</p>
       </div>
-    </a>
+      <div class="col-md-5 position-relative">
+        <a (click)="onLinkClick($event,'/consultas')" [href]="'/consultas'">
+        <div class="overlay d-flex justify-content-center align-items-center">
+          <span class="text">Agendar Consulta</span>
+        </div>
+      </a>
+      </div>
     </div>
-  </div>
 
-  <hr class="featurette-divider">
+    <hr class="featurette-divider">
 
+    <div class="row featurette">
+      <div class="col-md-7 order-md-2 " id="Chequeos">
+        <h2 class="featurette-heading fw-normal lh-1">C<span class="text-body-secondary">hequeos Generales</span></h2>
+        <p class="lead">Realice un chequeo preventivo completo para detectar posibles riesgos de salud y recibir recomendaciones.</p>
+      </div>
+      <div class="col-md-5 order-md-1 position-relative">
+        <a (click)="onLinkClick($event,'/chequeos')" [href]="'/chequeos'">
+        <div class="overlay d-flex justify-content-center align-items-center">
+          <span class="text">Programar Chequeo</span>
+        </div>
+      </a>
+      </div>
+    </div>
 
-</div><!-- /.container -->
+    <hr class="featurette-divider">
 
+  </div><!-- /.container -->
 
-<!-- FOOTER -->
-<footer class="container">
-  <p class="float-end"><a href="#">Back to top</a></p>
-  <p>&copy; 2017–2024 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-</footer>
+  <!-- FOOTER -->
+  <footer class="container">
+    <p class="float-end"><a href="#">Volver arriba</a></p>
+    <p>&copy; 2017–2024 Clínica Salud, Inc. &middot; <a href="#">Privacidad</a> &middot; <a href="#">Términos</a></p>
+  </footer>
 </main>
-

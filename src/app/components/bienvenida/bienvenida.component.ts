@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { ViewportScroller } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -11,14 +11,14 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-bienvenida',
   standalone: true,
-  imports: [NavbarComponent,RouterModule, SweetAlert2Module],
+  imports: [NavbarComponent,RouterModule, SweetAlert2Module,CommonModule],
   templateUrl: './bienvenida.component.html',
   styleUrl: './bienvenida.component.css'
 })
 export class BienvenidaComponent {
   userLoggedIn: boolean = false; 
   userEmail: string | null = null; 
-  tipoUsuario: string | null = null;
+  tipoUsuario: string | any = null;
 
 
   constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router, private route: ActivatedRoute) {
@@ -79,7 +79,7 @@ export class BienvenidaComponent {
       const isValid = this.validateUser();
 
       if (isValid) {
-        this.router.navigate(['/chat']); // Asegúrate de que '/chat' sea la ruta correcta
+        this.router.navigate(['/turnos'],{ queryParams: { tipo: this.tipoUsuario } }); 
       } else {
   
         await Swal.fire({

@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service'; 
+import { DatabaseService } from '../../services/database.service';
+
 
 @Component({
   selector: 'app-navbar',
@@ -11,20 +13,41 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  @Input() tipoUsuario: string = ""; 
   userLoggedIn: boolean = false;      
   userEmail: string | null = null; 
-  @Input() esAdministrador: string | null = null; 
+  usuarioActual: any | null = "";
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private db: DatabaseService) {
     // Suscribirse a los cambios de estado de autenticación
     this.authService.userLoggedIn$.subscribe((isLoggedIn) => {
       this.userLoggedIn = isLoggedIn;
     });
 
-    // Suscribirse a los cambios de correo del usuario
-    this.authService.userEmail$.subscribe((email) => {
+    // Suscribirse a los cambios de correo del usuarioActual
+    this.authService.userEmail$.subscribe(async (email) => {
       this.userEmail = email;
+      if (email && this.tipoUsuario) {
+        await this.cargarUsuarioActual();
+      } else { 
+        console.log("ERROR usuarioActual nulo: " + this.usuarioActual);
+      }
     });
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    if (changes['tipoUsuario'] && this.userEmail) {
+      // Si `tipoUsuario` ha cambiado y tenemos el correo, volvemos a cargar el usuario.
+      await this.cargarUsuarioActual();
+    }
+  }
+
+  async cargarUsuarioActual() {
+    const user = await this.authService.getCurrentUser(); // Obtener el usuario actual
+    if (user) {
+      console.log("UID " + user.uid);
+      this.usuarioActual = await this.db.obtenerUsuarioPorId(user.uid, this.tipoUsuario);
+    }
   }
 
   home() {
@@ -33,12 +56,15 @@ export class NavbarComponent {
     });
   }
 
-  quienSoy() {
-    this.router.navigate(['/quien-soy']);
+  misturnos() {
+    this.router.navigate(['/mis-turnos']);
   }
 
   seccionUsuarios() {
     this.router.navigate(['/seccion-usuarios']);
+  }
+  miPerfil(usuario: any) {
+    this.router.navigate(['/usuario-detalle'],{ state: { usuario } });
   }
 
   scrollToSection(sectionId: string) {

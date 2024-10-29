@@ -22,6 +22,9 @@
         <div *ngIf="usuario.perfil === 'especialista' && usuario.especialidad">
           <p class="card-text mb-3"><strong>Especialidad:</strong> {{ usuario.especialidad }}</p>
         </div>
+        <div *ngIf="usuario.perfil === 'especialista' && usuario.disponibilidad">
+          <p class="card-text mb-3"><strong>Disponibilidad:</strong> {{ usuario.disponibilidad }}</p>
+        </div>
         <!-- Obra social para pacientes -->
         <div *ngIf="usuario.perfil === 'paciente' && usuario.obraSocial">
           <p class="card-text mb-3"><strong>Obra Social:</strong> {{ usuario.obraSocial }}</p>
