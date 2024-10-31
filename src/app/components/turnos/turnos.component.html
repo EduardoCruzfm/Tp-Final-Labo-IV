@@ -21,9 +21,8 @@
       <div class="form-group mb-3">
         <label for="fechaHora">Fecha y Hora</label>
         <select id="fechaHora" class="form-control" formControlName="fechaHora">
-          <option *ngFor="let horario of horariosDisponibles" [ngValue]="horario">
-            {{ horario }}
-            <!-- {{ horario.fecha }} - {{ horario.hora }} -->
+          <option *ngFor="let disp of horariosDisponibles" [ngValue]="disp">
+            {{ disp.dia }} - {{ disp.mes }} - {{ disp.anio }} {{ disp.horaInicio }} {{ disp.horaFin }} 
           </option>
         </select>
       </div>
@@ -32,10 +31,17 @@
   
       <div class="form-group mb-3" *ngIf="esAdmin == true">
         <label for="paciente">Paciente</label>
-        <select id="paciente" class="form-control" formControlName="paciente" >
-          <option *ngFor="let paciente of pacientes" [ngValue]="paciente">{{ paciente.nombre }}</option>
+        <select 
+          id="paciente" 
+          class="form-control" 
+          formControlName="paciente" 
+          (change)="onNombrePacienteaChange($event)">
+          <option *ngFor="let paciente of pacientes" [ngValue]="paciente">
+            {{ paciente.nombre }} {{ paciente.apellido }}
+          </option>
         </select>
       </div>
+      
   
       <button type="submit" class="btn btn-primary" [disabled]="!turnoForm.valid">Solicitar Turno</button>
     </form>

@@ -1,1 +1,48 @@
-<p>mis-turnos works!</p>
+<div class="container mt-3">
+    <h2>Lista de Turnos</h2>
+
+    <div class="mb-3">
+        <label for="searchInput">Buscar por Especialidad o Especialista:</label>
+        <input type="text" id="searchInput" class="form-control" [(ngModel)]="searchTerm" (input)="filtrarTurnos()">
+      </div>
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+          <th>Obra Social</th>
+          <th>Especialidad</th>
+          <th>Día</th>
+          <th>Mes</th>
+          <th>Año</th>
+          <th>H Inicio</th>
+          <th>H Fin</th>
+          <th>Especialista</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let turno of turnos">
+          <td>{{ turno.paciente.nombre }}</td>
+          <td>{{ turno.paciente.apellido }}</td>
+          <td>{{ turno.paciente.dni }}</td>
+          <td>{{ turno.paciente.obraSocial }}</td>
+          <td>{{ turno.especialidad }}</td>
+          <td>{{ turno.fechaHora.dia }}</td>
+          <td>{{ turno.fechaHora.mes }}</td>
+          <td>{{ turno.fechaHora.anio }}</td>
+          <td>{{ turno.fechaHora.horaInicio }}</td>
+          <td>{{ turno.fechaHora.horaFin }}</td>
+          <td>{{ turno.especialista.nombre }} {{ turno.especialista.apellido }}</td>
+          <td>
+            <button class="btn btn-danger" (click)="cancelarTurno(turno)">
+              Cancelar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

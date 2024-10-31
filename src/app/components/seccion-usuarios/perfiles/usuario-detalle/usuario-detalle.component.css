@@ -25,3 +25,13 @@
     border: 3px solid white;
   }
   
+  .row label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .row select {
+    width: 100%;
+    padding: 0.4rem;
+  }
+  

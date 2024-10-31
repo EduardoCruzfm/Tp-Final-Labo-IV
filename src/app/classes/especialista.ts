@@ -9,8 +9,11 @@ export class Especialista {
     imagenPerfil: string;
     aprobado: boolean;
     perfil:string;
+    disponibilidad: any[];
+
   
-    constructor(id: string,nombre: string,apellido: string,edad: number,dni: string,especialidad: string[],email: string, imagenPerfil: string, aprobado: boolean, perfil:string) {
+    constructor(id: string,nombre: string,apellido: string,edad: number,dni: string,especialidad: string[],
+      email: string, imagenPerfil: string, aprobado: boolean, perfil:string,disponibilidad: any[]) {
       this.id = id;
       this.nombre = nombre;
       this.apellido = apellido;
@@ -21,13 +24,18 @@ export class Especialista {
       this.imagenPerfil = imagenPerfil;
       this.aprobado = aprobado;
       this.perfil = perfil;
+      this.disponibilidad = disponibilidad;
     }
   
     // Método para agregar una nueva especialidad si no se encuentra en la lista
-    agregarEspecialidad(nuevaEspecialidad: string) {
-      if (!this.especialidad.includes(nuevaEspecialidad)) {
-        this.especialidad.push(nuevaEspecialidad);
-      }
+    GetNombre() {
+      return {
+        nombre: this.nombre,
+        apellido: this.apellido
+      };
+    }
+
+    ActualizarDisponibilidad(disponibilidad:any){
+      this.disponibilidad = disponibilidad; 
     }
   }
-  

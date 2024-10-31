@@ -27,11 +27,11 @@ export class NavbarComponent {
     // Suscribirse a los cambios de correo del usuarioActual
     this.authService.userEmail$.subscribe(async (email) => {
       this.userEmail = email;
-      if (email && this.tipoUsuario) {
-        await this.cargarUsuarioActual();
-      } else { 
-        console.log("ERROR usuarioActual nulo: " + this.usuarioActual);
-      }
+      // if (email && this.tipoUsuario) {
+      //   await this.cargarUsuarioActual();
+      // } else { 
+      //   console.log("ERROR usuarioActual nulo: " + this.usuarioActual);
+      // }
     });
   }
 

@@ -7,6 +7,8 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service'; 
 import { ActivatedRoute } from '@angular/router';
+import { DatabaseService } from '../../services/database.service';
+DatabaseService
 
 @Component({
   selector: 'app-bienvenida',
@@ -19,9 +21,10 @@ export class BienvenidaComponent {
   userLoggedIn: boolean = false; 
   userEmail: string | null = null; 
   tipoUsuario: string | any = null;
+  
+  usuarioActual: string | any = null;
 
-
-  constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router, private route: ActivatedRoute) {
+  constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router, private route: ActivatedRoute, private db: DatabaseService) {
     // Suscribirse a los cambios de estado de autenticación
     this.authService.userLoggedIn$.subscribe((isLoggedIn) => {
       this.userLoggedIn = isLoggedIn;
@@ -44,6 +47,16 @@ export class BienvenidaComponent {
       this.route.queryParams.subscribe(params => {
         this.tipoUsuario = params['tipo'];
       });
+      this.cargarUsuarioActual();
+    }
+
+    async cargarUsuarioActual() {
+      const user = await this.authService.getCurrentUser();
+      if (user) {
+        this.usuarioActual = await this.db.obtenerUsuarioPorId(user.uid, this.tipoUsuario);
+        
+        console.log("usuaario actual" , this.usuarioActual );
+      }
     }
 
   async onLinkClick(event: MouseEvent, path: string) {
@@ -79,7 +92,7 @@ export class BienvenidaComponent {
       const isValid = this.validateUser();
 
       if (isValid) {
-        this.router.navigate(['/turnos'],{ queryParams: { tipo: this.tipoUsuario } }); 
+        this.router.navigate(['/turnos'], { state: { usuario: this.usuarioActual } });
       } else {
   
         await Swal.fire({
