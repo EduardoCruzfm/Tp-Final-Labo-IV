@@ -15,6 +15,12 @@ export class MisTurnosComponent {
   filteredTurnos: any[] = [];
   searchTerm: string = '';
 
+  turnoEnCancelacion: any | null = null; // Turno que está siendo cancelado
+  comentarioCancelacion: string = ''; // Comentario de cancelación
+  turnoSeleccionado: any = null; // Para almacenar el turno actual que tiene la reseña
+  calificacion: number = 0; // o el tipo adecuado que estés usando
+  comentario: string = ""; // o el tipo adecuado
+
   constructor( private db: DatabaseService,) {
       this.cargarTurnos();
   }
@@ -27,6 +33,31 @@ export class MisTurnosComponent {
     });
   }
 
+  // -----
+  cancelarTurno(turno: any) {
+    this.turnoEnCancelacion = turno;
+    this.comentarioCancelacion = ''; // Resetear el comentario al abrir el modal
+  }
+
+  confirmarCancelacion() {
+    if (this.turnoEnCancelacion) {
+      this.turnoEnCancelacion.estado = 'cancelado';  // Marcar el turno como cancelado
+      this.turnoEnCancelacion.comentario = this.comentarioCancelacion; // Guardar el comentario
+      console.log(this.turnoEnCancelacion);
+
+      //ACA DEBERIA MODIFICAR LA DISPONIBILIDAD DEL ESPECIALISTA
+
+      this.turnoEnCancelacion = null; // Resetear el turno en proceso de cancelación
+    }
+
+  }
+
+  cancelarAccion() {
+    this.turnoEnCancelacion = null; // Cancelar la acción sin guardar
+    this.comentarioCancelacion = ''; // Limpiar el comentario
+  }
+  //----------
+
   filtrarTurnos() {
     const term = this.searchTerm.toLowerCase();
     this.filteredTurnos = this.turnos.filter(turno => {
@@ -37,8 +68,28 @@ export class MisTurnosComponent {
     });
   }
 
-  cancelarTurno(turno: any) {
-    // Lógica para cancelar el turno (por ejemplo, actualizar la base de datos o cambiar un estado)
-    console.log('Cancelar turno:', turno);
+  
+
+  mostrarResena(turno: any) {
+    // Si ya se está mostrando una reseña, la ocultamos
+    if (this.turnoSeleccionado === turno) {
+      this.turnoSeleccionado = null;
+    } else {
+      this.turnoSeleccionado = turno; // Guardamos el turno seleccionado
+    }
   }
+
+  enviarEncuesta(turno: any) {
+    // lógica para enviar la encuesta
+    turno.comentario = `Encuesta: ${this.calificacion} - Comentario: ${this.comentario}`
+    console.log('encuesta' ,turno);
+}
+
+
+
+  //Para especialista
+  marcarComoRealizado(turno: any) {
+    turno.estado = 'realizado';
+  }
+  
 }

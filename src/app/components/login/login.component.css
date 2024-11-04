@@ -1,2 +1,48 @@
+.menu-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 20px; /* Espacio entre las imágenes */
+  overflow-x: auto; /* Para habilitar el desplazamiento si hay muchas tarjetas */
+}
 
-  
+.profile-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.profile-button:hover {
+  transform: translateY(-8px); /* Elevación en hover */
+}
+
+.profile-image {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%; /* Imágenes redondas */
+  object-fit: cover;
+  margin-bottom: 5px;
+  transition: box-shadow 0.3s, filter 0.3s;
+}
+
+.profile-button:hover .profile-image {
+  box-shadow: 0px 8px 16px rgba(0, 0, 48, 0.5); /* Sombra en hover */
+  /* filter: brightness(0.9); Efecto de tonalidad al pasar el mouse */
+  filter: brightness(0.8) saturate(1.5); /* Efecto de tonalidad al pasar el mouse */
+}
+
+p {
+  font-size: 0.9em;
+  margin-top: 5px;
+  color: #333;
+  transition: margin-top 0.3s, color 0.3s;
+}
+
+.profile-button:hover p {
+  margin-top: -3px; /* Elevación del texto */
+  color: #555;
+}

@@ -150,7 +150,10 @@ export class TurnosComponent {
           especialidad,
           nombreEspecialista,
           fechaHora, 
-          nombrePaciente
+          nombrePaciente,
+          'pendiente', // Seria pendiente 
+          '',
+          ''
         );
          this.db.agregarUsuario(turno, 'turnos');
         console.log('Datos del turno:', turno);

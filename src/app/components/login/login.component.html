@@ -1,16 +1,8 @@
-<div
-  class="container d-flex justify-content-center align-items-center min-vh-100"
->
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
   <main class="form-signin w-100">
     <form [formGroup]="form">
       <div class="text-center mb-4">
-        <img
-          class="mb-4"
-          src="image/logo.jpg"
-          alt=""
-          width="150rem"
-          height="150rem"
-        />
+        <img class="mb-4" src="image/logo.jpg" alt="" width="150" height="150" />
       </div>
       <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
 
@@ -35,14 +27,6 @@
         <label for="floatingPassword">Password</label>
       </div>
 
-      <div class="btn-group w-100 py-2 mt-2" role="group" aria-label="Selecciona tu tipo de usuario">
-        <input type="radio" class="btn-check" name="tipoUsuario" id="especialista" value="especialista" autocomplete="off" checked (change)="onTipoUsuarioChange('especialista')">
-        <label class="btn btn-outline-primary w-100" for="especialista">Especialista</label>
-    
-        <input type="radio" class="btn-check" name="tipoUsuario" id="paciente" value="paciente" autocomplete="off" (change)="onTipoUsuarioChange('paciente')">
-        <label class="btn btn-outline-primary w-100" for="paciente">Paciente</label>
-      </div>
-      
       <button
         class="btn btn-primary w-100 py-2"
         type="submit"
@@ -50,27 +34,40 @@
       >
         Sign in
       </button>
-      <button
-        class="btn btn-primary w-100 py-2 mt-2"
-        type="submit"
-        (click)="usuarioAdmin()"
-      >
-        Usuario administrador
-      </button>
-      <button
-        class="btn btn-primary w-100 py-2 mt-2"
-        type="submit"
-        (click)="usuarioEspecialista()"
-      >
-        Usuario especialista
-      </button>
-      <button
-        class="btn btn-primary w-100 py-2 mt-2"
-        type="submit"
-        (click)="usuarioPaciente()"
-      >
-        Usuario paciente
-      </button>
+
+      <div class="menu-container">
+        <!-- Administradores -->
+        <ng-container *ngIf="listaAdministradores?.length > 0">
+          <div *ngFor="let e of listaAdministradores" class="profile-button" (click)="asignarContrasenia(e)">
+            <img [src]="e.imagenPerfil" alt="Administrador" class="profile-image" />
+            <p>Administrador</p>
+          </div>
+        </ng-container>
+      
+        <!-- Especialistas -->
+        <ng-container *ngIf="listaEspecialistas?.length > 0">
+          <ng-container *ngFor="let e of listaEspecialistas; let i = index">
+            <div *ngIf="i < 2" class="profile-button" (click)="asignarContrasenia(e)">
+              <img [src]="e.imagenPerfil" alt="Especialista" class="profile-image" />
+              <p>Especialista</p>
+            </div>
+          </ng-container>
+        </ng-container>
+      
+        <!-- Pacientes -->
+        <ng-container *ngIf="listaPacientes?.length > 0">
+          <ng-container *ngFor="let e of listaPacientes; let i = index">
+            <div *ngIf="i < 3" class="profile-button" (click)="asignarContrasenia(e)">
+              <img [src]="e.imagenPerfil" alt="Paciente" class="profile-image" />
+              <p>Paciente</p>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+      
+      
+
+
       <p class="mt-5 mb-3 text-body-secondary text-center">&copy; 2017–2024</p>
     </form>
   </main>

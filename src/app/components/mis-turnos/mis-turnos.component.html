@@ -1,48 +1,95 @@
 <div class="container mt-3">
-    <h2>Lista de Turnos</h2>
+  <h2>Lista de Turnos</h2>
 
-    <div class="mb-3">
-        <label for="searchInput">Buscar por Especialidad o Especialista:</label>
-        <input type="text" id="searchInput" class="form-control" [(ngModel)]="searchTerm" (input)="filtrarTurnos()">
-      </div>
-    
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>DNI</th>
-          <th>Obra Social</th>
-          <th>Especialidad</th>
-          <th>Día</th>
-          <th>Mes</th>
-          <th>Año</th>
-          <th>H Inicio</th>
-          <th>H Fin</th>
-          <th>Especialista</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let turno of turnos">
-          <td>{{ turno.paciente.nombre }}</td>
-          <td>{{ turno.paciente.apellido }}</td>
-          <td>{{ turno.paciente.dni }}</td>
-          <td>{{ turno.paciente.obraSocial }}</td>
-          <td>{{ turno.especialidad }}</td>
-          <td>{{ turno.fechaHora.dia }}</td>
-          <td>{{ turno.fechaHora.mes }}</td>
-          <td>{{ turno.fechaHora.anio }}</td>
-          <td>{{ turno.fechaHora.horaInicio }}</td>
-          <td>{{ turno.fechaHora.horaFin }}</td>
-          <td>{{ turno.especialista.nombre }} {{ turno.especialista.apellido }}</td>
-          <td>
-            <button class="btn btn-danger" (click)="cancelarTurno(turno)">
-              Cancelar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="mb-3">
+    <label for="searchInput">Buscar por Especialidad o Especialista:</label>
+    <input type="text" id="searchInput" class="form-control" [(ngModel)]="searchTerm" (input)="filtrarTurnos()">
   </div>
   
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>DNI</th>
+        <th>Obra Social</th>
+        <th>Especialidad</th>
+        <th>Día</th>
+        <th>Mes</th>
+        <th>Año</th>
+        <th>H Inicio</th>
+        <th>H Fin</th>
+        <th>Especialista</th>
+        <th>Estado</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <!-- <tr *ngFor="let turno of filteredTurnos"> -->
+        <tr *ngFor="let turno of filteredTurnos; let i = index">
+        <td>{{ turno.paciente.nombre }}</td>
+        <td>{{ turno.paciente.apellido }}</td>
+        <td>{{ turno.paciente.dni }}</td>
+        <td>{{ turno.paciente.obraSocial }}</td>
+        <td>{{ turno.especialidad }}</td>
+        <td>{{ turno.fechaHora.dia }}</td>
+        <td>{{ turno.fechaHora.mes }}</td>
+        <td>{{ turno.fechaHora.anio }}</td>
+        <td>{{ turno.fechaHora.horaInicio }}</td>
+        <td>{{ turno.fechaHora.horaFin }}</td>
+        <td>{{ turno.especialista.nombre }} {{ turno.especialista.apellido }}</td>
+        <td>{{ turno.estado === 'pendiente' ? 'Pendiente' : turno.estado === 'realizado' ? 'Realizado' : 'Cancelado' }}</td>
+        <td>
+          <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="cancelarTurno(turno)">
+            Cancelar
+          </button>
+          
+          <button *ngIf="turno.estado === 'realizado' && turno.resenia" class="btn btn-info" (click)="mostrarResena(turno)">
+            Ver reseña
+          </button>
+          
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <!-- Modal de cancelación -->
+  <div *ngIf="turnoEnCancelacion" class="cancelacion-modal">
+    <h5>Cancelar turno</h5>
+    <p>Escriba el motivo de la cancelación:</p>
+    <textarea [(ngModel)]="comentarioCancelacion" class="form-control" rows="3"></textarea>
+    <button class="btn btn-primary mt-2" (click)="confirmarCancelacion()">Confirmar Cancelación</button>
+    <button class="btn btn-secondary mt-2" (click)="cancelarAccion()">Cancelar</button>
+  </div>
+
+  <!-- <div *ngIf="turnoSeleccionado" class="cancelacion-modal">
+    <h4>Reseña del Especialsita</h4>
+    <p>{{ turnoSeleccionado?.resenia }}</p>
+  </div> -->
+  <div *ngIf="turnoSeleccionado" class="card mt-3">
+    <div class="card-body">
+      <h4 class="card-title">Reseña del Especialista</h4>
+      <p class="card-text">{{ turnoSeleccionado?.resenia }}</p>
+      
+      <h5>Califica la Atención</h5>
+      <div>
+        <label>
+          <input type="radio" name="calificacion" value="bueno" [(ngModel)]="calificacion"> Bueno
+        </label>
+        <label>
+          <input type="radio" name="calificacion" value="regular" [(ngModel)]="calificacion"> Regular
+        </label>
+        <label>
+          <input type="radio" name="calificacion" value="malo" [(ngModel)]="calificacion"> Malo
+        </label>
+      </div>
+
+      <h5>Comentarios</h5>
+      <textarea [(ngModel)]="comentario" class="form-control" rows="3" placeholder="Escribe tus comentarios aquí..."></textarea>
+      <button class="btn btn-primary mt-2" (click)="enviarEncuesta(turnoSeleccionado)">Enviar Reseña</button>
+    </div>
+  </div>
+
+</div>
