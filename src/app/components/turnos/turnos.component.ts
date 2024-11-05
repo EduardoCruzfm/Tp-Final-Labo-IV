@@ -22,6 +22,8 @@ export class TurnosComponent {
     paciente: new FormControl() // Solo requerido si el usuario es admin
   });
 
+  
+
   especialidades: string[] = [];
   especialistasDisponibles: any[] = [];
   horariosDisponibles: any[] = [];
@@ -34,6 +36,7 @@ export class TurnosComponent {
   especialistasDisponiblesTest: any[] = [""];
   nombreEspecialista : any;
   dniPaciente : number = 0;
+  horarioSeleccionado: any;
 
   constructor( private db: DatabaseService,private router: Router, ) {
     
@@ -115,7 +118,14 @@ export class TurnosComponent {
     this.especialistaSeleccionado = this.turnoForm.get('especialista')?.value;
   
     if (this.especialistaSeleccionado) {
-      this.horariosDisponibles = this.especialistaSeleccionado.disponibilidad;
+      // this.horariosDisponibles = this.especialistaSeleccionado.disponibilidad;
+
+      this.especialistaSeleccionado.disponibilidad.forEach((horario : any) => {
+        if (horario.reservado) {
+          this.horariosDisponibles.push(horario);
+        }
+      });
+
       this.nombreEspecialista = ({nombre: this.especialistaSeleccionado.nombre, apellido: this.especialistaSeleccionado.apellido})
     }
     console.log(this.horariosDisponibles);
@@ -133,6 +143,34 @@ export class TurnosComponent {
     //   this.turnoForm.get('paciente')?.setValue({nombre: paciente.nombre,apellido: paciente.apellido});
     // }
   }
+
+  onHorarioSeleccionado(event: Event) {
+    // Accede directamente al valor del FormControl
+    const selectedValue = this.turnoForm.get('fechaHora')?.value; // Aquí obtienes el objeto seleccionado
+  
+    if (selectedValue) {
+      this.horarioSeleccionado = selectedValue;
+  
+      const disponibilidadIndex = this.especialistaSeleccionado.disponibilidad.findIndex((disp: any) =>
+        disp.dia === this.horarioSeleccionado.dia &&
+        disp.mes === this.horarioSeleccionado.mes &&
+        disp.anio === this.horarioSeleccionado.anio &&
+        disp.horaInicio === this.horarioSeleccionado.horaInicio
+        // && !disp.reservado
+      );
+      console.log("------>:", disponibilidadIndex);
+  
+      if (disponibilidadIndex !== -1) {
+        console.log("Horario disponible en el índice:", disponibilidadIndex);
+        this.especialistaSeleccionado.disponibilidad[disponibilidadIndex].reservado = false;
+        console.log(this.especialistaSeleccionado);
+      } else {
+        console.log("Horario no disponible o ya reservado");
+      }
+    }
+  }
+  
+  
   
   
 
@@ -140,13 +178,18 @@ export class TurnosComponent {
     if (this.turnoForm.valid) {
       // Asegúrate de que especialista y paciente sean de tipo objeto
       const { especialidad, fechaHora, paciente } = this.turnoForm.value;
+
+      //
   
       // Verifica que especialista y paciente sean objetos
       if (typeof especialidad === "string" && paciente) {
         const nombreEspecialista = this.nombreEspecialista;
         const nombrePaciente = paciente;
+        const idEspecialista = this.especialistaSeleccionado.id;
   
         const turno: Turno = new Turno(
+          "",
+          idEspecialista,
           especialidad,
           nombreEspecialista,
           fechaHora, 
@@ -155,7 +198,11 @@ export class TurnosComponent {
           '',
           ''
         );
-         this.db.agregarUsuario(turno, 'turnos');
+         this.db.agregarTurno(turno, 'turnos');
+
+         this.db.modificarUsuario(this.especialistaSeleccionado,'especialistas')
+
+
         console.log('Datos del turno:', turno);
       } else {
         console.log('Especialista o paciente son nulos o no válidos');

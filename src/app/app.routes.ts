@@ -85,5 +85,12 @@ export const routes: Routes = [
       import('./components/mis-turnos/mis-turnos.component').then(
         (m) => m.MisTurnosComponent
       ),
+  },
+  {
+    path: 'resenia',
+    loadComponent: () =>
+      import('./components/mis-turnos/resenia/resenia.component').then(
+        (m) => m.ReseniaComponent
+      ),
   }
 ];

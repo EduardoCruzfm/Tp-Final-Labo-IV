@@ -56,7 +56,7 @@ export class UsuarioDetalleComponent {
   }
   
   agregarDisponibilidad() {
-    const nuevaDisponibilidad: FechaHora = new FechaHora(this.dia,this.mes,this.anio, this.horaInicio, this.horaFin);
+    const nuevaDisponibilidad: FechaHora = new FechaHora(this.dia,this.mes,this.anio, this.horaInicio, this.horaFin,true);
     this.disponibilidad.push(nuevaDisponibilidad.GetFecha());
     this.usuario.disponibilidad = this.disponibilidad; // Actualizar la disponibilidad del usuario
   }

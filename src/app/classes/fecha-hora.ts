@@ -4,13 +4,15 @@ export class FechaHora {
   anio: number;
   horaInicio: string;
   horaFin: string;
+  reservado: boolean;
 
-  constructor( dia: string ,mes: string, anio: number, horaInicio: string,  horaFin: string) {
+  constructor( dia: string ,mes: string, anio: number, horaInicio: string,  horaFin: string, reservado: boolean) {
    this.dia = dia;
    this.mes = mes;
    this.anio = anio;
    this.horaInicio = horaInicio;
    this.horaFin = horaFin; 
+   this.reservado = reservado; 
   }
  
   GetFecha(){
@@ -19,7 +21,8 @@ export class FechaHora {
       mes: this.mes,
       anio: this.anio,
       horaInicio: this.horaInicio,
-      horaFin: this.horaFin
+      horaFin: this.horaFin,
+      reservado: this.reservado,
     };
   }
 

@@ -20,12 +20,13 @@
   
       <div class="form-group mb-3">
         <label for="fechaHora">Fecha y Hora</label>
-        <select id="fechaHora" class="form-control" formControlName="fechaHora">
+        <select id="fechaHora" class="form-control" formControlName="fechaHora" (change)="onHorarioSeleccionado($event)">
           <option *ngFor="let disp of horariosDisponibles" [ngValue]="disp">
-            {{ disp.dia }} - {{ disp.mes }} - {{ disp.anio }} {{ disp.horaInicio }} {{ disp.horaFin }} 
+            {{ disp.dia }} - {{ disp.mes }} - {{ disp.anio }} {{ disp.horaInicio }} {{ disp.horaFin }}
           </option>
         </select>
       </div>
+      
       
       
   

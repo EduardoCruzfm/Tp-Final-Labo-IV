@@ -23,6 +23,28 @@ export class DatabaseService {
     }
   }
 
+  async agregarTurno(turno: any, coleccion: string) {
+    try {
+      // Generar un nuevo ID único para el turno usando createId()
+      const turnoId = this.firestore.createId();
+  
+      // Asignar el ID generado al turno
+      turno.id = turnoId;
+  
+      // Crear una referencia al documento usando el ID generado
+      const turnoDocRef = this.firestore.collection(coleccion).doc(turnoId);
+  
+      // Guardar el documento en Firestore
+      await turnoDocRef.set({ ...turno });
+  
+      console.log('Turno agregado exitosamente con ID:', turnoId);
+    } catch (error) {
+      console.error('Error al agregar el turno:', error);
+    }
+  }
+  
+  
+
 
   traerUsuario(user: string){
     const collectionUsuarios = this.firestore.collection(user);

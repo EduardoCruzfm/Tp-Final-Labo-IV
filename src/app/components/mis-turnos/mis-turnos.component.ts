@@ -37,15 +37,17 @@ export class MisTurnosComponent {
   cancelarTurno(turno: any) {
     this.turnoEnCancelacion = turno;
     this.comentarioCancelacion = ''; // Resetear el comentario al abrir el modal
+    this.turnoSeleccionado = null; // para que desaparesca
   }
 
   confirmarCancelacion() {
     if (this.turnoEnCancelacion) {
       this.turnoEnCancelacion.estado = 'cancelado';  // Marcar el turno como cancelado
       this.turnoEnCancelacion.comentario = this.comentarioCancelacion; // Guardar el comentario
+      this.db.modificarUsuario(this.turnoEnCancelacion,'turnos');
       console.log(this.turnoEnCancelacion);
 
-      //ACA DEBERIA MODIFICAR LA DISPONIBILIDAD DEL ESPECIALISTA
+      //ACA DEBERIA MODIFICAR LA DISPONIBILIDAD DEL ESPECIALISTA      modificar el turno del del especialista con un estado
 
       this.turnoEnCancelacion = null; // Resetear el turno en proceso de cancelación
     }
@@ -68,20 +70,26 @@ export class MisTurnosComponent {
     });
   }
 
-  
-
   mostrarResena(turno: any) {
     // Si ya se está mostrando una reseña, la ocultamos
     if (this.turnoSeleccionado === turno) {
       this.turnoSeleccionado = null;
     } else {
+      this.turnoEnCancelacion = null;
       this.turnoSeleccionado = turno; // Guardamos el turno seleccionado
     }
   }
 
+  // En tu componente MisTurnosComponent
+  isComentarioVacio(comentario: any): boolean {
+    return comentario && Object.keys(comentario).length === 0;
+  }
+
+
   enviarEncuesta(turno: any) {
-    // lógica para enviar la encuesta
-    turno.comentario = `Encuesta: ${this.calificacion} - Comentario: ${this.comentario}`
+    // turno.comentario = `Encuesta: ${this.calificacion} - Comentario: ${this.comentario}`
+    turno.comentario = { encuesta: this.calificacion, comentario: this.comentario};
+    this.db.modificarUsuario(turno,'turnos');
     console.log('encuesta' ,turno);
 }
 
