@@ -133,13 +133,26 @@ i: any;
 async handleLogin() {
 
    // Carga el token reCAPTCHA v3
-   (window as any).grecaptcha.ready(() => {
-    (window as any).grecaptcha.execute('6LdYYncqAAAAAJ7rYlmPY4MV8dAtr8nlSv3M8T4C', { action: 'login' }).then((token: string) => {
-      this.token = token;
-      // Aquí puedes enviar el token a tu backend para la verificación
-      console.log('Token reCAPTCHA:', token);
+   // Comprobar si el objeto grecaptcha está definido
+  if ((window as any).grecaptcha) {
+    // Si grecaptcha está disponible, entonces ejecutamos la verificación
+    (window as any).grecaptcha.ready(() => {
+      (window as any).grecaptcha.execute('6LdYYncqAAAAAJ7rYlmPY4MV8dAtr8nlSv3M8T4C', { action: 'login' }).then((token: string) => {
+        this.token = token;
+        console.log('Token reCAPTCHA:', token);
+
+        // Aquí puedes enviar el token a tu backend para la verificación
+        if (this.form.valid) {
+          const { email, password } = this.form.value;
+          // Resto del código para el login
+        }
+      }).catch((error: any) => {
+        console.error('Error al ejecutar reCAPTCHA:', error);
+      });
     });
-  });
+  } else {
+    console.error('reCAPTCHA no está disponible en este momento.');
+  }
 
 
 
