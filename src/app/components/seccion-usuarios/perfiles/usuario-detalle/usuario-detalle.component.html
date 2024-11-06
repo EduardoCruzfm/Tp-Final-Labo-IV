@@ -1,3 +1,7 @@
+<app-navbar id="nav" [tipoUsuario]="tipoUsuarioPefil"></app-navbar>
+ <br>
+ <br>
+ <br>
 <div class="container mt-3" *ngIf="usuario">
     <h2>Detalles del Usuario</h2>
     <div class="card">
@@ -44,14 +48,16 @@
         <div *ngIf="usuario.perfil === 'especialista'">
           <h3 class="mt-4">Agregar Disponibilidad</h3>
           <div class="row">
+
               <!-- Selector de Día -->
               <div class="col-md-2">
                 <label for="dia">Día:</label>
                 <select id="dia" [(ngModel)]="dia" (change)="actualizarRangoHorario()" class="form-control">
-                  <option value="">Dia</option>
+                  <option value="">Día</option>
                   <option *ngFor="let dia of diasPermitidos" [value]="dia">{{ dia }}</option>
                 </select>
               </div>
+                          
               
               <!-- Selector de Mes -->
               <div class="col-md-2">
@@ -73,15 +79,21 @@
               </div>
               
               <!-- Selector de Hora de Inicio -->
-              <div class="col-md-3">
+               <div class="col-md-3">
                 <label for="horaInicio">Hora de Inicio:</label>
-                <input type="time" id="horaInicio" [(ngModel)]="horaInicio" class="form-control" [min]="horaInicioMin" [max]="horaInicioMax">
+                <select id="horaInicio" [(ngModel)]="horaInicio" class="form-control">
+                  <option value="">Hora de Inicio</option>
+                  <option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</option>
+                </select>
               </div>
               
               <!-- Selector de Hora de Fin -->
               <div class="col-md-3">
                 <label for="horaFin">Hora de Fin:</label>
-                <input type="time" id="horaFin" [(ngModel)]="horaFin" class="form-control" [min]="horaFinMin" [max]="horaFinMax">
+                <select id="horaFin" [(ngModel)]="horaFin" class="form-control">
+                  <option value="">Hora de Fin</option>
+                  <option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</option>
+                </select>
               </div>
             </div>
           

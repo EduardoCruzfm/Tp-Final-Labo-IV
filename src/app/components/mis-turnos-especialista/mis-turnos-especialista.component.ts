@@ -3,12 +3,14 @@ import { DatabaseService } from '../../services/database.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { UsuarioService } from '../../services/usuario.service';
 
 
 @Component({
   selector: 'app-mis-turnos-especialista',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule,CommonModule,NavbarComponent],
   templateUrl: './mis-turnos-especialista.component.html',
   styleUrl: './mis-turnos-especialista.component.css'
 })
@@ -26,17 +28,33 @@ export class MisTurnosEspecialistaComponent {
   resenia: string = '';
   estadoEnProceso: string = ''; // Puede ser 'cancelar', 'aceptar', 'rechazar', etc.
   mensajeModal: string = ''; // Mensaje dinámico para el modal
+  especilaista: any
+  tipoUsuario: any;
 
-  constructor( private db: DatabaseService,private auth: AuthService) {
+  tipoUsuarioPefil: string = '';
+  
+
+  constructor( private db: DatabaseService,private auth: AuthService, private usuarioService: UsuarioService) {
       this.cargarTurnos();
+      this.tipoUsuarioPefil = this.usuarioService.getUsuarioPerfil();
+    }
+    
+    async ngOnInit(): Promise<void> {
+
+        const currentUser = this.auth.getCurrentUser();
+      if (currentUser) {
+        this.especilaista = await this.db.obtenerUsuarioPorId(currentUser.uid,'especialistas');
+        this.usuarioService.setUsuario(this.especilaista);
+      }
+      console.log("especialista",this.especilaista)
   }
 
-  cargarTurnos() {
+  async cargarTurnos() {
     const currentUser = this.auth.getCurrentUser();
     
     if (currentUser) {
       
-      this.db.traerUsuario('turnos').subscribe((response) => {
+      await this.db.traerUsuario('turnos').subscribe((response) => {
         // Filtra los turnos que coinciden con el especialista
         this.turnos = response.filter((turno:any) => turno.idEspecialista === currentUser.uid);
         this.filteredTurnos = this.turnos;
@@ -110,6 +128,26 @@ export class MisTurnosEspecialistaComponent {
         case 'cancelar':
           this.turnoSeleccionado.estado = 'cancelado';
           this.turnoSeleccionado.comentario = this.comentarioCancelacion;
+          
+          if (this.especilaista) {
+            const disponibilidadIndex = this.especilaista.disponibilidad.findIndex((disp: any) =>
+              disp.dia === this.turnoSeleccionado.fechaHora.dia &&
+              disp.mes === this.turnoSeleccionado.fechaHora.mes &&
+              disp.anio === this.turnoSeleccionado.fechaHora.anio &&
+              disp.horaInicio === this.turnoSeleccionado.fechaHora.horaInicio
+              // && !disp.reservado
+            );
+            if (disponibilidadIndex !== -1) {
+              console.log("Horario disponible en el índice:", disponibilidadIndex);
+              this.especilaista.disponibilidad[disponibilidadIndex].reservado = true;
+              console.log('Especialista  ->: ',this.especilaista);
+            } else {
+              console.log("Horario no disponible o ya reservado");
+            }
+          }
+
+          this.db.modificarUsuario(this.especilaista,'especialistas'); // Se deberia actulaizar?
+
           break;
         case 'rechazar':
           this.turnoSeleccionado.estado = 'rechazado';
@@ -128,12 +166,12 @@ export class MisTurnosEspecialistaComponent {
       
       this.db.modificarUsuario(this.turnoSeleccionado, 'turnos');
       console.log(this.turnoSeleccionado);
+      console.log(this.especilaista);
       
       // Resetear el turno y estado en proceso
       this.turnoSeleccionado = null;
       this.estadoEnProceso = '';
     }
-    //ACA DEBERIA MODIFICAR LA DISPONIBILIDAD DEL ESPECIALISTA      modificar el turno del del especialista con un estado
   }
   
   

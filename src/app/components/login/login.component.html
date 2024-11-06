@@ -35,6 +35,10 @@
         Sign in
       </button>
 
+      <div class="mb-3">
+        <div class="g-recaptcha" data-sitekey="6LdYYncqAAAAAK7uzmNcGqSYpeFZph3cff55TPHn"></div>
+      </div>
+
       <div class="menu-container">
         <!-- Administradores -->
         <ng-container *ngIf="listaAdministradores?.length > 0">
@@ -71,4 +75,6 @@
       <p class="mt-5 mb-3 text-body-secondary text-center">&copy; 2017–2024</p>
     </form>
   </main>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </div>

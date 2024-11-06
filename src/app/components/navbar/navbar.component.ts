@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service'; 
 import { DatabaseService } from '../../services/database.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 
 @Component({
@@ -14,11 +15,14 @@ import { DatabaseService } from '../../services/database.service';
 })
 export class NavbarComponent {
   @Input() tipoUsuario: string = ""; 
+
+  tipoUsuarioPefil: string = '';
+
   userLoggedIn: boolean = false;      
   userEmail: string | null = null; 
   usuarioActual: any | null = "";
 
-  constructor(private authService: AuthService, private router: Router, private db: DatabaseService) {
+  constructor(private authService: AuthService, private router: Router, private db: DatabaseService,private usuarioService: UsuarioService) {
     // Suscribirse a los cambios de estado de autenticación
     this.authService.userLoggedIn$.subscribe((isLoggedIn) => {
       this.userLoggedIn = isLoggedIn;
@@ -27,12 +31,16 @@ export class NavbarComponent {
     // Suscribirse a los cambios de correo del usuarioActual
     this.authService.userEmail$.subscribe(async (email) => {
       this.userEmail = email;
-      // if (email && this.tipoUsuario) {
-      //   await this.cargarUsuarioActual();
-      // } else { 
-      //   console.log("ERROR usuarioActual nulo: " + this.usuarioActual);
-      // }
     });
+
+    this.tipoUsuarioPefil = this.usuarioService.getUsuarioPerfil();
+    
+  }
+  
+  ngOnInit(): void {
+    // Recuperar el perfil del usuario desde el servicio
+    this.tipoUsuarioPefil = this.usuarioService.getUsuarioPerfil();
+    this.usuarioActual = this.usuarioService.getUsuario();
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -41,19 +49,39 @@ export class NavbarComponent {
       await this.cargarUsuarioActual();
     }
   }
-
+  
   async cargarUsuarioActual() {
     const user = await this.authService.getCurrentUser(); // Obtener el usuario actual
     if (user) {
       console.log("UID " + user.uid);
-      this.usuarioActual = await this.db.obtenerUsuarioPorId(user.uid, this.tipoUsuario);
+      this.usuarioActual = await this.db.obtenerUsuarioPorId(user.uid, this.tipoUsuarioPefil); // <-----
+      
     }
   }
 
-  home() {
-    this.router.navigate(['/bienvenida']).then(() => {
-      this.scrollToSection('nav');
-    });
+  home() { 
+
+    switch (this.usuarioActual.perfil) {
+      case 'paciente':
+        this.router.navigate(['/bienvenida']).then(() => {
+          this.scrollToSection('nav');
+        });
+        
+        break;
+      case 'especialista':
+        this.router.navigate(['/bienvenida']).then(() => {
+          this.scrollToSection('nav');
+        });
+        
+        break;
+      case 'administrador':
+        this.router.navigate(['/bienvenida']).then(() => {
+          this.scrollToSection('nav');
+        });
+        break;
+    
+    }
+    
   }
 
   misturnos() {
@@ -70,7 +98,9 @@ export class NavbarComponent {
     this.router.navigate(['/seccion-usuarios']);
   }
   miPerfil(usuario: any) {
-    this.router.navigate(['/usuario-detalle'],{ state: { usuario } });
+    this.usuarioService.setUsuario(usuario); 
+    this.router.navigate(['/usuario-detalle']);
+    // this.router.navigate(['/usuario-detalle'],{ state: { usuario } });
   }
 
   scrollToSection(sectionId: string) {
@@ -84,6 +114,7 @@ export class NavbarComponent {
 
   cerrarSesion() {
     this.authService.logout().then(() => {
+      this.usuarioService.clearUsuario();
       this.router.navigate(['/bienvenida']); 
     });
   }

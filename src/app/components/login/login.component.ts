@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 import { DatabaseService } from '../../services/database.service';
 import { CommonModule } from '@angular/common';
+import { UsuarioService } from '../../services/usuario.service';
  
 
 @Component({
@@ -28,7 +29,7 @@ export class LoginComponent {
   });
 i: any;
 
-  constructor(private router: Router, private authService: AuthService, private db: DatabaseService) {
+  constructor(private router: Router, private authService: AuthService, private db: DatabaseService,private usuarioService: UsuarioService) {
     this.traerAdministradores();
     this.traerEspecialistas();
     this.traerPacientes();
@@ -70,14 +71,26 @@ i: any;
   usuarioEspecialista2(){
     this.form.patchValue({
       // email: 'arturo@example.com',
-      email: 'arturo@example.com',
-      password: '456456'
+      email: 'zonyohq406@dollarurl.com',
+      password: '450253'
     });
   }
 
   usuarioPaciente(){
     this.form.patchValue({
       email: 'educacionflash@gmail.com',
+      password: '450253'
+    });
+  }
+  usuarioPaciente2(){
+    this.form.patchValue({
+      email: 'tarefo7577@opposir.com',
+      password: '450253'
+    });
+  }
+  usuarioPaciente3(){
+    this.form.patchValue({
+      email: 'academyxok@gmail.com',
       password: '450253'
     });
   }
@@ -95,8 +108,14 @@ i: any;
         case 'educacionflash@gmail.com':
             this.usuarioPaciente();
           break;
-        case 'arturo@example.com':
+        case 'zonyohq406@dollarurl.com':
             this.usuarioEspecialista2();
+          break;
+        case 'tarefo7577@opposir.com':
+            this.usuarioPaciente2();
+          break;
+        case 'academyxok@gmail.com':
+            this.usuarioPaciente3();
           break;
       
         default:
@@ -129,7 +148,8 @@ async handleLogin() {
         );
 
         if (esAdmin) {
-          this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'administradores' } });   
+          this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'administradores' } });  
+          this.usuarioService.setUsuarioPerfil('administradores');   
         }
         else if(esEspecialista && await this.emailVerified()){
 
@@ -146,6 +166,7 @@ async handleLogin() {
             });
             
             this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'especialistas' } });
+            this.usuarioService.setUsuarioPerfil('especialistas');   
             // por state 
 
           } else {
@@ -162,9 +183,8 @@ async handleLogin() {
           // this.emailVerified();
           this.setterForms();
           this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'pacientes' } });
+          this.usuarioService.setUsuarioPerfil('pacientes');   
 
-        
-          //-----
         }
       } catch (error) {
         // Mostrar alerta en caso de error de autenticación

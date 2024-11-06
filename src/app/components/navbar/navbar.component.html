@@ -30,13 +30,13 @@
                 Home
               </button>
             </li>
-            <li *ngIf="tipoUsuario && tipoUsuario !== 'administradores'"  class="nav-item">
+            <li *ngIf="tipoUsuario && tipoUsuario !== 'administradores' && userLoggedIn"  class="nav-item">
               <button class="nav-link" (click)="misturnos()">Mis turnos</button>
             </li>
-            <li *ngIf="tipoUsuario === 'administradores'" class="nav-item">
+            <li *ngIf="tipoUsuario === 'administradores' && userLoggedIn" class="nav-item">
               <button class="nav-link" (click)="seccionUsuarios()">Usuarios</button>
             </li>
-            <li  *ngIf="tipoUsuario" class="nav-item">
+            <li  *ngIf="tipoUsuario && userLoggedIn" class="nav-item">
               <button class="nav-link" (click)="miPerfil(this.usuarioActual)">Mi perfil</button>
             </li>
           </ul>

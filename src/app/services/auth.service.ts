@@ -9,6 +9,7 @@ import { DatabaseService } from './database.service';
   providedIn: 'root'
 })
 export class AuthService {
+   private usuario:any;
 
   private userLoggedInSubject = new BehaviorSubject<boolean>(false);
   private userEmailSubject = new BehaviorSubject<string | null>(null);

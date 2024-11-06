@@ -2,11 +2,14 @@ import { Component } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { UsuarioService } from '../../services/usuario.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-mis-turnos',
   standalone: true,
-  imports: [CommonModule,FormsModule ],
+  imports: [CommonModule,FormsModule,NavbarComponent ],
   templateUrl: './mis-turnos.component.html',
   styleUrl: './mis-turnos.component.css'
 })
@@ -20,17 +23,25 @@ export class MisTurnosComponent {
   turnoSeleccionado: any = null; // Para almacenar el turno actual que tiene la reseña
   calificacion: number = 0; // o el tipo adecuado que estés usando
   comentario: string = ""; // o el tipo adecuado
+  tipoUsuarioPefil:string = '';
 
-  constructor( private db: DatabaseService,) {
+  constructor( private db: DatabaseService,private auth: AuthService,private usuarioService: UsuarioService) {
       this.cargarTurnos();
+      this.tipoUsuarioPefil = this.usuarioService.getUsuarioPerfil();
   }
 
   cargarTurnos() {
-    this.db.traerUsuario('turnos').subscribe((response) => {
-      this.turnos = response;
-      this.filteredTurnos = response;
-      console.log(this.turnos);
-    });
+    const currentUser = this.auth.getCurrentUser();
+    
+    if (currentUser) {
+      
+      this.db.traerUsuario('turnos').subscribe((response) => {
+        // Filtra los turnos que coinciden con el especialista
+        this.turnos = response.filter((turno:any) => turno.paciente.id === currentUser.uid);
+        this.filteredTurnos = this.turnos;
+        console.log(this.turnos);
+      });
+    }
   }
 
   // -----
@@ -101,3 +112,7 @@ export class MisTurnosComponent {
   }
   
 }
+
+
+// tarefo7577@opposir.com -> daniel martinez
+// tarefo7577@opposir.com-> daniel martinez

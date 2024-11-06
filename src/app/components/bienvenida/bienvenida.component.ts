@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service'; 
 import { ActivatedRoute } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
+import { UsuarioService } from '../../services/usuario.service';
 DatabaseService
 
 @Component({
@@ -24,7 +25,7 @@ export class BienvenidaComponent {
   
   usuarioActual: string | any = null;
 
-  constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router, private route: ActivatedRoute, private db: DatabaseService) {
+  constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router, private route: ActivatedRoute, private db: DatabaseService,private usuarioService: UsuarioService) {
     // Suscribirse a los cambios de estado de autenticación
     this.authService.userLoggedIn$.subscribe((isLoggedIn) => {
       this.userLoggedIn = isLoggedIn;
@@ -44,9 +45,11 @@ export class BienvenidaComponent {
 
     ngOnInit(): void {
       // Recuperar los parámetros de la ruta
-      this.route.queryParams.subscribe(params => {
-        this.tipoUsuario = params['tipo'];
-      });
+      // this.route.queryParams.subscribe(params => {
+      //   this.tipoUsuario = params['tipo']; // ----> seteo desde el login
+      // });
+
+      this.tipoUsuario = this.usuarioService.getUsuarioPerfil();
       this.cargarUsuarioActual();
     }
 

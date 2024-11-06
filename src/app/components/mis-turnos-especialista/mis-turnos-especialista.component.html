@@ -1,3 +1,7 @@
+<app-navbar id="nav" [tipoUsuario]="tipoUsuarioPefil"></app-navbar>
+<br>
+<br>
+<br>
 <div class="container mt-3">
     <h2>Lista de Turnos</h2>
   
@@ -88,9 +92,10 @@
       <br>
       <h5>Comentarios</h5>
       <textarea [(ngModel)]="resenia" class="form-control" rows="3" placeholder="Escribe tus comentarios aquí..."></textarea>
-      <button class="btn btn-primary mt-2" (click)="enviarResenia(turnoSeleccionado)">Enviar Reseña</button>
+      <button *ngIf="turnoSeleccionado?.resenia === ''" class="btn btn-primary mt-2" (click)="enviarResenia(turnoSeleccionado)">Enviar Reseña</button>
+      <button *ngIf="turnoSeleccionado?.resenia !== ''"  class="btn btn-primary mt-2" (click)="enviarResenia(turnoSeleccionado)">Editar Reseña</button>
     </div>
 
-    
+
   </div>
   
