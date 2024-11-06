@@ -22,6 +22,7 @@ export class LoginComponent {
   listaEspecialistas: any;
   listaPacientes: any;
   usuarioActual: any
+  token: string | null = null;
 
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -130,6 +131,18 @@ i: any;
 
 // LoginComponent
 async handleLogin() {
+
+   // Carga el token reCAPTCHA v3
+   (window as any).grecaptcha.ready(() => {
+    (window as any).grecaptcha.execute('6LdYYncqAAAAAK7uzmNcGqSYpeFZph3cff55TPHn', { action: 'login' }).then((token: string) => {
+      this.token = token;
+      // Aquí puedes enviar el token a tu backend para la verificación
+      console.log('Token reCAPTCHA:', token);
+    });
+  });
+
+
+
   if (this.form.valid) {
     const { email, password } = this.form.value;
 
