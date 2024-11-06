@@ -134,7 +134,7 @@ async handleLogin() {
 
    // Carga el token reCAPTCHA v3
    (window as any).grecaptcha.ready(() => {
-    (window as any).grecaptcha.execute('6LdYYncqAAAAAK7uzmNcGqSYpeFZph3cff55TPHn', { action: 'login' }).then((token: string) => {
+    (window as any).grecaptcha.execute('6LdYYncqAAAAAJ7rYlmPY4MV8dAtr8nlSv3M8T4C', { action: 'login' }).then((token: string) => {
       this.token = token;
       // Aquí puedes enviar el token a tu backend para la verificación
       console.log('Token reCAPTCHA:', token);
