@@ -1,0 +1,8 @@
+.resenia {
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    transition: all 0.3s ease; /* Suaviza cualquier transición */
+}
+
+.turnos-list {
+    padding-bottom: 120px; /* Espacio para la sección de reseña fija */
+}

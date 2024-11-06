@@ -1,0 +1,96 @@
+<div class="container mt-3">
+    <h2>Lista de Turnos</h2>
+  
+    <!-- Búsqueda por Especialidad o Especialista -->
+    <div class="mb-3">
+      <label for="searchInput">Buscar por Especialidad o Especialista:</label>
+      <input type="text" id="searchInput" class="form-control" [(ngModel)]="searchTerm" (input)="filtrarTurnos()">
+    </div>
+  
+    <!-- Tabla de turnos -->
+    <div class="turnos-list" style="overflow-y: auto; max-height: 400px;">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>Obra Social</th>
+            <th>Especialidad</th>
+            <th>Fecha</th>
+            <th>Hora Inicio</th>
+            <th>Hora Fin</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let turno of filteredTurnos">
+            <td>{{ turno.paciente.nombre }}</td>
+            <td>{{ turno.paciente.apellido }}</td>
+            <td>{{ turno.paciente.dni }}</td>
+            <td>{{ turno.paciente.obraSocial }}</td>
+            <td>{{ turno.especialidad }}</td>
+            <td>{{ turno.fechaHora.dia }}/{{ turno.fechaHora.mes }}/{{ turno.fechaHora.anio }}</td>
+            <td>{{ turno.fechaHora.horaInicio }}</td>
+            <td>{{ turno.fechaHora.horaFin }}</td>
+            <td>
+              <!-- Muestra el estado con etiquetas de colores -->
+              <span [ngClass]="{
+                'badge bg-warning': turno.estado === 'pendiente',
+                'badge bg-success': turno.estado === 'aceptado',
+                'badge bg-secondary': turno.estado === 'finalizado',
+                'badge bg-danger': turno.estado === 'rechazado' || turno.estado === 'cancelado'
+              }">
+                {{ turno.estado | titlecase }}
+              </span>
+            </td>
+            <td>
+              <!-- Botones de acción basados en el estado -->
+              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-success me-1" (click)="cambiarEstadoTurno(turno, 'aceptar')">Aceptar</button>
+              <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger me-1" (click)="cambiarEstadoTurno(turno, 'rechazar')">Rechazar</button>
+              <button *ngIf="turno.estado === 'aceptado'" class="btn btn-danger me-1" (click)="cambiarEstadoTurno(turno, 'cancelar')">Cancelar</button>
+              <button *ngIf="turno.estado === 'aceptado'" class="btn btn-info me-1" (click)="cambiarEstadoTurno(turno, 'finalizar')">Finalizar</button>
+              <button *ngIf="turno.estado === 'finalizado'" class="btn btn-primary me-1" (click)="mostrarResena(turno)">Ver reseña</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Modal de confirmación para cambiar estado -->
+    <div *ngIf="turnoSeleccionado && turnoSeleccionado.estado !== 'finalizado'" class="modal fade show d-block" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ mensajeModal }}</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="cancelarAccion()"></button>
+          </div>
+          <div class="modal-body">
+            <p *ngIf="estadoEnProceso === 'cancelar' || estadoEnProceso === 'rechazar'">Escriba el motivo de la {{ estadoEnProceso }}:</p>
+            <textarea *ngIf="estadoEnProceso === 'cancelar' || estadoEnProceso === 'rechazar'" [(ngModel)]="comentarioCancelacion" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" (click)="confirmarCambioEstado()">Confirmar</button>
+            <button class="btn btn-secondary" (click)="cancelarAccion()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Reseña fija al fondo -->
+    <div *ngIf="turnoSeleccionado?.estado === 'finalizado'" class="card fixed-bottom bg-light p-3 border rounded shadow-sm">
+      <h4 class="card-title">Reseña al Paciente</h4>
+      <p class="card-text">{{ turnoSeleccionado?.resenia }}</p>
+  
+  
+      
+      <br>
+      <h5>Comentarios</h5>
+      <textarea [(ngModel)]="resenia" class="form-control" rows="3" placeholder="Escribe tus comentarios aquí..."></textarea>
+      <button class="btn btn-primary mt-2" (click)="enviarResenia(turnoSeleccionado)">Enviar Reseña</button>
+    </div>
+
+    
+  </div>
+  

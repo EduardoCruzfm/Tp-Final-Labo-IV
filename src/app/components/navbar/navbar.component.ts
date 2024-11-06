@@ -57,7 +57,13 @@ export class NavbarComponent {
   }
 
   misturnos() {
-    this.router.navigate(['/mis-turnos']);
+
+    if (this.tipoUsuario == 'pacientes') {
+      this.router.navigate(['/mis-turnos']); // paciente
+    }
+    else if (this.tipoUsuario == 'especialistas') {
+      this.router.navigate(['/mis-turnos-especilista']); // para el especialista crear******
+    }
   }
 
   seccionUsuarios() {

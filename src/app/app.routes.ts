@@ -87,10 +87,11 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'resenia',
+    path: 'mis-turnos-especilista',
     loadComponent: () =>
-      import('./components/mis-turnos/resenia/resenia.component').then(
-        (m) => m.ReseniaComponent
+      import('./components/mis-turnos-especialista/mis-turnos-especialista.component').then(
+        (m) => m.MisTurnosEspecialistaComponent
       ),
-  }
+  },
+  
 ];
