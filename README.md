@@ -26,6 +26,7 @@ El sistema está dividido en varias secciones, accesibles a través de un menú 
   - **Formulario de inicio de sesión**: Campo para ingresar correo electrónico y contraseña.
   - **Botón "Iniciar sesión"**: Valida las credenciales y accede a la plataforma.
   - **Captcha**: Se muestra automáticamente en el proceso de autenticación cuando es necesario.
+  ![alt text](2.png)
 
 ### 3. **Pantalla de Registro (Especialista, Paciente)****
 
@@ -34,6 +35,7 @@ El sistema está dividido en varias secciones, accesibles a través de un menú 
 - **Contenido**:
   - **Formulario de registro**: Campos para ingresar nombre, correo electrónico, contraseña y otros datos relevantes.
   - **Botón "Registrar"**: Crea una nueva cuenta y redirige a la pantalla de inicio de sesión.
+  ![alt text](3.png)
 
 ### 4. **Pantalla de Mi Perfil (Administrador, Especialista, Paciente)**
 
@@ -46,6 +48,12 @@ El sistema está dividido en varias secciones, accesibles a través de un menú 
     - **Especialista**: Acceso a las turnod asignadas, historial médico de pacientes y posibilidad de agregar notas médicas.
     - **Paciente**: Visualización de sus turnos, historial médico y la opción de reservar nuevos turnos.
 
+    - **Paciente**
+    ![alt text](4.png)
+
+    - **Paciente**
+    ![alt text](4.1.png)
+
 ### 5. **Pantalla de Mis Turnos**
 
 - **Descripción**: Permite a los pacientes ver sus turnos y a los especialistas ver sus asignados.
@@ -54,6 +62,13 @@ El sistema está dividido en varias secciones, accesibles a través de un menú 
   - **Calendario de citas**: Muestra las citas que tiene el paciente o las citas asignadas al especialista.
   - **Formulario para agendar citas**: Los pacientes pueden seleccionar fecha, hora y el especialista con quien desean realizar la consulta.
   - **Botón "Cancelar cita"**: Permite a los pacientes o especialistas cancelar citas previamente agendadas.
+  
+  - **Paciente"**
+  ![alt text](5.png)
+  
+  - **Especialista"**
+  ![alt text](5.1.png)
+
 
 ### 6. **Pantalla de Solicitar Turnos**
 
@@ -62,6 +77,7 @@ El sistema está dividido en varias secciones, accesibles a través de un menú 
 - **Contenido**:
   - **Calendario de citas**: Muestra las citas disponibles del especialista.
   - **Formulario para agendar citas**: Los pacientes pueden seleccionar fecha, hora y el especialista con quien desean realizar la consulta.
+  ![alt text](6.png)
 
 ### 7. **Pantalla de Usuarios(Administrador)**
 
@@ -73,7 +89,7 @@ El sistema está dividido en varias secciones, accesibles a través de un menú 
   - **Boton Registro Paciente**: Muestra formulario para registrar un nuevo paciente.
   - **Boton Registro Especialista**: Muestra formulario para registrar un nuevo especialistas.
   - **Boton Registro Administrador**: Muestra formulario para registrar un nuevo administrador.
-  
+  ![alt text](7.png)
 
 
 ## Acceso a las Diferentes Secciones
