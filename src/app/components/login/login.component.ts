@@ -149,7 +149,12 @@ async handleLogin() {
 
   // Validar CAPTCHA antes de proceder con el login
   if (!this.validateCaptcha()) {
-    alert('El CAPTCHA es incorrecto. Por favor, inténtalo de nuevo.');
+
+    await Swal.fire({
+      icon: 'warning',
+      title: 'El CAPTCHA es incorrecto',
+      text: 'Por favor, inténtalo de nuevo.',
+    });
     return;
   }
 
