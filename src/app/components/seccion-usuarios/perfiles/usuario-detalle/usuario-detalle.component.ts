@@ -40,6 +40,8 @@ export class UsuarioDetalleComponent {
     // Lista de todos los meses
    mesesDisponibles: number[] = Array.from({ length: 12 }, (_, i) => i + 1); 
 
+   intervalosGenerados: string[] = [];
+
   // Definir los rangos de horas de la clínica
   horarioClinica = {
     lunes: { apertura: 8, cierre: 19 }, // 08:00 a 19:00
@@ -81,12 +83,55 @@ export class UsuarioDetalleComponent {
       }
       return horas;
     }
+
+    // Método para generar los intervalos de 30 minutos entre la hora de inicio y fin
+    generarIntervalos(horaInicio: string, horaFin: string): any[] {
+      const intervalos: any[] = [];
+      let [inicioHoras, inicioMinutos] = horaInicio.split(':').map(Number);
+      let [finHoras, finMinutos] = horaFin.split(':').map(Number);
+    
+      while (inicioHoras < finHoras || (inicioHoras === finHoras && inicioMinutos < finMinutos)) {
+        const horaActualInicio = `${inicioHoras.toString().padStart(2, '0')}:${inicioMinutos.toString().padStart(2, '0')}`;
+        inicioMinutos += 30;
+    
+        if (inicioMinutos >= 60) {
+          inicioMinutos -= 60;
+          inicioHoras++;
+        }
+    
+        const horaActualFin = `${inicioHoras.toString().padStart(2, '0')}:${inicioMinutos.toString().padStart(2, '0')}`;
+    
+        // Crear un objeto para cada intervalo padar clase FECHA
+
+        intervalos.push({
+          dia: this.dia,
+          mes: this.mes,
+          anio: this.anio,
+          horaInicio: horaActualInicio,
+          horaFin: horaActualFin,
+          reservado: false
+        });
+      }
+    
+      return intervalos;
+    }
+
+    agregarDisponibilidad(): void {
+      if (this.horaInicio && this.horaFin && this.dia) {
+        const intervalos = this.generarIntervalos(this.horaInicio, this.horaFin);
+        this.disponibilidad.push(...intervalos); // Agregar todos los intervalos al array de disponibilidad
+        console.log('Disponibilidad generada:', this.disponibilidad);
+        this.usuario.disponibilidad = this.disponibilidad; // Actualizar la disponibilidad del usuario
+      } else {
+        alert('Por favor, selecciona un día y un rango de horas válido.');
+      }
+    }
+
   
-  agregarDisponibilidad() {
-    const nuevaDisponibilidad: FechaHora = new FechaHora(this.dia,this.mes,this.anio, this.horaInicio, this.horaFin,true);
-    this.disponibilidad.push(nuevaDisponibilidad.GetFecha());
-    this.usuario.disponibilidad = this.disponibilidad; // Actualizar la disponibilidad del usuario
-  }
+  // agregarDisponibilidad() {
+  //   const nuevaDisponibilidad: FechaHora = new FechaHora(this.dia,this.mes,this.anio, this.horaInicio, this.horaFin,true);
+  //   this.disponibilidad.push(nuevaDisponibilidad.GetFecha());
+  // }
 
     // Actualizar las horas disponibles según el día seleccionado
     actualizarRangoHorario(): void {
@@ -110,10 +155,7 @@ export class UsuarioDetalleComponent {
         case 'Sabado':
           this.horasDisponibles = this.generarHorasDisponibles(this.horarioClinica.sabado.apertura, this.horarioClinica.sabado.cierre);
           break;
-      
-        
       }
-
     }
 
   obtenerNombreMes(mes: number): string {
