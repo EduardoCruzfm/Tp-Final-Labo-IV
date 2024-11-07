@@ -109,7 +109,7 @@ export class UsuarioDetalleComponent {
           anio: this.anio,
           horaInicio: horaActualInicio,
           horaFin: horaActualFin,
-          reservado: false
+          reservado: true
         });
       }
     
