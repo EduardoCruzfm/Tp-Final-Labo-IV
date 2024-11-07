@@ -22,19 +22,34 @@ export class LoginComponent {
   listaEspecialistas: any;
   listaPacientes: any;
   usuarioActual: any
-  token: string | null = null;
+
+   // Variable para almacenar el CAPTCHA generado
+  generatedCaptcha: string = '';
+
+  // Variable para almacenar el valor ingresado por el usuario
+  captchaInput: string = '';
+  
+  // Mensaje de error de CAPTCHA
+  captchaError: boolean = false;
+
+
+
 
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
-i: any;
 
   constructor(private router: Router, private authService: AuthService, private db: DatabaseService,private usuarioService: UsuarioService) {
     this.traerAdministradores();
     this.traerEspecialistas();
     this.traerPacientes();
   } 
+
+  ngOnInit(): void {
+    // Generar el CAPTCHA cuando se carga el componente
+    this.generateCaptcha();
+  }
 
   traerAdministradores(){
     this.db.traerUsuario('administradores').subscribe((response) => {
@@ -132,28 +147,11 @@ i: any;
 // LoginComponent
 async handleLogin() {
 
-   // Carga el token reCAPTCHA v3
-   // Comprobar si el objeto grecaptcha está definido
-  if ((window as any).grecaptcha) {
-    // Si grecaptcha está disponible, entonces ejecutamos la verificación
-    (window as any).grecaptcha.ready(() => {
-      (window as any).grecaptcha.execute('6LdYYncqAAAAAJ7rYlmPY4MV8dAtr8nlSv3M8T4C', { action: 'login' }).then((token: string) => {
-        this.token = token;
-        console.log('Token reCAPTCHA:', token);
-
-        // Aquí puedes enviar el token a tu backend para la verificación
-        if (this.form.valid) {
-          const { email, password } = this.form.value;
-          // Resto del código para el login
-        }
-      }).catch((error: any) => {
-        console.error('Error al ejecutar reCAPTCHA:', error);
-      });
-    });
-  } else {
-    console.error('reCAPTCHA no está disponible en este momento.');
+  // Validar CAPTCHA antes de proceder con el login
+  if (!this.validateCaptcha()) {
+    alert('El CAPTCHA es incorrecto. Por favor, inténtalo de nuevo.');
+    return;
   }
-
 
 
   if (this.form.valid) {
@@ -268,6 +266,39 @@ async handleLogin() {
       console.log("ERROR -> ", User);
     } 
   }
+
+  //
+   // Función para generar un CAPTCHA aleatorio
+   generateCaptcha(): void {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let captchaText = '';
+
+    // Generar un texto aleatorio de 6 caracteres
+    for (let i = 0; i < 6; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      captchaText += characters[randomIndex];
+    }
+
+    // Asignar el CAPTCHA generado a la variable
+    this.generatedCaptcha = captchaText;
+  }
+
+  // Función para validar el CAPTCHA ingresado
+  validateCaptcha(): boolean {
+    console.log(this.captchaInput);
+    console.log(this.generatedCaptcha);
+    
+    if (this.captchaInput === this.generatedCaptcha) {
+      this.captchaError = false;  // CAPTCHA válido
+      return true;
+    } else {
+      this.captchaError = true;   // CAPTCHA incorrecto
+      return false;
+    }
+
+  }
+
+
 
 }
 
