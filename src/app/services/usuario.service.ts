@@ -9,9 +9,13 @@ export class UsuarioService {
 
   private usuario: any = null;
   private usuarioPerfil: any = null;
-
+  private especialista: any = null;
+  private turno: any = null;
+  
   private usuarioKey = 'usuario';
   private perfilKey = 'usuarioPerfil';
+  private especialistaKey = 'especialista';
+  private turnoKey = 'turno';
 
   setUsuario(usuario: any) {
     this.usuario = usuario;
@@ -26,18 +30,44 @@ export class UsuarioService {
     const usuario = localStorage.getItem(this.usuarioKey);
     return usuario ? JSON.parse(usuario) : null;
   }
-
+  
   setUsuarioPerfil(perfil: string) {
     this.usuarioPerfil = perfil;
     localStorage.setItem(this.perfilKey, perfil);
   }
-
+  
   getUsuarioPerfil() {
     if (this.usuarioPerfil) {
       return this.usuarioPerfil;
     }
     // Recuperar el perfil desde localStorage si está disponible
     return localStorage.getItem(this.perfilKey);
+  }
+  
+  setEspecialista(especialista: any) {
+    this.especialista = especialista;
+    localStorage.setItem(this.especialistaKey, JSON.stringify(especialista));
+  }
+  
+  getEspecialista() {
+    if (this.especialista) {
+      return this.especialista;
+    }
+    // Recuperar el perfil desde localStorage si está disponible
+    return localStorage.getItem(this.especialistaKey);
+  }
+
+  setTurno(turno: any) {
+    this.turno = turno;
+    localStorage.setItem(this.turnoKey, JSON.stringify(turno));
+  }
+  
+  getTurno() {
+    if (this.turno) {
+      return this.turno;
+    }
+    // Recuperar el perfil desde localStorage si está disponible
+    return localStorage.getItem(this.turnoKey);
   }
 
   clearUsuario() {

@@ -1,4 +1,4 @@
-<app-navbar id="nav" [tipoUsuario]="tipoUsuarioPefil"></app-navbar>
+<app-navbar id="nav"></app-navbar>
  <br>
  <br>
  <br>
@@ -22,7 +22,7 @@
         <p class="card-text mb-3"><strong>Edad:</strong> {{ usuario.edad }}</p>
         <p class="card-text mb-3"><strong>DNI:</strong> {{ usuario.dni }}</p>
         <p class="card-text mb-3"><strong>Perfil:</strong> {{ usuario.perfil }}</p>
-
+        
         <!-- Especialidad para especialistas -->
         <div *ngIf="usuario.perfil === 'especialista' && usuario.especialidad">
           <p class="card-text mb-3"><strong>Especialidad:</strong> {{ usuario.especialidad }}</p>
@@ -109,7 +109,6 @@
           </ul>
           <button class="btn btn-success mt-3" (click)="guardarCambios()">Guardar Cambios</button>
         </div>
-        
       </div>  
       </div>
       

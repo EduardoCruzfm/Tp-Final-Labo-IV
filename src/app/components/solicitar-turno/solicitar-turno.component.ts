@@ -1,31 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component , OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DatabaseService } from '../../services/database.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Turno } from '../../classes/turno';
-
+import { Router } from '@angular/router';
+import { DatabaseService } from '../../services/database.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
-  selector: 'app-turnos',
+  selector: 'app-solicitar-turno',
   standalone: true,
   imports: [FormsModule, CommonModule, ReactiveFormsModule],
-  templateUrl: './turnos.component.html',
-  styleUrl: './turnos.component.css'
+  templateUrl: './solicitar-turno.component.html',
+  styleUrl: './solicitar-turno.component.css'
 })
-export class TurnosComponent {  
-  
+export class SolicitarTurnoComponent {
+
   turnoForm = new FormGroup({
     especialidad: new FormControl('', [Validators.required]),
     especialista: new FormControl('', [Validators.required]),
     fechaHora: new FormControl('', [Validators.required]),
-    paciente: new FormControl() // Solo requerido si el usuario es admin
+    paciente: new FormControl() 
   });
-
   
-
-  especialidades: string[] = [];
-  especialistasDisponibles: any[] = [];
   horariosDisponibles: any[] = [];
   pacientes: any[] = [];
   esAdmin: boolean = false;
@@ -33,72 +29,59 @@ export class TurnosComponent {
   especialidadSeleccionada: string | any = '';
   tipoUsuario: any;  
   
-  especialistasDisponiblesTest: any[] = [""];
+  especialistasDisponiblesFiltro: any[] = [];
+  especialistasDisponibles: any[] = [];
+  
   nombreEspecialista : any;
   dniPaciente : number = 0;
   horarioSeleccionado: any;
+  datosTurno : any;
 
-  constructor( private db: DatabaseService,private router: Router ) {
+  constructor( private db: DatabaseService,private router: Router,private usuarioService: UsuarioService) {
     
-    const navigation = this.router.getCurrentNavigation();
-     this.tipoUsuario = navigation?.extras.state?.['usuario'];
-     console.log("-->",this.tipoUsuario)  // verifiar estos datos !!!!!!
+     this.datosTurno = this.usuarioService.getTurno();
+     this.tipoUsuario = this.usuarioService.getUsuarioPerfil();
+     this.especialistaSeleccionado = this.usuarioService.getEspecialista();
   }
 
   ngOnInit(): void {
-      this.cargarEspecialistas();
 
       if (this.tipoUsuario) {
-         if (this.tipoUsuario.perfil == "administrador") {
+         if (this.tipoUsuario == "administradores") {
            this.esAdmin = true;
            this.cargarPacientes();
          }
-         else if(this.tipoUsuario.perfil  == "paciente"){
-           this.turnoForm.get('paciente')?.setValue(this.tipoUsuario);
-          //  this.turnoForm.get('paciente')?.setValue({nombre: this.tipoUsuario.nombre, apellido: this.tipoUsuario.apellido});
+         else if(this.tipoUsuario == "pacientes"){
+          const paciente = this.usuarioService.getUsuario();
+           this.turnoForm.get('paciente')?.setValue(paciente); // cargar alpaciente
           }
           console.log("Es administrador: ",this.esAdmin);
         }else{
           console.log("ERROR Usuario no valido: ",this.tipoUsuario);
         }     
-  }
+        
+        if (this.datosTurno) {
+          const nombre = `${this.especialistaSeleccionado.nombre} ${this.especialistaSeleccionado.apellido}`;
+          this.turnoForm.get('especialidad')?.setValue(this.tipoUsuario);
+          this.turnoForm.get('especialista')?.setValue(nombre);
 
-  carga() {
-    this.especialidades = [];
-    this.especialistasDisponiblesTest.forEach((especialista) => {
-      if (Array.isArray(especialista.especialidad)) {
-        especialista.especialidad.forEach((esp: any) => {
-          if (!this.especialidades.includes(esp)) {
-            this.especialidades.push(esp);
-          }
-        });
-      }
-    });
+          this.nombreEspecialista = nombre;
+          // Setear los valores iniciales en el formulario
+          this.turnoForm.patchValue({
+            especialidad: this.datosTurno.especialidad,
+            especialista: nombre
+          });
+        }
 
-    console.log('Especialidades cargadas:', this.especialidades);
-  }
-
-  
-
-  cargarPacientes() {
-    this.db.traerUsuario('pacientes').subscribe((response) => {
-      this.pacientes = response;
-    });
-  }
-  
-  cargarEspecialistas() {
-    this.db.traerUsuario('especialistas').subscribe((response) => {
-      this.especialistasDisponiblesTest = response;
-
-      this.carga(); // Llenar las especialidades después de cargar los especialistas.
-    });
+        this.onEspecialistaChange();
+        // console.log("GET -> ", this.especialistaSeleccionado)
   }
 
   onEspecialidadChange() {
     this.especialidadSeleccionada = this.turnoForm.get('especialidad')?.value;
     
     // Filtrar especialistas según la especialidad seleccionada
-    this.especialistasDisponibles = this.especialistasDisponiblesTest.filter(esp => 
+    this.especialistasDisponibles = this.especialistasDisponiblesFiltro.filter(esp => 
       Array.isArray(esp.especialidad) && esp.especialidad.includes(this.especialidadSeleccionada)
     );
   
@@ -111,38 +94,29 @@ export class TurnosComponent {
     console.log('Especialistas disponibles:', this.especialistasDisponibles);
   }
   
-  
-  
 
-  onEspecialistaChange() {
-    this.especialistaSeleccionado = this.turnoForm.get('especialista')?.value;
+
+  cargarPacientes() {
+    this.db.traerUsuario('pacientes').subscribe((response) => {
+      this.pacientes = response;
+    });
+  }
+  
+  
+  onEspecialistaChange() {    
   
     if (this.especialistaSeleccionado) {
-      // this.horariosDisponibles = this.especialistaSeleccionado.disponibilidad;
 
       this.especialistaSeleccionado.disponibilidad.forEach((horario : any) => {
         if (horario.reservado) {
           this.horariosDisponibles.push(horario);
         }
       });
-
-      this.nombreEspecialista = ({nombre: this.especialistaSeleccionado.nombre, apellido: this.especialistaSeleccionado.apellido})
     }
     console.log(this.horariosDisponibles);
   }
   
-  // onNombrePacienteaChange(event: any) {
-  //   // Se obtiene el valor seleccionado del evento.
-  //   // const paciente = event.target.value;
-  //   // this.pacientes = paciente.dni;
 
-  //   // console.log(paciente)
-  
-  //   // // Se verifica que el valor seleccionado sea un objeto válido.
-  //   // if (paciente && paciente.nombre && paciente.apellido) {
-  //   //   this.turnoForm.get('paciente')?.setValue({nombre: paciente.nombre,apellido: paciente.apellido});
-  //   // }
-  // }
 
   onHorarioSeleccionado(event: Event) {
     // Accede directamente al valor del FormControl
@@ -177,7 +151,7 @@ export class TurnosComponent {
   solicitarTurno() {
     if (this.turnoForm.valid) {
       // Asegúrate de que especialista y paciente sean de tipo objeto
-      const { especialidad, fechaHora, paciente } = this.turnoForm.value;
+      const { especialidad,fechaHora, paciente } = this.turnoForm.value;
 
       //
   
@@ -198,9 +172,9 @@ export class TurnosComponent {
           '',
           ''
         );
-         this.db.agregarTurno(turno, 'turnos');
+        //  this.db.agregarTurno(turno, 'turnos');
 
-         this.db.modificarUsuario(this.especialistaSeleccionado,'especialistas')
+        //  this.db.modificarUsuario(this.especialistaSeleccionado,'especialistas')
 
 
         console.log('Datos del turno:', turno);
@@ -211,5 +185,4 @@ export class TurnosComponent {
       console.log('El formulario no es válido');
     }
   }
-  
 }

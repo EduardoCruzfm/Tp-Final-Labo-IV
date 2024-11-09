@@ -95,7 +95,9 @@ export class BienvenidaComponent {
       const isValid = this.validateUser();
 
       if (isValid) {
-        this.router.navigate(['/turnos'], { state: { usuario: this.usuarioActual } });
+        
+        this.router.navigate(['/mostrar-especialidades'], { state: { usuario: this.usuarioActual } });
+        // this.router.navigate(['/turnos'], { state: { usuario: this.usuarioActual } });
       } else {
   
         await Swal.fire({

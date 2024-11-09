@@ -93,5 +93,26 @@ export const routes: Routes = [
         (m) => m.MisTurnosEspecialistaComponent
       ),
   },
+  {
+    path: 'mostrar-especialidades',
+    loadComponent: () =>
+      import('./components/mostrar-especialidades/mostrar-especialidades.component').then(
+        (m) => m.MostrarEspecialidadesComponent
+      ),
+  },
+  {
+    path: 'mostrar-pefil-especialistas',
+    loadComponent: () =>
+      import('./components/mostrar-pefil-especialistas/mostrar-pefil-especialistas.component').then(
+        (m) => m.MostrarPefilEspecialistasComponent
+      ),
+  },
+  {
+    path: 'solicitar-turno',
+    loadComponent: () =>
+      import('./components/solicitar-turno/solicitar-turno.component').then(
+        (m) => m.SolicitarTurnoComponent
+      ),
+  },
   
 ];

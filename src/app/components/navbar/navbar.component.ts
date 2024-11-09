@@ -13,8 +13,7 @@ import { UsuarioService } from '../../services/usuario.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
-  @Input() tipoUsuario: string = ""; 
+export class NavbarComponent { 
 
   tipoUsuarioPefil: string = '';
 
@@ -37,17 +36,15 @@ export class NavbarComponent {
     
   }
   
-  ngOnInit(): void {
-    // Recuperar el perfil del usuario desde el servicio
+  async ngOnInit(): Promise<void> {
+    // Recuperar el perfil del usu
+    await this.cargarUsuarioActual();
+    this.usuarioService.setUsuario(this.usuarioActual );
     this.tipoUsuarioPefil = this.usuarioService.getUsuarioPerfil();
     this.usuarioActual = this.usuarioService.getUsuario();
-  }
 
-  async ngOnChanges(changes: SimpleChanges) {
-    if (changes['tipoUsuario'] && this.userEmail) {
-      // Si `tipoUsuario` ha cambiado y tenemos el correo, volvemos a cargar el usuario.
-      await this.cargarUsuarioActual();
-    }
+    console.log("tipoUsuarioPefil", this.tipoUsuarioPefil)
+    console.log("usuarioActual ", this.usuarioActual)
   }
   
   async cargarUsuarioActual() {
@@ -86,13 +83,22 @@ export class NavbarComponent {
 
   misturnos() {
 
-    if (this.tipoUsuario == 'pacientes') {
+    if (this.tipoUsuarioPefil == 'pacientes') {
       this.router.navigate(['/mis-turnos']); // paciente
     }
-    else if (this.tipoUsuario == 'especialistas') {
+    else if (this.tipoUsuarioPefil == 'especialistas') {
       this.router.navigate(['/mis-turnos-especilista']); // para el especialista crear******
     }
   }
+  // misturnos() {
+
+  //   if (this.tipoUsuario == 'pacientes') {
+  //     this.router.navigate(['/mis-turnos']); // paciente
+  //   }
+  //   else if (this.tipoUsuario == 'especialistas') {
+  //     this.router.navigate(['/mis-turnos-especilista']); // para el especialista crear******
+  //   }
+  // }
 
   seccionUsuarios() {
     this.router.navigate(['/seccion-usuarios']);

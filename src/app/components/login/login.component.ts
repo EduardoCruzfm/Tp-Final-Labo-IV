@@ -148,15 +148,15 @@ export class LoginComponent {
 async handleLogin() {
 
   // Validar CAPTCHA antes de proceder con el login
-  if (!this.validateCaptcha()) {
+  // if (!this.validateCaptcha()) {
 
-    await Swal.fire({
-      icon: 'warning',
-      title: 'El CAPTCHA es incorrecto',
-      text: 'Por favor, inténtalo de nuevo.',
-    });
-    return;
-  }
+  //   await Swal.fire({
+  //     icon: 'warning',
+  //     title: 'El CAPTCHA es incorrecto',
+  //     text: 'Por favor, inténtalo de nuevo.',
+  //   });
+  //   return;
+  // }
 
 
   if (this.form.valid) {
@@ -263,7 +263,7 @@ async handleLogin() {
   }
 
    obtenerUsuario(perfil: string){
-    const User = this.authService.getCurrentUser();
+    const User =  this.authService.getCurrentUser();
     if (User) {
       this.usuarioActual =  this.db.obtenerUsuarioPorId(User.uid, perfil);
     }
@@ -271,6 +271,8 @@ async handleLogin() {
       console.log("ERROR -> ", User);
     } 
   }
+
+
 
   //
    // Función para generar un CAPTCHA aleatorio
@@ -318,3 +320,17 @@ async handleLogin() {
 // - Al ingresar a la página solo se deben ver 2 imágenes que represente a un paciente o especialista,
 // según esa elección mostrará un formulario correspondiente.
 // - Estas imágenes deben estar en botones redondos.
+
+
+// 2
+// * Sacar un turno
+//  - Comienza mostrando en las ESPECIALIDADES botones con la imagen de la especialidad,
+//  en caso de no tener muesra imagen por default. Deben ser botones redondos sin el nombre de la especialidad
+
+//  - Una vez seleccionada mostrará los PROFESIONALES, en botones con la imagen de perfil de cada profesional y 
+//  su nombre debajo. Estos botones deben ser redondos.
+
+// - Una vez seleccionado el profesional, aparecerán los días con turnos disponibles para ese PROFESIONAL.
+//  Estos botones deben ser rectangulares. Formato (09/09).
+
+//  - Seleccionado el día mostrará los horarios disponibles. Estos botones deben ser rectangulares. Formato 12:15am,.

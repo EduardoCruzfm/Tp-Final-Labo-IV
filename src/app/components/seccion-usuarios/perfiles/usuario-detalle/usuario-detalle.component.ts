@@ -36,7 +36,7 @@ export class UsuarioDetalleComponent {
   tipoUsuarioPefil: string = '';
 
    // Listado de días permitidos y meses
-   diasPermitidos: string[] = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sabado"];
+   diasPermitidos: string[] = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
     // Lista de todos los meses
    mesesDisponibles: number[] = Array.from({ length: 12 }, (_, i) => i + 1); 
 

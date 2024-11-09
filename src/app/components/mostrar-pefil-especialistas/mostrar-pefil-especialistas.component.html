@@ -1,0 +1,14 @@
+<app-navbar id="nav"></app-navbar>
+
+<div class="menu-container"> 
+    <div class="row">
+      <div *ngFor="let esp of   especialistasDisponibles " class="col-6 category-col">
+        <div class="category-card" (click)="seleccionarEspecialista(esp)">
+          <img [src]="esp.imagenPerfil" alt="Especialista" class="category-image">
+          <p>{{esp.nombre}} {{esp.apellido}}</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  

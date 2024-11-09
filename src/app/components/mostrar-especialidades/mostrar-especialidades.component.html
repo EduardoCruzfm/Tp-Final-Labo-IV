@@ -1,0 +1,15 @@
+<app-navbar id="nav"></app-navbar>
+
+
+<div class="menu-container">
+    <div class="row">
+      <div *ngFor="let especialidad of especialidades" class="col-md-3 col-sm-6 category-col">
+        <div class="category-card">
+          <button class="especialidad-boton" (click)="seleccionarEspecialidad(especialidad)">
+            <img [src]="getImagenEspecialidad(especialidad)" [alt]="especialidad" class="especialidad-imagen">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -18,7 +18,7 @@ import { Especialista } from '../../../classes/especialista';
 })
 export class RegistroEspecialistasComponent {
   selectedFile: File | null = null;
-  especialidadesDisponibles: string[] = ['Cardiología', 'Pediatría', 'Neurología', 'Dermatología']; 
+  especialidadesDisponibles: string[] = ['Cardiologia', 'Pediatria', 'Neurologia', 'Dermatologia']; 
   especialidadPersonalizada: string = '';
   selectedEspecialidades: Set<string> = new Set();
 
