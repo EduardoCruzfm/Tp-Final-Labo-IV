@@ -36,6 +36,15 @@ export class SolicitarTurnoComponent {
   dniPaciente : number = 0;
   horarioSeleccionado: any;
   datosTurno : any;
+  fechasDisponibles: any[] = [];
+  horariosParaFechaSeleccionada: string[] = [];
+  fechaSeleccionada: any;
+  horaSeleccionada: string | null = null;
+  fechaHora: any;
+  setParaForm: any;
+  disponibilidadIndexAnterior: any;
+
+
 
   constructor( private db: DatabaseService,private router: Router,private usuarioService: UsuarioService) {
     
@@ -53,7 +62,7 @@ export class SolicitarTurnoComponent {
          }
          else if(this.tipoUsuario == "pacientes"){
           const paciente = this.usuarioService.getUsuario();
-           this.turnoForm.get('paciente')?.setValue(paciente); // cargar alpaciente
+           this.turnoForm.get('paciente')?.setValue(paciente); 
           }
           console.log("Es administrador: ",this.esAdmin);
         }else{
@@ -74,26 +83,8 @@ export class SolicitarTurnoComponent {
         }
 
         this.onEspecialistaChange();
-        // console.log("GET -> ", this.especialistaSeleccionado)
+        this.cargarFechasDisponibles();
   }
-
-  onEspecialidadChange() {
-    this.especialidadSeleccionada = this.turnoForm.get('especialidad')?.value;
-    
-    // Filtrar especialistas según la especialidad seleccionada
-    this.especialistasDisponibles = this.especialistasDisponiblesFiltro.filter(esp => 
-      Array.isArray(esp.especialidad) && esp.especialidad.includes(this.especialidadSeleccionada)
-    );
-  
-    // Reiniciar horarios disponibles
-    this.horariosDisponibles = []; // Esto es necesario para que el selector de horarios se vacíe al cambiar la especialidad
-  
-    // Reiniciar el control del especialista para que se actualice la vista
-    this.turnoForm.get('especialista')?.setValue(''); // Resetea el especialista seleccionado
-  
-    console.log('Especialistas disponibles:', this.especialistasDisponibles);
-  }
-  
 
 
   cargarPacientes() {
@@ -102,58 +93,176 @@ export class SolicitarTurnoComponent {
     });
   }
   
-  
   onEspecialistaChange() {    
-  
     if (this.especialistaSeleccionado) {
-
       this.especialistaSeleccionado.disponibilidad.forEach((horario : any) => {
-        if (horario.reservado) {
+        if (horario.reservado) {                                                  //Disponibilidad en true
           this.horariosDisponibles.push(horario);
         }
       });
     }
-    console.log(this.horariosDisponibles);
+    console.log("Horarios disponibles", this.horariosDisponibles);
   }
   
 
+  cargarFechasDisponibles() {
+    if ( this.horariosDisponibles) {
+      const fechasUnicas = new Set();
 
-  onHorarioSeleccionado(event: Event) {
-    // Accede directamente al valor del FormControl
-    const selectedValue = this.turnoForm.get('fechaHora')?.value; // Aquí obtienes el objeto seleccionado
+      this.fechasDisponibles =  this.horariosDisponibles.map((turno: any) => {
+        const mesNumerico = this.convertirMesANumero(turno.mes);
+        const diaConFormato = turno.diaNumero.toString().padStart(2, '0');
+        // return `${diaConFormato}/${mesNumerico}`;
+        return {
+                 diaConFormato: diaConFormato,
+                 mesNumerico: mesNumerico, 
+                 diaCadena : turno.diaCadena, 
+                 mesCadena: turno.mes,
+                 anio: turno.anio,
+              };
+      })
+      .filter((fecha) => {
+
+        const fechaClave = `${fecha.diaConFormato}/${fecha.mesNumerico}`;
+        if (fechasUnicas.has(fechaClave)) {
+          return false; // Ya existe, descartar.
+        } else {
+          fechasUnicas.add(fechaClave); // Agregar al Set.
+          return true; // No existe, mantener.
+        }
+      })
+    }
+    console.log("Fechas disponibles: ", this.fechasDisponibles);
+  }
+
+  // Mapeo de los nombres de los meses a su formato numérico
+   convertirMesANumero(mes: string): string {
+    const mesesMap: { [key: string]: string } = {
+      'Enero': '01',
+      'Febrero': '02',
+      'Marzo': '03',
+      'Abril': '04',
+      'Mayo': '05',
+      'Junio': '06',
+      'Julio': '07',
+      'Agosto': '08',
+      'Septiembre': '09',
+      'Octubre': '10',
+      'Noviembre': '11',
+      'Diciembre': '12'
+    };
+    return mesesMap[mes] || '00'; // Devuelve '00' si el mes no es válido
+  }
+
+  convertirHora24(hora12: string): string {
+    const [hora, minutoAmPm] = hora12.split(':');
+    const [minutos, amPm] = minutoAmPm.split(' ');
+    let horas = parseInt(hora, 10);
   
-    if (selectedValue) {
-      this.horarioSeleccionado = selectedValue;
+    if (amPm.toLowerCase() === 'pm' && horas < 12) {
+      horas += 12;
+    } else if (amPm.toLowerCase() === 'am' && horas === 12) {
+      horas = 0;
+    }
   
-      const disponibilidadIndex = this.especialistaSeleccionado.disponibilidad.findIndex((disp: any) =>
-        disp.dia === this.horarioSeleccionado.dia &&
-        disp.mes === this.horarioSeleccionado.mes &&
-        disp.anio === this.horarioSeleccionado.anio &&
-        disp.horaInicio === this.horarioSeleccionado.horaInicio
-        // && !disp.reservado
-      );
-      console.log("------>:", disponibilidadIndex);
+    return `${horas.toString().padStart(2, '0')}:${minutos}`;
+  }
   
-      if (disponibilidadIndex !== -1) {
-        console.log("Horario disponible en el índice:", disponibilidadIndex);
-        this.especialistaSeleccionado.disponibilidad[disponibilidadIndex].reservado = false;
-        console.log(this.especialistaSeleccionado);
-      } else {
-        console.log("Horario no disponible o ya reservado");
-      }
+  
+  // Método para seleccionar la hora
+  seleccionarHora(hora: any): void {
+
+    if (hora) {
+      this.fechaHora = {
+        diaConFormato: this.fechaSeleccionada.diaConFormato,
+        mesNumerico: this.fechaSeleccionada.mesNumerico,
+        diaCadena: this.fechaSeleccionada.diaCadena,
+        mesCadena: this.fechaSeleccionada.mesCadena,
+        horaInicio : hora.horaInicio,
+        horaFin : hora.horaFin,
+        anio: this.fechaSeleccionada.anio
+      };
+    }
+    this.horaSeleccionada = hora; 
+
+    this.setParaForm = '';
+    this.setParaForm = `${this.fechaHora.diaCadena} ${this.fechaHora.diaConFormato} ${this.fechaHora.mesCadena} ${this,this.fechaHora.horaInicio}`;
+
+    this.turnoForm.get('fechaHora')?.setValue(this.setParaForm);
+
+    
+    // Modifica la disponibilidad del especialista
+    const disponibilidadIndex = this.especialistaSeleccionado.disponibilidad.findIndex((disp: any) =>
+      disp.diaNumero.toString().padStart(2, '0')  === this.fechaHora.diaConFormato.padStart(2, '0')  && 
+      disp.mes === this.fechaHora.mesCadena &&
+      disp.anio === this.fechaHora.anio &&
+      this.convertirHora24(this.fechaHora.horaInicio) === disp.horaInicio
+    );
+    console.log("reservado", disponibilidadIndex);
+
+    if (this.disponibilidadIndexAnterior) {
+      this.especialistaSeleccionado.disponibilidad[this.disponibilidadIndexAnterior].reservado = true; // Cambiar según sea necesario
+      console.log("SETEO A TRUE");
+    }
+
+
+    if (disponibilidadIndex !== -1) {
+      this.disponibilidadIndexAnterior = disponibilidadIndex;
+      console.log("Horario disponible en el índice:", disponibilidadIndex);
+      this.especialistaSeleccionado.disponibilidad[disponibilidadIndex].reservado = false; // Cambiar según sea necesario
+      console.log("Esp-->>>  ",this.especialistaSeleccionado);
+    } else {
+      console.log("Horario no disponible o ya reservado");
     }
   }
   
-  
-  
-  
+  // Método para seleccionar una fecha y mostrar los horarios disponibles
+  seleccionarFecha(fecha: any): void {
+    this.fechaSeleccionada = fecha;
+    
+    if (fecha) {
+      this.fechaSeleccionada = {
+        diaConFormato: fecha.diaConFormato,
+        mesNumerico: fecha.mesNumerico,
+        diaCadena: fecha.diaCadena,
+        mesCadena: fecha.mesCadena,
+        anio: fecha.anio
+      };
+    }  
+     const dia = fecha.diaConFormato;
+     const mes = fecha.mesNumerico
+     console.log("Dia -->>",dia)
+     console.log("mes->> ",mes)
+
+    // Busca los horarios que coincidan con la fecha seleccionada
+    this.horariosDisponibles = this.especialistaSeleccionado.disponibilidad
+      .filter((turno: any) => {
+        const mesNumerico = this.convertirMesANumero(turno.mes); // Convierte el mes del turno al formato numérico
+        const diaConFormato = turno.diaNumero.toString().padStart(2, '0'); // Formatea el día a dos dígitos
+        return diaConFormato === dia && mesNumerico === mes;
+      })
+      .map((turno: any) => ({
+        horaInicio: this.formatearHora(turno.horaInicio),
+        horaFin: this.formatearHora(turno.horaFin)
+        
+      }));
+
+    console.log("Horarios disponibles para la fecha seleccionada:", this.horariosDisponibles);
+
+  }
+
+  // Método para formatear la hora a formato hh:mm am/pm
+  formatearHora(hora: string): string {
+    const [horas, minutos] = hora.split(':').map(Number);
+    const amPm = horas >= 12 ? 'pm' : 'am';
+    const horasFormateadas = horas % 12 || 12; // Convierte 0 a 12 para el formato de 12 horas
+    return `${horasFormateadas}:${minutos.toString().padStart(2, '0')} ${amPm}`;
+  }
 
   solicitarTurno() {
     if (this.turnoForm.valid) {
       // Asegúrate de que especialista y paciente sean de tipo objeto
-      const { especialidad,fechaHora, paciente } = this.turnoForm.value;
-
-      //
+      const { especialidad, fechaHora, paciente } = this.turnoForm.value;
   
       // Verifica que especialista y paciente sean objetos
       if (typeof especialidad === "string" && paciente) {
@@ -166,9 +275,9 @@ export class SolicitarTurnoComponent {
           idEspecialista,
           especialidad,
           nombreEspecialista,
-          fechaHora, 
+          this.fechaHora, 
           nombrePaciente,
-          'pendiente', // Seria pendiente 
+          'pendiente', 
           '',
           ''
         );

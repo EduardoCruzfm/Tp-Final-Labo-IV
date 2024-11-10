@@ -13,19 +13,48 @@
       <div class="form-group mb-3" *ngIf="especialistaSeleccionado">
         <label for="especialista">Especialista</label>
         <select id="especialista" class="form-control" formControlName="especialista" required>
-            <option [selected]="true" value="{{ especialistaSeleccionado?.nombre  }} "> {{ especialistaSeleccionado?.nombre }} {{especialistaSeleccionado?.nombre}} </option>
+            <option [selected]="true" value="{{ especialistaSeleccionado?.nombre }} "> {{ especialistaSeleccionado?.nombre }} {{especialistaSeleccionado?.apellido}} </option>
         </select>
       </div>      
 
+      <div class="form-group mb-3">
+        <label>Días con turnos disponibles</label>
+        <div class="d-flex flex-wrap">
+          <button 
+            *ngFor="let fecha of fechasDisponibles" 
+            type="button" 
+            class="btn btn-outline-primary m-1" 
+            [ngClass]="{'btn-success': fecha.diaConFormato === fechaSeleccionada?.diaConFormato && fecha.mesNumerico === fechaSeleccionada?.mesNumerico}"  
+            (click)="seleccionarFecha(fecha)"
+          >
+            {{fecha.diaConFormato}}/{{fecha.mesNumerico}}
+          </button>
+        </div>
+      </div>
+  
+      <div class="form-group mb-3" *ngIf="fechaSeleccionada">
+        <label>Horarios disponibles</label>
+        <div class="d-flex flex-wrap">
+          <button 
+            *ngFor="let horario of horariosDisponibles" 
+            type="button" 
+            class="btn btn-outline-primary m-1" 
+            [ngClass]="{'btn-success': horario === horaSeleccionada}"  
+            (click)="seleccionarHora(horario)"
+          >
+            {{ horario.horaInicio }}
+          </button>
+        </div>
+      </div>
   
       <div class="form-group mb-3">
         <label for="fechaHora">Fecha y Hora</label>
-        <select id="fechaHora" class="form-control" formControlName="fechaHora" (change)="onHorarioSeleccionado($event)">
-          <option *ngFor="let disp of horariosDisponibles" [ngValue]="disp">
-            {{ disp.dia }} - {{ disp.mes }} - {{ disp.anio }} {{ disp.horaInicio }} {{ disp.horaFin }}
-          </option>
-        </select>
+        <input id="fechaHora" class="form-control" formControlName="fechaHora"
+               [value]="setParaForm" />
+               <!-- [value]="fechaSeleccionada ? (fechaSeleccionada.diaCadena + ' ' + fechaSeleccionada.mesCadena) : ''" /> -->
       </div>
+      
+     
       
       <div class="form-group mb-3" *ngIf="esAdmin == true">
         <label for="paciente">Paciente</label>

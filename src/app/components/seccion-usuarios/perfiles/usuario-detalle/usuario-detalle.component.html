@@ -49,36 +49,36 @@
         <div *ngIf="usuario.perfil === 'especialista'">
           <h3 class="mt-4">Agregar Disponibilidad</h3>
           <div class="row">
-
-              <!-- Selector de Día -->
+   
+              <!-- Selector de Año -->
               <div class="col-md-2">
-                <label for="dia">Día:</label>
-                <select id="dia" [(ngModel)]="dia" (change)="actualizarRangoHorario()" class="form-control">
-                  <option value="">Día</option>
-                  <option *ngFor="let dia of diasPermitidos" [value]="dia">{{ dia }}</option>
+                <label for="anio">Año:</label>
+                <select id="anio" [(ngModel)]="anio"  (change)="obtenerDatosIniciales(mes,anio)" class="form-control">
+                  <option [selected]="true" [value]="anioActual">{{ anioActual }}</option>
+                  <option [value]="anioSiguiente" class>{{ anioSiguiente }}</option>
                 </select>
               </div>
-                          
-              
-              <!-- Selector de Mes -->
-              <div class="col-md-2">
+
+               <!-- Selector de Mes -->
+               <div class="col-md-2">
                 <label for="mes">Mes:</label>
-                <select id="mes" [(ngModel)]="mes" class="form-control">
+                <select id="mes" [(ngModel)]="mes" (change)="obtenerDatosIniciales(mes,anioActual)" class="form-control">
                   <option value="">Mes</option>
                   <option *ngFor="let mes of mesesDisponibles" [value]="obtenerNombreMes(mes)">{{ obtenerNombreMes(mes) }}</option>
                 </select>
               </div>
-
               
-              <!-- Selector de Año -->
-              <div class="col-md-2">
-                <label for="anio">Año:</label>
-                <select id="anio" [(ngModel)]="anio" class="form-control">
-                  <option [value]="anioActual">{{ anioActual }}</option>
-                  <option [value]="anioSiguiente">{{ anioSiguiente }}</option>
+               <!-- Selector de Día -->
+               <div class="col-md-2">
+                <label for="dia">Día:</label>
+                <select id="dia" [(ngModel)]="dia" (change)="actualizarRangoHorario()" class="form-control">
+                  <option value="">Día</option>
+                  <!-- <option *ngFor="let dia of diasPermitidos" [value]="dia">{{ dia }}</option> -->
+                  <option *ngFor="let dia of diasEnMes" [ngValue]="dia">{{dia.diaNumero}}</option>
+                  <!-- <option *ngFor="let dia of diasEnMes" [value]="dia.diaNombre">{{dia.diaNumero}}</option> -->
                 </select>
               </div>
-              
+
               <!-- Selector de Hora de Inicio -->
                <div class="col-md-3">
                 <label for="horaInicio">Hora de Inicio:</label>
@@ -104,7 +104,7 @@
           <p class="card-text mb-3"><strong>Disponibilidad:</strong> </p>
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let disp of disponibilidad">
-              {{ disp.dia }} - {{ disp.mes }} - {{ disp.anio }} {{ disp.horaInicio }} {{ disp.horaFin }} 
+              {{ disp.diaCadena }} {{ disp.diaNumero }} - {{ disp.mes }} - {{ disp.anio }} {{ disp.horaInicio }} {{ disp.horaFin }} 
             </li>
           </ul>
           <button class="btn btn-success mt-3" (click)="guardarCambios()">Guardar Cambios</button>

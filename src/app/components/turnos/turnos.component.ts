@@ -131,18 +131,7 @@ export class TurnosComponent {
     console.log(this.horariosDisponibles);
   }
   
-  // onNombrePacienteaChange(event: any) {
-  //   // Se obtiene el valor seleccionado del evento.
-  //   // const paciente = event.target.value;
-  //   // this.pacientes = paciente.dni;
 
-  //   // console.log(paciente)
-  
-  //   // // Se verifica que el valor seleccionado sea un objeto válido.
-  //   // if (paciente && paciente.nombre && paciente.apellido) {
-  //   //   this.turnoForm.get('paciente')?.setValue({nombre: paciente.nombre,apellido: paciente.apellido});
-  //   // }
-  // }
 
   onHorarioSeleccionado(event: Event) {
     // Accede directamente al valor del FormControl
