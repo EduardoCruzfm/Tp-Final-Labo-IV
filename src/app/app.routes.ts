@@ -114,5 +114,12 @@ export const routes: Routes = [
         (m) => m.SolicitarTurnoComponent
       ),
   },
+  {
+    path: 'historia-clinica',
+    loadComponent: () =>
+      import('./components/historia-clinica/historia-clinica.component').then(
+        (m) => m.HistoriaClinicaComponent
+      ),
+  },
   
 ];

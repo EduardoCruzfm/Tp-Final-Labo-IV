@@ -5,11 +5,12 @@ import { Turno } from '../../classes/turno';
 import { Router } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
 import { UsuarioService } from '../../services/usuario.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-solicitar-turno',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule,NavbarComponent],
   templateUrl: './solicitar-turno.component.html',
   styleUrl: './solicitar-turno.component.css'
 })
@@ -239,7 +240,7 @@ export class SolicitarTurnoComponent {
       .filter((turno: any) => {
         const mesNumerico = this.convertirMesANumero(turno.mes); // Convierte el mes del turno al formato numérico
         const diaConFormato = turno.diaNumero.toString().padStart(2, '0'); // Formatea el día a dos dígitos
-        return diaConFormato === dia && mesNumerico === mes;
+        return diaConFormato === dia && mesNumerico === mes && turno.reservado === true;
       })
       .map((turno: any) => ({
         horaInicio: this.formatearHora(turno.horaInicio),
@@ -281,9 +282,9 @@ export class SolicitarTurnoComponent {
           '',
           ''
         );
-        //  this.db.agregarTurno(turno, 'turnos');
+         this.db.agregarTurno(turno, 'turnos');
 
-        //  this.db.modificarUsuario(this.especialistaSeleccionado,'especialistas')
+         this.db.modificarUsuario(this.especialistaSeleccionado,'especialistas')
 
 
         console.log('Datos del turno:', turno);

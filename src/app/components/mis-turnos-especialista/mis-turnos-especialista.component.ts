@@ -33,6 +33,15 @@ export class MisTurnosEspecialistaComponent {
 
   tipoUsuarioPefil: string = '';
   
+  reseniaForm = {
+    comentario: '',
+    altura: null,
+    peso: null,
+    temperatura: null,
+    presion: ''
+  };
+
+  
 
   constructor( private db: DatabaseService,private auth: AuthService, private usuarioService: UsuarioService) {
       this.cargarTurnos();
@@ -88,11 +97,26 @@ export class MisTurnosEspecialistaComponent {
     // Restablecer el comentario cada vez que se abra el modal
     this.comentarioCancelacion = '';
   }
-  
-  
+    
+    guardarResenia() {
+      if (this.turnoSeleccionado) {
+        // Asigna la reseña al turno seleccionado
+        this.turnoSeleccionado.resenia = { ...this.reseniaForm };
+     
+      this.db.modificarUsuario(this.turnoSeleccionado,'turnos');
+      console.log(this.turnoSeleccionado)
+    }
+  }
+
   cancelarAccion() {
-    this.turnoSeleccionado = null; // Cancelar la acción sin guardar
-    this.comentarioCancelacion = ''; // Limpiar el comentario
+    this.turnoSeleccionado = null;
+    this.reseniaForm = {
+      comentario: '',
+      altura: null,
+      peso: null,
+      temperatura: null,
+      presion: ''
+    };
   }
   //----------
 

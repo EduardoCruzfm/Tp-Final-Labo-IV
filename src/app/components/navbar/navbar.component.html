@@ -39,6 +39,9 @@
             <li  *ngIf="tipoUsuarioPefil && userLoggedIn" class="nav-item">
               <button class="nav-link" (click)="miPerfil(this.usuarioActual)">Mi perfil</button>
             </li>
+            <li  *ngIf="tipoUsuarioPefil === 'especialistas' && userLoggedIn" class="nav-item">
+              <button class="nav-link" (click)="misPacientes()">Pacientes</button>
+            </li>
           </ul>
           <ul class="navbar-nav ms-auto mb-2 mb-md-0"> <!-- Alinea a la derecha href="" --> 
             <li class="nav-item" *ngIf="userLoggedIn">

@@ -35,7 +35,7 @@
             <td>{{ turno.paciente.dni }}</td>
             <td>{{ turno.paciente.obraSocial }}</td>
             <td>{{ turno.especialidad }}</td>
-            <td>{{ turno.fechaHora.dia }}/{{ turno.fechaHora.mes }}/{{ turno.fechaHora.anio }}</td>
+            <td>{{ turno.fechaHora.diaConFormato }} {{ turno.fechaHora.diaCadena }}/{{ turno.fechaHora.mesCadena }}/{{ turno.fechaHora.anio }}</td>
             <td>{{ turno.fechaHora.horaInicio }}</td>
             <td>{{ turno.fechaHora.horaFin }}</td>
             <td>
@@ -83,7 +83,7 @@
     </div>
   
     <!-- Reseña fija al fondo -->
-    <div *ngIf="turnoSeleccionado?.estado === 'finalizado'" class="card fixed-bottom bg-light p-3 border rounded shadow-sm">
+    <!-- <div *ngIf="turnoSeleccionado?.estado === 'finalizado'" class="card fixed-bottom bg-light p-3 border rounded shadow-sm">
       <h4 class="card-title">Reseña al Paciente</h4>
       <p class="card-text">{{ turnoSeleccionado?.resenia }}</p>
   
@@ -94,7 +94,50 @@
       <textarea [(ngModel)]="resenia" class="form-control" rows="3" placeholder="Escribe tus comentarios aquí..."></textarea>
       <button *ngIf="turnoSeleccionado?.resenia === ''" class="btn btn-primary mt-2" (click)="enviarResenia(turnoSeleccionado)">Enviar Reseña</button>
       <button *ngIf="turnoSeleccionado?.resenia !== ''"  class="btn btn-primary mt-2" (click)="enviarResenia(turnoSeleccionado)">Editar Reseña</button>
+    </div> -->
+    
+    <!-- Modal para generar la reseña -->
+<div *ngIf="turnoSeleccionado" class="modal fade show d-block" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Generar Reseña para el Turno</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancelarAccion()"></button>
+      </div>
+
+        <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="comentario" class="form-label">Comentario</label>
+            <textarea id="comentario" class="form-control" [(ngModel)]="reseniaForm.comentario" [ngModelOptions]="{standalone: true}"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="altura" class="form-label">Altura (cm)</label>
+            <input id="altura" type="number" class="form-control" [(ngModel)]="reseniaForm.altura" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="mb-3">
+            <label for="peso" class="form-label">Peso (kg)</label>
+            <input id="peso" type="number" class="form-control" [(ngModel)]="reseniaForm.peso" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="mb-3">
+            <label for="temperatura" class="form-label">Temperatura (°C)</label>
+            <input id="temperatura" type="number" class="form-control" [(ngModel)]="reseniaForm.temperatura" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="mb-3">
+            <label for="presion" class="form-label">Presión (mmHg)</label>
+            <input id="presion" type="text" class="form-control" [(ngModel)]="reseniaForm.presion" [ngModelOptions]="{standalone: true}">
+          </div>
+        </form>
+      </div>
+
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="guardarResenia()">Guardar</button>
+        <button class="btn btn-secondary" (click)="cancelarAccion()">Cancelar</button>
+      </div>
     </div>
+  </div>
+</div>
 
 
   </div>

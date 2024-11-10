@@ -2,18 +2,21 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatabaseService } from '../../../services/database.service';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../../services/usuario.service';
+import { NavbarComponent } from '../../navbar/navbar.component';
+
 
 @Component({
   selector: 'app-perfiles',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,NavbarComponent],
   templateUrl: './perfiles.component.html',
   styleUrl: './perfiles.component.css'
 })
 export class PerfilesComponent {
   listaUsuarios: any[] = [];
 
-  constructor(private db: DatabaseService, private router: Router) {}
+  constructor(private db: DatabaseService, private router: Router,private usuarioService: UsuarioService) {}
 
   ngOnInit(): void {
     this.cargarUsuarios();
@@ -36,7 +39,16 @@ export class PerfilesComponent {
     });
   }
 
+  verHistorialPaciente(usuario: any) {
+    // Lógica para redirigir al historial del paciente
+    // Por ejemplo, puedes usar un servicio de router para navegar a otra ruta
+    this.usuarioService.setPacienteHistorial(usuario);
+    this.router.navigate(['/historia-clinica']);
+    console.log("--->>   ",usuario);
+  }
+  
+  //Ver perfil del usuario
   verDetalleUsuario(usuario: any) {
-    this.router.navigate(['/usuario-detalle'], { state: { usuario } }); 
+    // this.router.navigate(['/usuario-detalle'], { state: { usuario } }); // ver esto
   }
 }

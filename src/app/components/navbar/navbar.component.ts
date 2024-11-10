@@ -90,19 +90,14 @@ export class NavbarComponent {
       this.router.navigate(['/mis-turnos-especilista']); // para el especialista crear******
     }
   }
-  // misturnos() {
-
-  //   if (this.tipoUsuario == 'pacientes') {
-  //     this.router.navigate(['/mis-turnos']); // paciente
-  //   }
-  //   else if (this.tipoUsuario == 'especialistas') {
-  //     this.router.navigate(['/mis-turnos-especilista']); // para el especialista crear******
-  //   }
-  // }
 
   seccionUsuarios() {
     this.router.navigate(['/seccion-usuarios']);
   }
+  misPacientes() {
+    this.router.navigate(['/historia-clinica']);
+  }
+
   miPerfil(usuario: any) {
     this.usuarioService.setUsuario(usuario); 
     this.router.navigate(['/usuario-detalle']);

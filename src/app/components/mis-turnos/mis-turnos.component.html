@@ -37,12 +37,12 @@
           <td>{{ turno.paciente.dni }}</td>
           <td>{{ turno.paciente.obraSocial }}</td>
           <td>{{ turno.especialidad }}</td>
-          <td>{{ turno.fechaHora.dia }}</td>
-          <td>{{ turno.fechaHora.mes }}</td>
+          <td>{{ turno.fechaHora.diaCadena }} {{ turno.fechaHora.diaConFormato }}</td>
+          <td>{{ turno.fechaHora.mesCadena }}</td>
           <td>{{ turno.fechaHora.anio }}</td>
           <td>{{ turno.fechaHora.horaInicio }}</td>
           <td>{{ turno.fechaHora.horaFin }}</td>
-          <td>{{ turno.especialista.nombre }} {{ turno.especialista.apellido }}</td>
+          <td>{{ turno.especialista}}</td>
           <td>{{ turno.estado === 'pendiente' ? 'Pendiente' : turno.estado === 'realizado' ? 'Realizado' : 'Cancelado' }}</td>
           <td>
             <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="cancelarTurno(turno)">

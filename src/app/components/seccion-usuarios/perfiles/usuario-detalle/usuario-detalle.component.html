@@ -27,14 +27,7 @@
         <div *ngIf="usuario.perfil === 'especialista' && usuario.especialidad">
           <p class="card-text mb-3"><strong>Especialidad:</strong> {{ usuario.especialidad }}</p>
         </div>
-        <!-- <div *ngIf="usuario.perfil === 'especialista' && usuario.disponibilidad">
-          <p class="card-text mb-3"><strong>Disponibilidad:</strong> </p>
-            <ul class="list-group">
-              <li class="list-group-item" *ngFor="let disp of  usuario.disponibilidad">
-                {{ disp.dia }} - {{ disp.mes }} - {{ disp.anio }} {{ disp.horaInicio }} {{ disp.horaFin }} 
-              </li>
-            </ul>
-        </div> -->
+    
 
         <!-- Obra social para pacientes -->
         <div *ngIf="usuario.perfil === 'paciente' && usuario.obraSocial">
@@ -43,6 +36,10 @@
         <!-- Estado -->
         <div *ngIf="usuario.perfil !== 'administrador' && usuario.aprobado">
           <p class="card-text mb-3"><strong>Estado:</strong> {{ usuario.aprobado }}</p>
+        </div>  
+        
+        <div *ngIf="usuario.perfil === 'paciente' && usuario.obraSocial">
+          <button class="btn btn-primary mt-2" (click)="historial()">Mi historial</button>
         </div>  
         
         <!-- Especialista -->

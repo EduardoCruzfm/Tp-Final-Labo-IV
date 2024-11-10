@@ -57,7 +57,7 @@ export class UsuarioDetalleComponent {
   horasDisponibles: string[] = [];
   
 
-  constructor(private db: DatabaseService,private usuarioService: UsuarioService) {
+  constructor(private db: DatabaseService,private usuarioService: UsuarioService, private router: Router) {
     this.usuario = this.usuarioService.getUsuario(); // Obtiene el usuario desde el servicio
     console.log("test", this.usuario);
     this.tipoUsuarioPefil = this.usuarioService.getUsuarioPerfil();
@@ -74,10 +74,12 @@ export class UsuarioDetalleComponent {
       console.error('No se han recibido datos del usuario.');
     }
 
-    // const fechaActual = new Date();
-    // const mesActual = fechaActual.getMonth(); // Devuelve un número entre 0 y 11 (enero es 0)
-
     this.obtenerDatosIniciales(this.mesActual,this.anioActual);
+  }
+
+  historial(){
+    this.router.navigate(['/historia-clinica']); // ver esto
+
   }
 
   obtenerDatosIniciales(mes:any, anio:any){

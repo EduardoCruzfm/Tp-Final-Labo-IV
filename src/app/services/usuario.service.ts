@@ -11,12 +11,27 @@ export class UsuarioService {
   private usuarioPerfil: any = null;
   private especialista: any = null;
   private turno: any = null;
+  private pacienteHistorial: any = null;
   
   private usuarioKey = 'usuario';
   private perfilKey = 'usuarioPerfil';
   private especialistaKey = 'especialista';
   private turnoKey = 'turno';
+  private pacienteHistorialkey = 'pacienteHistorial';
 
+  setPacienteHistorial(paciente: any) {
+    this.pacienteHistorial = paciente;
+    localStorage.setItem(this.pacienteHistorialkey, JSON.stringify(paciente));
+  }
+
+  getPacienteHistorial() {
+    if (this.pacienteHistorial) {
+      return this.pacienteHistorial;
+    }
+    // Recuperar el usuario desde localStorage si está disponible
+    const usuario = localStorage.getItem(this.pacienteHistorialkey);
+    return usuario ? JSON.parse(usuario) : null;
+  }
   setUsuario(usuario: any) {
     this.usuario = usuario;
     localStorage.setItem(this.usuarioKey, JSON.stringify(usuario));

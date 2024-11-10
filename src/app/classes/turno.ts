@@ -8,10 +8,10 @@ export class Turno {
     paciente: any; 
     estado: 'pendiente' | 'realizado' | 'cancelado'; // Tipo string con tres opciones
     comentario: any;
-    resenia: string;
+    resenia: any;
   
     constructor(id: string,idEspecialista: string, especialidad: string,especialista: string,fechaHora: any,
-      paciente: string, estado: 'pendiente' | 'realizado' | 'cancelado' = 'pendiente', comentario: any,resenia: string) {
+      paciente: string, estado: 'pendiente' | 'realizado' | 'cancelado' = 'pendiente', comentario: any,resenia: any) {
       this.id = id;
       this.idEspecialista = idEspecialista;
       this.especialidad = especialidad;

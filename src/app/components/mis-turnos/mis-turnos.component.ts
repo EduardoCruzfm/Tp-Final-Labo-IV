@@ -24,6 +24,7 @@ export class MisTurnosComponent {
   calificacion: number = 0; // o el tipo adecuado que estés usando
   comentario: string = ""; // o el tipo adecuado
   tipoUsuarioPefil:string = '';
+  especialistaModificado: any;
 
   constructor( private db: DatabaseService,private auth: AuthService,private usuarioService: UsuarioService) {
       this.cargarTurnos();
@@ -51,19 +52,54 @@ export class MisTurnosComponent {
     this.turnoSeleccionado = null; // para que desaparesca
   }
 
-  confirmarCancelacion() {
+  convertirHora24(hora12: string): string {
+    const [hora, minutoAmPm] = hora12.split(':');
+    const [minutos, amPm] = minutoAmPm.split(' ');
+    let horas = parseInt(hora, 10);
+  
+    if (amPm.toLowerCase() === 'pm' && horas < 12) {
+      horas += 12;
+    } else if (amPm.toLowerCase() === 'am' && horas === 12) {
+      horas = 0;
+    }
+  
+    return `${horas.toString().padStart(2, '0')}:${minutos}`;
+  }
+
+  async confirmarCancelacion() {
     if (this.turnoEnCancelacion) {
       this.turnoEnCancelacion.estado = 'cancelado';  // Marcar el turno como cancelado
       this.turnoEnCancelacion.comentario = this.comentarioCancelacion; // Guardar el comentario
-      this.db.modificarUsuario(this.turnoEnCancelacion,'turnos');
+      this.db.modificarUsuario(this.turnoEnCancelacion, 'turnos');
       console.log(this.turnoEnCancelacion);
-
-      //ACA DEBERIA MODIFICAR LA DISPONIBILIDAD DEL ESPECIALISTA      modificar el turno del del especialista con un estado
-
+  
+      // Esperar a que la promesa de `obtenerUsuarioPorId` se resuelva
+      this.especialistaModificado = await this.db.obtenerUsuarioPorId(this.turnoEnCancelacion.idEspecialista, "especialistas");
+      console.log(this.especialistaModificado);
+  
+      // Modificar la disponibilidad del especialista
+      const disponibilidadIndex = this.especialistaModificado.disponibilidad.findIndex((disp: any) =>
+        disp.diaNumero.toString().padStart(2, '0') === this.turnoEnCancelacion.fechaHora.diaConFormato.padStart(2, '0') &&
+        disp.mes === this.turnoEnCancelacion.fechaHora.mesCadena &&
+        disp.anio === this.turnoEnCancelacion.fechaHora.anio &&
+        this.convertirHora24(this.turnoEnCancelacion.fechaHora.horaInicio) === disp.horaInicio
+      );
+  
+      console.log("reservado", disponibilidadIndex);
+  
+      if (disponibilidadIndex !== -1) {
+        console.log("Horario disponible en el índice:", disponibilidadIndex);
+        this.especialistaModificado.disponibilidad[disponibilidadIndex].reservado = true; // Cambiar según sea necesario
+        this.db.modificarUsuario(this.especialistaModificado,"especialistas")
+        console.log("Esp-->>>  ", this.especialistaModificado);
+      } else {
+        console.log("Horario no disponible o ya reservado");
+      }
+  
       this.turnoEnCancelacion = null; // Resetear el turno en proceso de cancelación
     }
-
   }
+  
 
   cancelarAccion() {
     this.turnoEnCancelacion = null; // Cancelar la acción sin guardar

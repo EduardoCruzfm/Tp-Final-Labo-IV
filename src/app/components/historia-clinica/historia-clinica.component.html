@@ -1,0 +1,103 @@
+<app-navbar id="nav"></app-navbar>
+<br>
+<br>
+
+<div class="container mt-3">
+  <h2>Historial de Turnos</h2>
+  
+  <div class="turnos-list" style="overflow-y: auto; max-height: 400px;">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Especialidad</th>
+          <th>Día</th>
+          <th>Mes</th>
+          <th>Año</th>
+          <th>H Inicio</th>
+          <th>H Fin</th>
+          <th>Especialista</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let turno of turnosFiltrado; let i = index">
+          <td>{{ turno.especialidad }}</td>
+          <td>{{ turno.fechaHora.diaCadena }} {{ turno.fechaHora.diaConFormato }}</td>
+          <td>{{ turno.fechaHora.mesCadena }}</td>
+          <td>{{ turno.fechaHora.anio }}</td>
+          <td>{{ turno.fechaHora.horaInicio }}</td>
+          <td>{{ turno.fechaHora.horaFin }}</td>
+          <td>{{ turno.especialista}}</td>
+          <td>
+            <button *ngIf="turno.resenia" class="btn btn-info" (click)="mostrarResenia(turno)">
+              Ver Historial
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de confirmación para cambiar estado -->
+  <!-- <div *ngIf="turnoSeleccionado" class="modal fade show d-block" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title"> Historial del turno asisitido</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="cancelarAccion()"></button>
+        </div>
+
+
+                    <p>{{turnoSeleccionado.resenia}}</p>
+        
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="cancelarAccion()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+  <!-- Modal de confirmación para mostrar el historial -->
+  <div *ngIf="turnoSeleccionado" class="modal fade show d-block" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Historial del Turno Asistido</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="cancelarAccion()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <h6 class="text-center mb-3">Reseña del Especialista</h6>
+            <p class="text-center">{{ turnoSeleccionado.resenia.comentario || 'No disponible' }}</p>
+            
+            <hr>
+            
+            <h6 class="text-center mb-3">Datos del Turno</h6>
+            <div class="row">
+              <div class="col-6 text-right font-weight-bold">Altura:</div>
+              <div class="col-6">{{ turnoSeleccionado.resenia.altura || 'No registrada' }} cm</div>
+            </div>
+            <div class="row">
+              <div class="col-6 text-right font-weight-bold">Peso:</div>
+              <div class="col-6">{{ turnoSeleccionado.resenia.peso || 'No registrado' }} kg</div>
+            </div>
+            <div class="row">
+              <div class="col-6 text-right font-weight-bold">Temperatura:</div>
+              <div class="col-6">{{ turnoSeleccionado.resenia.temperatura || 'No registrada' }} °C</div>
+            </div>
+            <div class="row">
+              <div class="col-6 text-right font-weight-bold">Presión:</div>
+              <div class="col-6">{{ turnoSeleccionado.resenia.presion || 'No registrada' }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="cancelarAccion()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

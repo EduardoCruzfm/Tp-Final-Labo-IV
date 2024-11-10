@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 
 @Component({
   selector: 'app-seccion-usuarios',
   standalone: true,
-  imports: [],
+  imports: [NavbarComponent],
   templateUrl: './seccion-usuarios.component.html',
   styleUrl: './seccion-usuarios.component.css'
 })
