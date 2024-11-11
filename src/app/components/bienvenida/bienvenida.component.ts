@@ -9,14 +9,26 @@ import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
 import { UsuarioService } from '../../services/usuario.service';
-DatabaseService
+import { trigger, transition, style, animate } from '@angular/animations';
+
 
 @Component({
   selector: 'app-bienvenida',
   standalone: true,
   imports: [NavbarComponent,RouterModule, SweetAlert2Module,CommonModule],
   templateUrl: './bienvenida.component.html',
-  styleUrl: './bienvenida.component.css'
+  styleUrl: './bienvenida.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class BienvenidaComponent {
   userLoggedIn: boolean = false; 
@@ -24,6 +36,8 @@ export class BienvenidaComponent {
   tipoUsuario: string | any = null;
   
   usuarioActual: string | any = null;
+  mostrarLogin: boolean = true; 
+
 
   constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router, private route: ActivatedRoute, private db: DatabaseService,private usuarioService: UsuarioService) {
     // Suscribirse a los cambios de estado de autenticación

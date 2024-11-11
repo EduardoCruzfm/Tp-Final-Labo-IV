@@ -1,4 +1,4 @@
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
+<div *ngIf="mostrarLogin" [@fadeAnimation]  class="container d-flex justify-content-center align-items-center min-vh-100">
     <main class="form-signin w-100">
       <form [formGroup]="form">
         <div class="text-center mb-4">

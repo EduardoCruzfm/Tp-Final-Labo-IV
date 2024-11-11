@@ -6,20 +6,36 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { DatabaseService } from '../../../services/database.service'; 
 import { Administrador } from '../../../classes/administrador';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { CommonModule } from '@angular/common';
+
 
 
 @Component({
   selector: 'app-registro-administrador',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, SweetAlert2Module],
+  imports: [FormsModule, ReactiveFormsModule, SweetAlert2Module,CommonModule],
   templateUrl: './registro-administrador.component.html',
-  styleUrl: './registro-administrador.component.css'
+  styleUrl: './registro-administrador.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class RegistroAdministradorComponent {
   
   // ver como agregamos un nuevo admin ala bd y leerlo antes del login
 
   selectedFile: File | null = null;
+  mostrarLogin: boolean = true; 
+
 
   form = new FormGroup({
     nombre: new FormControl('', [Validators.required]),

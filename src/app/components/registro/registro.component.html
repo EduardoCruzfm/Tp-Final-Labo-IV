@@ -1,4 +1,4 @@
-<div class="menu-container"> 
+<div *ngIf="mostrarLogin" [@fadeAnimation]  class="menu-container"> 
     <div class="row">
       <div class="col-6 category-col">
         <div class="category-card" (click)="seleccionarPaciente()">

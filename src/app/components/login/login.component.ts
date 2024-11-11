@@ -5,8 +5,10 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 import { DatabaseService } from '../../services/database.service';
-import { CommonModule } from '@angular/common';
 import { UsuarioService } from '../../services/usuario.service';
+import { CommonModule } from '@angular/common';
+import { trigger, transition, style, animate } from '@angular/animations';
+
  
 
 @Component({
@@ -14,7 +16,18 @@ import { UsuarioService } from '../../services/usuario.service';
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule,SweetAlert2Module,CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class LoginComponent {
 
@@ -31,6 +44,7 @@ export class LoginComponent {
   
   // Mensaje de error de CAPTCHA
   captchaError: boolean = false;
+  mostrarLogin: boolean = true; 
 
 
 
@@ -178,6 +192,7 @@ async handleLogin() {
 
         if (esAdmin) {
           this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'administradores' } });  
+          this.mostrarLogin = false; 
           this.usuarioService.setUsuarioPerfil('administradores');   
         }
         else if(esEspecialista && await this.emailVerified()){
@@ -195,6 +210,7 @@ async handleLogin() {
             });
             
             this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'especialistas' } });
+            this.mostrarLogin = false; 
             this.usuarioService.setUsuarioPerfil('especialistas');   
             // por state 
 
@@ -212,6 +228,7 @@ async handleLogin() {
           // this.emailVerified();
           this.setterForms();
           this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'pacientes' } });
+          this.mostrarLogin = false; 
           this.usuarioService.setUsuarioPerfil('pacientes');   
 
         }

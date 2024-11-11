@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { DatabaseService } from '../../../services/database.service'; 
 import { Especialista } from '../../../classes/especialista';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 
 @Component({
@@ -14,13 +15,26 @@ import { Especialista } from '../../../classes/especialista';
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, SweetAlert2Module, CommonModule],
   templateUrl: './registro-especialistas.component.html',
-  styleUrls: ['./registro-especialistas.component.css']
+  styleUrls: ['./registro-especialistas.component.css'],
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class RegistroEspecialistasComponent {
   selectedFile: File | null = null;
   especialidadesDisponibles: string[] = ['Cardiologia', 'Pediatria', 'Neurologia', 'Dermatologia']; 
   especialidadPersonalizada: string = '';
   selectedEspecialidades: Set<string> = new Set();
+  mostrarLogin: boolean = true; 
+
 
   form = new FormGroup({
     nombre: new FormControl('', [Validators.required]),

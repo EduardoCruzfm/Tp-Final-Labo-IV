@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms'; 
-import { FechaHora } from '../../../../classes/fecha-hora';
 import { DatabaseService } from '../../../../services/database.service';
 import { UsuarioService } from '../../../../services/usuario.service';
 import { NavbarComponent } from '../../../navbar/navbar.component';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 
 @Component({
@@ -13,13 +13,27 @@ import { NavbarComponent } from '../../../navbar/navbar.component';
   standalone: true,
   imports: [CommonModule,FormsModule,NavbarComponent],
   templateUrl: './usuario-detalle.component.html',
-  styleUrl: './usuario-detalle.component.css'
+  styleUrl: './usuario-detalle.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
+
 export class UsuarioDetalleComponent {
   usuario: any;
   dia: any = '';
   mes: string = '';
   anio: number = 0;
+  mostrarLogin: boolean = true; 
+
 
   // Rango de horarios predeterminados
   horaInicioMin: string = '08:00';

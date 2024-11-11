@@ -6,17 +6,32 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { DatabaseService } from '../../../services/database.service'; 
 import { Paciente } from '../../../classes/paciente';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registro-pacientes',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, SweetAlert2Module],
+  imports: [FormsModule, ReactiveFormsModule, SweetAlert2Module,CommonModule],
   templateUrl: './registro-pacientes.component.html',
-  styleUrl: './registro-pacientes.component.css'
+  styleUrl: './registro-pacientes.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class RegistroPacientesComponent {
   selectedFile: File | null = null;
   selectedFileDos: File | null = null;
+  mostrarLogin: boolean = true; 
+
 
   form = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
