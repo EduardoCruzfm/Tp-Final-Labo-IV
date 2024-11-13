@@ -5,15 +5,25 @@ import { UsuarioService } from '../../services/usuario.service';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { jsPDF } from "jspdf";
-
-
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-historia-clinica',
   standalone: true,
   imports: [CommonModule,NavbarComponent],
   templateUrl: './historia-clinica.component.html',
-  styleUrl: './historia-clinica.component.css'
+  styleUrl: './historia-clinica.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class HistoriaClinicaComponent {
   tipoUsuarioPefil: any;
@@ -22,7 +32,7 @@ export class HistoriaClinicaComponent {
   usuarioHistorial:any
   usuarioEspecialista:any
   turnoSeleccionado: any = null; // Para almacenar el turno actual que tiene la reseña
-
+  mostrarLogin: boolean = true; 
 
   constructor( private db: DatabaseService,private auth: AuthService, private usuarioService: UsuarioService) {
     this.tipoUsuarioPefil = this.usuarioService.getUsuarioPerfil();

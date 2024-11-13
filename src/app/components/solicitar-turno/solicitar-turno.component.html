@@ -3,7 +3,7 @@
 <br>
 <br>
 
-<div class="container mt-3">
+<div *ngIf="mostrarLogin" [@fadeAnimation]  class="container mt-3">
     <h2>Solicitar Turno</h2>
 
     <form [formGroup]="turnoForm" (ngSubmit)="solicitarTurno()">

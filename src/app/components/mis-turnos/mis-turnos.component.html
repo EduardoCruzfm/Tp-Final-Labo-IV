@@ -3,7 +3,7 @@
 <br>
 <br>
 
-<div class="container mt-3">
+<div *ngIf="mostrarLogin" [@fadeAnimation]  class="container mt-3">
   <h2>Lista de Turnos</h2>
 
   <div class="mb-3">
@@ -48,7 +48,7 @@
             <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="cancelarTurno(turno)">
               Cancelar
             </button>
-            <button *ngIf="turno.estado === 'realizado' && turno.resenia" class="btn btn-info" (click)="mostrarResena(turno)">
+            <button *ngIf="turno.estado === 'finalizado' && turno.resenia" class="btn btn-info" (click)="mostrarResena(turno)">
               Ver reseña
             </button>
           </td>
@@ -69,9 +69,9 @@
   <!-- Reseña fija al fondo -->
   <div *ngIf="turnoSeleccionado" class="card fixed-bottom bg-light p-3 border rounded shadow-sm">
     <h4 class="card-title">Reseña del Especialista</h4>
-    <p class="card-text" *ngIf="turnoSeleccionado">{{ turnoSeleccionado?.resenia }}</p>
+    <p class="card-text" *ngIf="turnoSeleccionado">{{ turnoSeleccionado?.resenia.comentario }}</p>
     
-    <div *ngIf="isComentarioVacio(turnoSeleccionado.comentario)" class="mt-3">
+    <div *ngIf="turnoSeleccionado.comentario === '' " class="mt-3">
         <h5>Califica la Atención</h5>
         <div>
             <label class="me-3">
@@ -94,7 +94,7 @@
         <button class="btn btn-primary mt-2" (click)="enviarEncuesta(turnoSeleccionado)">Enviar Reseña</button>
     </div>
 
-    <div *ngIf="!(isComentarioVacio(turnoSeleccionado.comentario))" class="mt-3">
+    <div *ngIf="turnoSeleccionado.comentario !== '' " class="mt-3">
         <h5>Ya has calificado y enviado tu opinión sobre nuestra atención</h5>
     </div>
 </div>

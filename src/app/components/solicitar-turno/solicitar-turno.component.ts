@@ -6,13 +6,25 @@ import { Router } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-solicitar-turno',
   standalone: true,
   imports: [FormsModule, CommonModule, ReactiveFormsModule,NavbarComponent],
   templateUrl: './solicitar-turno.component.html',
-  styleUrl: './solicitar-turno.component.css'
+  styleUrl: './solicitar-turno.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class SolicitarTurnoComponent {
 
@@ -44,7 +56,7 @@ export class SolicitarTurnoComponent {
   fechaHora: any;
   setParaForm: any;
   disponibilidadIndexAnterior: any;
-
+  mostrarLogin: boolean = true; 
 
 
   constructor( private db: DatabaseService,private router: Router,private usuarioService: UsuarioService) {

@@ -5,14 +5,27 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-mis-turnos',
   standalone: true,
   imports: [CommonModule,FormsModule,NavbarComponent ],
   templateUrl: './mis-turnos.component.html',
-  styleUrl: './mis-turnos.component.css'
+  styleUrl: './mis-turnos.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
+
 export class MisTurnosComponent {
   turnos: any[] = [];
   filteredTurnos: any[] = [];
@@ -25,6 +38,8 @@ export class MisTurnosComponent {
   comentario: string = ""; // o el tipo adecuado
   tipoUsuarioPefil:string = '';
   especialistaModificado: any;
+  mostrarLogin: boolean = true; 
+
 
   constructor( private db: DatabaseService,private auth: AuthService,private usuarioService: UsuarioService) {
       this.cargarTurnos();
@@ -121,9 +136,17 @@ export class MisTurnosComponent {
       const matcheResTemperatura = turno.resenia?.temperatura?.toString().toLowerCase().includes(term);
       const matcheResPresion = turno.resenia?.presion?.toLowerCase().includes(term);
 
+      let matchesDatosDinamicos = false;
+      if (turno.resenia?.datosDinamicos) {
+        matchesDatosDinamicos = turno.resenia.datosDinamicos.some((dato: any) => {
+          const claveMatch = dato.clave?.toLowerCase().includes(term);
+          const valorMatch = dato.valor?.toString().toLowerCase().includes(term);
+          return claveMatch || valorMatch;
+        });
+      }
 
       return matchesEspecialidad || matchesEspecialista || matchefecha || matcheMes || matchehoraInicio
-            || matcheResAltura || matcheResPeso || matcheResTemperatura || matcheResPresion;
+            || matcheResAltura || matcheResPeso || matcheResTemperatura || matcheResPresion || matchesDatosDinamicos;
     });
   }
 

@@ -2,7 +2,7 @@
 <br>
 <br>
 <br>
-<div class="container mt-3">
+<div *ngIf="mostrarLogin" [@fadeAnimation]  class="container mt-3">
     <h2>Lista de Turnos</h2>
   
     <!-- Búsqueda por Especialidad o Especialista -->
@@ -21,7 +21,9 @@
             <th>DNI</th>
             <th>Obra Social</th>
             <th>Especialidad</th>
-            <th>Fecha</th>
+            <th>Día</th>
+            <th>Mes</th>
+            <th>Año</th>
             <th>Hora Inicio</th>
             <th>Hora Fin</th>
             <th>Estado</th>
@@ -35,7 +37,9 @@
             <td>{{ turno.paciente.dni }}</td>
             <td>{{ turno.paciente.obraSocial }}</td>
             <td>{{ turno.especialidad }}</td>
-            <td>{{ turno.fechaHora.diaConFormato }} {{ turno.fechaHora.diaCadena }}/{{ turno.fechaHora.mesCadena }}/{{ turno.fechaHora.anio }}</td>
+            <td>{{ turno.fechaHora.diaCadena }} {{ turno.fechaHora.diaConFormato }}</td>
+            <td>{{ turno.fechaHora.mesCadena }}</td>
+            <td>{{ turno.fechaHora.mesCadena }}</td>
             <td>{{ turno.fechaHora.horaInicio }}</td>
             <td>{{ turno.fechaHora.horaFin }}</td>
             <td>

@@ -36,6 +36,9 @@
             <li *ngIf="tipoUsuarioPefil === 'administradores' && userLoggedIn" class="nav-item">
               <button class="nav-link" (click)="seccionUsuarios()">Usuarios</button>
             </li>
+            <li *ngIf="tipoUsuarioPefil === 'administradores' && userLoggedIn" class="nav-item">
+              <button class="nav-link" (click)="estadisticas()">Estadiscas</button>
+            </li>
             <li  *ngIf="tipoUsuarioPefil && userLoggedIn" class="nav-item">
               <button class="nav-link" (click)="miPerfil(this.usuarioActual)">Mi perfil</button>
             </li>

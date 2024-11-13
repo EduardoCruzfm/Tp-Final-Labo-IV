@@ -94,8 +94,13 @@ export class NavbarComponent {
   seccionUsuarios() {
     this.router.navigate(['/seccion-usuarios']);
   }
+
   misPacientes() {
     this.router.navigate(['/historia-clinica']);
+  }
+
+  estadisticas() {
+    this.router.navigate(['/estadisticas']);
   }
 
   miPerfil(usuario: any) {

@@ -121,5 +121,12 @@ export const routes: Routes = [
         (m) => m.HistoriaClinicaComponent
       ),
   },
+  {
+    path: 'estadisticas',
+    loadComponent: () =>
+      import('./components/estadisticas/estadisticas.component').then(
+        (m) => m.EstadisticasComponent
+      ),
+  },
   
 ];

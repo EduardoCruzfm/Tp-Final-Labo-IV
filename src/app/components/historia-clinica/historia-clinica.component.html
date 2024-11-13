@@ -2,7 +2,7 @@
 <br>
 <br>
 
-<div class="container mt-3">
+<div *ngIf="mostrarLogin" [@fadeAnimation]  class="container mt-3">
   <h2>Historial de Turnos</h2>
   
   <div class="turnos-list" style="overflow-y: auto; max-height: 400px;">
@@ -97,7 +97,7 @@
             
             <!-- Datos dinamicos -->
             <!-- Iterar sobre los datos dinámicos si existen -->
-        <div class="container" *ngIf="turnoSeleccionado.resenia?.datosDinamicos?.length > 0">
+        <div class="modal-body" *ngIf="turnoSeleccionado.resenia?.datosDinamicos?.length > 0">
           <div class="row"  *ngFor="let dato of turnoSeleccionado.resenia.datosDinamicos">
           <h6>Datos Dinámicos:</h6>
           <div class="col-6 text-right font-weight-bold">{{ dato.clave }}:</div>

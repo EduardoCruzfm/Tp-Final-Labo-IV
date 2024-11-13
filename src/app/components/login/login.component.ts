@@ -8,8 +8,7 @@ import { DatabaseService } from '../../services/database.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
-
- 
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -46,6 +45,10 @@ export class LoginComponent {
   captchaError: boolean = false;
   mostrarLogin: boolean = true; 
 
+  // Registro del logue
+  anioActual: number = new Date().getFullYear();
+  fechaActual = new Date();
+  mesActual = this.fechaActual.getMonth(); 
 
 
 
@@ -61,7 +64,8 @@ export class LoginComponent {
   } 
 
   ngOnInit(): void {
-    // Generar el CAPTCHA cuando se carga el componente
+    // Generar el CAPTCHA cuando se carga el componente        ->>> crear log basico
+
     this.generateCaptcha();
   }
 
@@ -91,7 +95,6 @@ export class LoginComponent {
       password: '450253',
     });
   }
-
   usuarioEspecialista1(){
     this.form.patchValue({
       email: 'eduardofrankcruzmendez@gmail.com',
@@ -105,7 +108,6 @@ export class LoginComponent {
       password: '450253'
     });
   }
-
   usuarioPaciente(){
     this.form.patchValue({
       email: 'educacionflash@gmail.com',
@@ -191,14 +193,15 @@ async handleLogin() {
         );
 
         if (esAdmin) {
+          this.registrarLogs();
           this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'administradores' } });  
           this.mostrarLogin = false; 
           this.usuarioService.setUsuarioPerfil('administradores');   
         }
         else if(esEspecialista && await this.emailVerified()){
-
-          this.obtenerUsuario("especialistas");
-          console.log("Del log: ", this.usuarioActual);
+          this.registrarLogs();
+          // this.obtenerUsuario("especialistas");
+          // console.log("Del log: ", this.usuarioActual);
          
           const resultado = await this.authService.verificarAprobacionUsuarioActual("especialista");
           if (resultado.aprobado) {
@@ -212,7 +215,6 @@ async handleLogin() {
             this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'especialistas' } });
             this.mostrarLogin = false; 
             this.usuarioService.setUsuarioPerfil('especialistas');   
-            // por state 
 
           } else {
             await Swal.fire({
@@ -225,7 +227,7 @@ async handleLogin() {
           this.setterForms();
         }
         else if(esPaciente && await this.emailVerified()){
-          // this.emailVerified();
+          this.registrarLogs();
           this.setterForms();
           this.router.navigate(['/bienvenida'],{ queryParams: { tipo: 'pacientes' } });
           this.mostrarLogin = false; 
@@ -290,8 +292,42 @@ async handleLogin() {
   }
 
 
+registrarLogs() {
+  const User = this.authService.getCurrentUser();
+  if (User) {
+    const fechaActual = new Date();
+    const dia = fechaActual.getDate();
+    const mesDigito = fechaActual.getMonth(); // Mes en formato de número (0-11)
+    const anio = fechaActual.getFullYear();
+    const hora = formatDate(fechaActual, 'HH:mm:ss', 'en-US'); // Hora en formato HH:mm:ss
 
-  //
+    // Mapa de meses para convertir el número a cadena
+    const mesesCadena = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const mesCadena = mesesCadena[mesDigito];
+
+    const log = {
+      idUsuario: User.uid,
+      dia: dia,
+      mes: {
+        cadena: mesCadena,
+        digito: mesDigito
+      },
+      hora: hora,
+      anio: anio
+    };
+
+    console.log(log);
+    
+    this.db.agregarLog(log,'logs');
+
+  } else {
+    console.log("ERROR -> ", User);
+  }
+}
+
    // Función para generar un CAPTCHA aleatorio
    generateCaptcha(): void {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

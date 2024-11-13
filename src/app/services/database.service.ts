@@ -42,6 +42,23 @@ export class DatabaseService {
       console.error('Error al agregar el turno:', error);
     }
   }
+
+  async agregarLog(log: any, coleccion: string) {
+    try {
+      const logId = this.firestore.createId();
+      log.id = logId;
+  
+      // Crear una referencia al documento usando el ID generado
+      const logDocRef = this.firestore.collection(coleccion).doc(logId);
+  
+      // Guardar el documento en Firestore
+      await logDocRef.set({ ...log });
+  
+      console.log('Log agregado exitosamente con ID:', logId);
+    } catch (error) {
+      console.error('Error al agregar el log:', error);
+    }
+  }
   
   
 

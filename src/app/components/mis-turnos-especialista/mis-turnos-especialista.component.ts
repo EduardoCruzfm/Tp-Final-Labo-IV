@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { UsuarioService } from '../../services/usuario.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 
 @Component({
@@ -12,7 +13,18 @@ import { UsuarioService } from '../../services/usuario.service';
   standalone: true,
   imports: [FormsModule,CommonModule,NavbarComponent],
   templateUrl: './mis-turnos-especialista.component.html',
-  styleUrl: './mis-turnos-especialista.component.css'
+  styleUrl: './mis-turnos-especialista.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class MisTurnosEspecialistaComponent {
   turnos: any[] = [];
@@ -30,7 +42,7 @@ export class MisTurnosEspecialistaComponent {
   mensajeModal: string = ''; // Mensaje dinámico para el modal
   especilaista: any
   tipoUsuario: any;
-
+  mostrarLogin: boolean = true; 
   tipoUsuarioPefil: string = '';
   
   reseniaForm = {
@@ -153,8 +165,17 @@ export class MisTurnosEspecialistaComponent {
       const matcheResTemperatura = turno.resenia?.temperatura?.toString().toLowerCase().includes(term);
       const matcheResPresion = turno.resenia?.presion?.toLowerCase().includes(term);
 
+      let matchesDatosDinamicos = false;
+      if (turno.resenia?.datosDinamicos) {
+        matchesDatosDinamicos = turno.resenia.datosDinamicos.some((dato: any) => {
+          const claveMatch = dato.clave?.toLowerCase().includes(term);
+          const valorMatch = dato.valor?.toString().toLowerCase().includes(term);
+          return claveMatch || valorMatch;
+        });
+      }
+
       return matchesEspecialidad || matchesPaciente || matchesObraSocial || matchefecha || matcheMes || matchehoraInicio
-            || matcheResAltura || matcheResPeso || matcheResTemperatura || matcheResPresion;
+            || matcheResAltura || matcheResPeso || matcheResTemperatura || matcheResPresion || matchesDatosDinamicos;
     });
   }
   

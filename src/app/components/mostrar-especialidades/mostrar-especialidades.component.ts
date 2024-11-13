@@ -4,18 +4,30 @@ import { DatabaseService } from '../../services/database.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-mostrar-especialidades',
   standalone: true,
   imports: [CommonModule,NavbarComponent],
   templateUrl: './mostrar-especialidades.component.html',
-  styleUrl: './mostrar-especialidades.component.css'
+  styleUrl: './mostrar-especialidades.component.css',
+  animations: [
+    trigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class MostrarEspecialidadesComponent {
   especialidades: string[] = [];
   especialistasDisponiblesFiltro: any[] = [""];
-  // tipoUsuarioPefil: string;
+  mostrarLogin: boolean = true; 
   tipoUsuario: any;
 
   imagenes: Array<{ valor: string, imagen: string }> = [ 
