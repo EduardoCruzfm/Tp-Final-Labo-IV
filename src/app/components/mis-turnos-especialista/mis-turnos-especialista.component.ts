@@ -38,7 +38,8 @@ export class MisTurnosEspecialistaComponent {
     altura: null,
     peso: null,
     temperatura: null,
-    presion: ''
+    presion: '',
+    datosDinamicos: [{ clave: '', valor: '' }] // Array para datos dinámicos
   };
 
   
@@ -115,10 +116,27 @@ export class MisTurnosEspecialistaComponent {
       altura: null,
       peso: null,
       temperatura: null,
-      presion: ''
+      presion: '',
+      datosDinamicos: [{ clave: '', valor: '' }] // Array para datos dinámicos
     };
   }
-  //----------
+  
+  agregarDatoDinamico() {
+    // Permitir un máximo de 3 datos dinámicos
+    if (this.reseniaForm.datosDinamicos && this.reseniaForm.datosDinamicos.length < 3) {
+      this.reseniaForm.datosDinamicos.push({ clave: '', valor: '' });
+    }
+  }
+
+  eliminarDatoDinamico(index: number) {
+    if (this.reseniaForm.datosDinamicos && index >= 0 && this.reseniaForm.datosDinamicos.length > 1) {
+      this.reseniaForm.datosDinamicos.splice(index, 1);
+    }
+  }
+
+  maximoDatosDinamicos(): boolean {
+    return this.reseniaForm.datosDinamicos && this.reseniaForm.datosDinamicos.length >= 3;
+  }
 
   filtrarTurnos() {
     const term = this.searchTerm.toLowerCase();
@@ -126,7 +144,17 @@ export class MisTurnosEspecialistaComponent {
       const matchesEspecialidad = turno.especialidad.toLowerCase().includes(term);
       const pacienteNombreCompleto = `${turno.paciente.nombre} ${turno.paciente.apellido}`.toLowerCase();
       const matchesPaciente = pacienteNombreCompleto.includes(term);
-      return matchesEspecialidad || matchesPaciente;
+      const matchesObraSocial = turno.paciente.obraSocial.toLowerCase().includes(term);
+      const matchefecha = turno.fechaHora.diaCadena.toLowerCase().includes(term);
+      const matcheMes = turno.fechaHora.mesCadena.toLowerCase().includes(term);
+      const matchehoraInicio = turno.fechaHora.horaInicio.toLowerCase().includes(term);
+      const matcheResAltura = turno.resenia?.altura?.toString().toLowerCase().includes(term);
+      const matcheResPeso = turno.resenia?.peso?.toString().toLowerCase().includes(term);
+      const matcheResTemperatura = turno.resenia?.temperatura?.toString().toLowerCase().includes(term);
+      const matcheResPresion = turno.resenia?.presion?.toLowerCase().includes(term);
+
+      return matchesEspecialidad || matchesPaciente || matchesObraSocial || matchefecha || matcheMes || matchehoraInicio
+            || matcheResAltura || matcheResPeso || matcheResTemperatura || matcheResPresion;
     });
   }
   
@@ -137,14 +165,24 @@ export class MisTurnosEspecialistaComponent {
     } else {
       this.turnoEnCancelacion = null;
       this.turnoSeleccionado = turno; // Guardamos el turno seleccionado
+      // this.reseniaForm = { ...this.turnoSeleccionado.resenia };
+      this.reseniaForm.comentario = turno.resenia?.comentario || '';
+      this.reseniaForm.altura = turno.resenia?.altura || null;
+      this.reseniaForm.peso = turno.resenia?.peso || null;
+      this.reseniaForm.temperatura = turno.resenia?.temperatura || null;
+      this.reseniaForm.presion = turno.resenia?.presion || '';
+  
+      // Inicializa los datos dinámicos o crea un array vacío si no existen
+      this.reseniaForm.datosDinamicos = turno.resenia?.datosDinamicos || [{ clave: '', valor: '' }];
+    
     }
   }
   
-  enviarResenia(turno: any){
-    turno.resenia = this.resenia;
-    this.db.modificarUsuario(turno,'turnos');
-    console.log('Reseña' ,turno);
-  }
+  // enviarResenia(turno: any){
+  //   turno.resenia = this.resenia;
+  //   this.db.modificarUsuario(turno,'turnos');
+  //   console.log('Reseña' ,turno);
+  // }
   
   confirmarCambioEstado() {
     if (this.turnoSeleccionado) {

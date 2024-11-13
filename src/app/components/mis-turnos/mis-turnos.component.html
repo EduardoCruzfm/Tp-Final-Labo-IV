@@ -42,8 +42,8 @@
           <td>{{ turno.fechaHora.anio }}</td>
           <td>{{ turno.fechaHora.horaInicio }}</td>
           <td>{{ turno.fechaHora.horaFin }}</td>
-          <td>{{ turno.especialista}}</td>
-          <td>{{ turno.estado === 'pendiente' ? 'Pendiente' : turno.estado === 'realizado' ? 'Realizado' : 'Cancelado' }}</td>
+          <td>{{ turno.especialista.nombre}} {{ turno.especialista.apellido}}</td>
+          <td>{{ turno.estado === 'pendiente' ? 'Pendiente' : turno.estado === 'finalizado' ? 'Finalizado' : 'Cancelado' }}</td>
           <td>
             <button *ngIf="turno.estado === 'pendiente'" class="btn btn-danger" (click)="cancelarTurno(turno)">
               Cancelar

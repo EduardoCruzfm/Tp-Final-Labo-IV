@@ -27,10 +27,13 @@
           <td>{{ turno.fechaHora.anio }}</td>
           <td>{{ turno.fechaHora.horaInicio }}</td>
           <td>{{ turno.fechaHora.horaFin }}</td>
-          <td>{{ turno.especialista}}</td>
+          <td>{{ turno.especialista.nombre}} {{ turno.especialista.apellido}}</td>
           <td>
-            <button *ngIf="turno.resenia" class="btn btn-info" (click)="mostrarResenia(turno)">
+            <button *ngIf="turno.resenia" class="btn btn-info me-2" (click)="mostrarResenia(turno)">
               Ver Historial
+            </button>
+            <button  *ngIf="turno.resenia" class="btn btn-primary" (click)="descargarPDF()">
+              Descargar PDF
             </button>
           </td>
         </tr>
@@ -91,6 +94,18 @@
               <div class="col-6 text-right font-weight-bold">Presión:</div>
               <div class="col-6">{{ turnoSeleccionado.resenia.presion || 'No registrada' }}</div>
             </div>
+            
+            <!-- Datos dinamicos -->
+            <!-- Iterar sobre los datos dinámicos si existen -->
+        <div class="container" *ngIf="turnoSeleccionado.resenia?.datosDinamicos?.length > 0">
+          <div class="row"  *ngFor="let dato of turnoSeleccionado.resenia.datosDinamicos">
+          <h6>Datos Dinámicos:</h6>
+          <div class="col-6 text-right font-weight-bold">{{ dato.clave }}:</div>
+          <div class="col-6">{{ dato.valor  || 'No registrada' }}</div>
+
+          </div>
+        </div>
+
           </div>
         </div>
         <div class="modal-footer">

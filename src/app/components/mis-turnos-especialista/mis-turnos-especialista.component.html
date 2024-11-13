@@ -97,7 +97,7 @@
     </div> -->
     
     <!-- Modal para generar la reseña -->
-<div *ngIf="turnoSeleccionado" class="modal fade show d-block" tabindex="-1" aria-hidden="true">
+<div *ngIf=" turnoSeleccionado && turnoSeleccionado.estado === 'finalizado'" class="modal fade show d-block" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -127,6 +127,22 @@
             <label for="presion" class="form-label">Presión (mmHg)</label>
             <input id="presion" type="text" class="form-control" [(ngModel)]="reseniaForm.presion" [ngModelOptions]="{standalone: true}">
           </div>
+
+           <!-- Campos para datos dinámicos -->
+      <div class="mb-3" *ngFor="let dato of reseniaForm.datosDinamicos; let i = index">
+        <div class="d-flex align-items-center">
+          <input type="text" class="form-control me-2" placeholder="Clave" [(ngModel)]="dato.clave" [ngModelOptions]="{standalone: true}">
+          <input type="text" class="form-control me-2" placeholder="Valor" [(ngModel)]="dato.valor" [ngModelOptions]="{standalone: true}">
+          <button type="button" class="btn btn-danger" (click)="eliminarDatoDinamico(i)" *ngIf="i > 0">X</button>
+        </div>
+      </div>
+
+      <!-- Botón para agregar un nuevo dato dinámico -->
+      <button type="button" class="btn btn-secondary mt-2" (click)="agregarDatoDinamico()" [disabled]="maximoDatosDinamicos()">
+        Agregar dato dinámico
+      </button>
+
+
         </form>
       </div>
 

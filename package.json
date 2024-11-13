@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@sweetalert2/ngx-sweetalert2": "^12.4.0",
+    "jspdf": "^2.5.2",
     "ng-recaptcha-18": "^1.0.1",
     "ng-recaptcha3": "^1.4.0",
     "rxjs": "~7.8.0",

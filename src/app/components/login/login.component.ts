@@ -351,3 +351,8 @@ async handleLogin() {
 //  Estos botones deben ser rectangulares. Formato (09/09).
 
 //  - Seleccionado el día mostrará los horarios disponibles. Estos botones deben ser rectangulares. Formato 12:15am,.
+
+// Falta pfd ,
+// resiña dinamica ,
+// mejorar filtro de turnos, 
+// FILTRO UNICO  ->>    en la sección Mis turnos, tanto para los Especialistas

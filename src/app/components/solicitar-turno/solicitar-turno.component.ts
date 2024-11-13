@@ -75,7 +75,10 @@ export class SolicitarTurnoComponent {
           this.turnoForm.get('especialidad')?.setValue(this.tipoUsuario);
           this.turnoForm.get('especialista')?.setValue(nombre);
 
-          this.nombreEspecialista = nombre;
+          this.nombreEspecialista = {
+            nombre: this.especialistaSeleccionado.nombre,
+            apellido: this.especialistaSeleccionado.apellido
+          };
           // Setear los valores iniciales en el formulario
           this.turnoForm.patchValue({
             especialidad: this.datosTurno.especialidad,
@@ -263,7 +266,7 @@ export class SolicitarTurnoComponent {
   solicitarTurno() {
     if (this.turnoForm.valid) {
       // Asegúrate de que especialista y paciente sean de tipo objeto
-      const { especialidad, fechaHora, paciente } = this.turnoForm.value;
+      const { especialidad, paciente } = this.turnoForm.value;
   
       // Verifica que especialista y paciente sean objetos
       if (typeof especialidad === "string" && paciente) {

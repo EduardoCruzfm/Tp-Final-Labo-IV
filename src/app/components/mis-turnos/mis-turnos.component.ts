@@ -113,7 +113,17 @@ export class MisTurnosComponent {
       const matchesEspecialidad = turno.especialidad.toLowerCase().includes(term);
       const especialistaNombreCompleto = `${turno.especialista.nombre} ${turno.especialista.apellido}`.toLowerCase();
       const matchesEspecialista = especialistaNombreCompleto.includes(term);
-      return matchesEspecialidad || matchesEspecialista;
+      const matchefecha = turno.fechaHora.diaCadena.toLowerCase().includes(term);
+      const matcheMes = turno.fechaHora.mesCadena.toLowerCase().includes(term);
+      const matchehoraInicio = turno.fechaHora.horaInicio.toLowerCase().includes(term);
+      const matcheResAltura = turno.resenia?.altura?.toString().toLowerCase().includes(term);
+      const matcheResPeso = turno.resenia?.peso?.toString().toLowerCase().includes(term);
+      const matcheResTemperatura = turno.resenia?.temperatura?.toString().toLowerCase().includes(term);
+      const matcheResPresion = turno.resenia?.presion?.toLowerCase().includes(term);
+
+
+      return matchesEspecialidad || matchesEspecialista || matchefecha || matcheMes || matchehoraInicio
+            || matcheResAltura || matcheResPeso || matcheResTemperatura || matcheResPresion;
     });
   }
 
