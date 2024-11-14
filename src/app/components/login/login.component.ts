@@ -363,7 +363,7 @@ registrarLogs() {
 }
 
 //CAMBIAR EL BOTON DE LOGIN
-
+// 1
 // * Botones de Acceso rápido
 // - Deben ser botones redondos
 // - Deben tener la imagen de perfil del usuario
@@ -388,7 +388,4 @@ registrarLogs() {
 
 //  - Seleccionado el día mostrará los horarios disponibles. Estos botones deben ser rectangulares. Formato 12:15am,.
 
-// Falta pfd ,
-// resiña dinamica ,
-// mejorar filtro de turnos, 
-// FILTRO UNICO  ->>    en la sección Mis turnos, tanto para los Especialistas
+// 3

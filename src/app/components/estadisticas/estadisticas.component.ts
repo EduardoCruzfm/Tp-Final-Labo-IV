@@ -7,7 +7,10 @@ import { Chart, registerables } from 'chart.js';
 import { ChartData, ChartOptions } from 'chart.js';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
-import { Especialista } from '../../classes/especialista';
+import { jsPDF } from "jspdf";
+import html2canvas from 'html2canvas';
+
+
 
 @Component({
   selector: 'app-estadisticas',
@@ -414,6 +417,27 @@ export class EstadisticasComponent {
     };
   
     return { data, options };
+  }
+
+  exportarPDF() {
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const container = document.getElementById('graficos-container');
+  
+    if (container) {
+      html2canvas(container).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 190; // Ajuste para la anchura de la página A4
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+  
+        // Guarda el archivo PDF
+        pdf.save('graficos.pdf');
+      });
+    } else {
+      console.error('No se encontró el contenedor de gráficos.');
+    }
   }
   
 }
