@@ -119,6 +119,7 @@ export class MisTurnosEspecialistaComponent {
       this.db.modificarUsuario(this.turnoSeleccionado,'turnos');
       console.log(this.turnoSeleccionado)
     }
+    this.cancelarAccion();
   }
 
   cancelarAccion() {
