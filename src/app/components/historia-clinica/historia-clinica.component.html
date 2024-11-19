@@ -17,7 +17,7 @@
           *ngFor="let especialista of especialistas" 
           class="btn btn-dark"
           (click)="descargarHistorialPorEspecialista(especialista)">
-          Historial de Dr. {{ especialista.nombre }}
+          Historial de Dr. {{ especialista.nombre | capitalizar }}
         </button>
       </div>
     </div>

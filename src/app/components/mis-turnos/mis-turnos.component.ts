@@ -6,11 +6,17 @@ import { AuthService } from '../../services/auth.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { CapitalizarPipe } from '../../pipes/capitalizar.pipe';
+import { TraducirEstadoPipe } from '../../pipes/traducir-estado.pipe';
+import { FormatoHoraPipe } from '../../pipes/formato-hora.pipe';
+
+
+
 
 @Component({
   selector: 'app-mis-turnos',
   standalone: true,
-  imports: [CommonModule,FormsModule,NavbarComponent ],
+  imports: [CommonModule,FormsModule,NavbarComponent,CapitalizarPipe,TraducirEstadoPipe,FormatoHoraPipe],
   templateUrl: './mis-turnos.component.html',
   styleUrl: './mis-turnos.component.css',
   animations: [

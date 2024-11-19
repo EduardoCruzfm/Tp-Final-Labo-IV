@@ -6,11 +6,13 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { jsPDF } from "jspdf";
 import { trigger, transition, style, animate } from '@angular/animations';
+import { CapitalizarPipe } from '../../pipes/capitalizar.pipe';
+
 
 @Component({
   selector: 'app-historia-clinica',
   standalone: true,
-  imports: [CommonModule,NavbarComponent],
+  imports: [CommonModule,NavbarComponent,CapitalizarPipe],
   templateUrl: './historia-clinica.component.html',
   styleUrl: './historia-clinica.component.css',
   animations: [
