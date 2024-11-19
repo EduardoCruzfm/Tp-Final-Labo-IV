@@ -1,0 +1,15 @@
+<app-navbar id="nav"></app-navbar>
+<br>
+<br >
+
+<div *ngIf="mostrarLogin" [@fadeAnimation]  class="menu-container"> 
+    <div class="row">
+      <div *ngFor="let paciente of  listaPacientes " class="col-6 category-col">
+        <div class="category-card" (click)="verHistorialPaciente(paciente)">
+          <img [src]="paciente.imagenPerfil" alt="Paciente" class="category-image">
+          <p>{{paciente.nombre}} {{paciente.apellido}}</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>

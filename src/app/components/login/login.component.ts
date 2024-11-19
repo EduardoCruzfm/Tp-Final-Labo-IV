@@ -389,3 +389,19 @@ registrarLogs() {
 //  - Seleccionado el día mostrará los horarios disponibles. Estos botones deben ser rectangulares. Formato 12:15am,.
 
 // 3
+// Sección Pacientes ->	"Para los especialistas. Solo deberá mostrar los usuarios que el
+// especialista haya atendido al menos 1 vez."	Además, Mostrar los usuarios con un favbutton redondo , 
+// imagen y nombre, al seleccionar un paciente  se muestra los dellaes de los turnos y un acceso a la 
+// reseña de cada consulta
+// ------------------------------
+// Sección usuarios ->	"Solamente para el perfil Administrador, poder descargar un excel con los datos de todos los
+// usuarios."	Además, mostrar los usuarios de esta sección con un favbutton redondo, imagen y nombre.
+//  Al seleccionarlo descarga los datos de que turnos tomo y con quien (también en excel)
+// ----------------
+// Mi perfil ->	"Para los usuarios paciente, poder descargar un pdf con la historia clínica. 
+// El PDF tiene que tener
+// logo de la clínica, título del informe y fecha de emisión."	
+// Además, debe haber una forma para poder bajar todas las atenciones que realice segun un PROFESIONAL (También en PDF)
+// --------------------
+// Animaciones ->	"Se debe agregar al menos 2, como mínimo, animaciones de transición entre componentes al navegar
+// la aplicación."	Una debe ser de Derecha a izquierda

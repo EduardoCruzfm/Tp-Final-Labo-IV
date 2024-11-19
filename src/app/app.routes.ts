@@ -128,5 +128,12 @@ export const routes: Routes = [
         (m) => m.EstadisticasComponent
       ),
   },
+  {
+    path: 'historia-clinica-filtro',
+    loadComponent: () =>
+      import('./components/historia-clinica-filtro/historia-clinica-filtro.component').then(
+        (m) => m.HistoriaClinicaFiltroComponent
+      ),
+  },
   
 ];

@@ -3,31 +3,56 @@
 <br>
 
 <div *ngIf="mostrarLogin" [@fadeAnimation]  class="container mt-3">
-  <h2>Historial de Turnos</h2>
+  <h2>Historia clinica</h2>
+  <br>
   
+ <!-- Sección para descargar el historial completo con cada especialista -->
+  <div class="card my-4">
+    <div class="card-header text-center">
+      <h3>Descargar historial por especialista</h3>
+    </div>
+    <div class="card-body">
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+        <button 
+          *ngFor="let especialista of especialistas" 
+          class="btn btn-dark"
+          (click)="descargarHistorialPorEspecialista(especialista)">
+          Historial de Dr. {{ especialista.nombre }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+  
+  <br>
+<!-- Sección de turnos individuales -->
+  <h3>Turnos Individuales</h3>
   <div class="turnos-list" style="overflow-y: auto; max-height: 400px;">
     <table class="table table-striped">
       <thead>
         <tr>
+          <th *ngIf="tipoUsuarioPefil === 'especialistas'" >Paciente</th>
           <th>Especialidad</th>
           <th>Día</th>
           <th>Mes</th>
           <th>Año</th>
           <th>H Inicio</th>
           <th>H Fin</th>
-          <th>Especialista</th>
+          <th *ngIf="tipoUsuarioPefil !== 'especialistas'" >Especialista</th>
           <th>Acción</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let turno of turnosFiltrado; let i = index">
+          <td *ngIf="tipoUsuarioPefil === 'especialistas'" >{{ turno.paciente.nombre}} {{ turno.paciente.apellido}}</td>
           <td>{{ turno.especialidad }}</td>
           <td>{{ turno.fechaHora.diaCadena }} {{ turno.fechaHora.diaConFormato }}</td>
           <td>{{ turno.fechaHora.mesCadena }}</td>
           <td>{{ turno.fechaHora.anio }}</td>
           <td>{{ turno.fechaHora.horaInicio }}</td>
           <td>{{ turno.fechaHora.horaFin }}</td>
-          <td>{{ turno.especialista.nombre}} {{ turno.especialista.apellido}}</td>
+          <td *ngIf="tipoUsuarioPefil !== 'especialistas'" >{{ turno.especialista.nombre}} {{ turno.especialista.apellido}}</td>
           <td>
             <button *ngIf="turno.resenia" class="btn btn-info me-2" (click)="mostrarResenia(turno)">
               Ver Historial

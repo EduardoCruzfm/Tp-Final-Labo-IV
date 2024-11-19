@@ -96,7 +96,7 @@ export class NavbarComponent {
   }
 
   misPacientes() {
-    this.router.navigate(['/historia-clinica']);
+    this.router.navigate(['/historia-clinica-filtro']);
   }
 
   estadisticas() {

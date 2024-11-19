@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
-import { AuthService } from '../../services/auth.service';
-import { UsuarioService } from '../../services/usuario.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, registerables } from 'chart.js';
 import { ChartData, ChartOptions } from 'chart.js';
@@ -31,7 +29,7 @@ export class EstadisticasComponent {
   listaUsuarios:  any[] = [];
 
 
-  constructor(private db: DatabaseService, private auth: AuthService, private usuarioService: UsuarioService) {
+  constructor(private db: DatabaseService) {
     Chart.register(...registerables);
   }
 
