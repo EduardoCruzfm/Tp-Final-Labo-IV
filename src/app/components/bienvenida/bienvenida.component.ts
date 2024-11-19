@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule, ViewportScroller } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ChildrenOutletContexts } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { trigger, transition, style, animate } from '@angular/animations';
-
+// import { slideInAnimation } from '../../animations/route-animations';
 
 @Component({
   selector: 'app-bienvenida',
@@ -39,7 +39,8 @@ export class BienvenidaComponent {
   mostrarLogin: boolean = true; 
 
 
-  constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router, private route: ActivatedRoute, private db: DatabaseService,private usuarioService: UsuarioService) {
+  constructor(private authService: AuthService, private viewportScroller: ViewportScroller, private router: Router, 
+    private route: ActivatedRoute, private db: DatabaseService,private usuarioService: UsuarioService,) {
     // Suscribirse a los cambios de estado de autenticación
     this.authService.userLoggedIn$.subscribe((isLoggedIn) => {
       this.userLoggedIn = isLoggedIn;

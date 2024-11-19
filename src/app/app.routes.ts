@@ -8,6 +8,7 @@ export const routes: Routes = [
       import('./components/login/login.component').then(
         (m) => m.LoginComponent
       ),
+      data: { animation: 'login' },
   },
   {
     path: 'bienvenida',
@@ -15,6 +16,7 @@ export const routes: Routes = [
       import('./components/bienvenida/bienvenida.component').then(
         (m) => m.BienvenidaComponent
       ),
+      data: { animation: 'bienvenida' },
   },
   {
     path: 'registro',
@@ -22,6 +24,7 @@ export const routes: Routes = [
       import('./components/registro/registro.component').then(
         (m) => m.RegistroComponent
       ),
+      data: { animation: 'registro' },
   },
   {
     path: 'registro-pacientes',
