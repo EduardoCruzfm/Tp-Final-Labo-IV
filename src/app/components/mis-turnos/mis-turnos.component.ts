@@ -9,14 +9,14 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { CapitalizarPipe } from '../../pipes/capitalizar.pipe';
 import { TraducirEstadoPipe } from '../../pipes/traducir-estado.pipe';
 import { FormatoHoraPipe } from '../../pipes/formato-hora.pipe';
-
+import { HoverHighlightDirective } from '../../directives/hover-highlight.directive';
 
 
 
 @Component({
   selector: 'app-mis-turnos',
   standalone: true,
-  imports: [CommonModule,FormsModule,NavbarComponent,CapitalizarPipe,TraducirEstadoPipe,FormatoHoraPipe],
+  imports: [CommonModule,FormsModule,NavbarComponent,CapitalizarPipe,TraducirEstadoPipe,FormatoHoraPipe,HoverHighlightDirective],
   templateUrl: './mis-turnos.component.html',
   styleUrl: './mis-turnos.component.css',
   animations: [

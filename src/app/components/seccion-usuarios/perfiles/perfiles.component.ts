@@ -4,12 +4,14 @@ import { DatabaseService } from '../../../services/database.service';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../../services/usuario.service';
 import { NavbarComponent } from '../../navbar/navbar.component';
+import { HoverHighlightDirective } from '../../../directives/hover-highlight.directive';
+
 
 
 @Component({
   selector: 'app-perfiles',
   standalone: true,
-  imports: [CommonModule,NavbarComponent],
+  imports: [CommonModule,NavbarComponent,HoverHighlightDirective],
   templateUrl: './perfiles.component.html',
   styleUrl: './perfiles.component.css'
 })

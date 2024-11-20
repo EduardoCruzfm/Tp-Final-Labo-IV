@@ -31,7 +31,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let turno of filteredTurnos; let i = index">
+        <tr appHoverHighlight *ngFor="let turno of filteredTurnos; let i = index">
           <td>{{ turno.paciente.nombre }}</td>
           <td>{{ turno.paciente.apellido }}</td>
           <td>{{ turno.paciente.dni }}</td>

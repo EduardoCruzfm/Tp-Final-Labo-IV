@@ -7,11 +7,13 @@ import { DatabaseService } from '../../services/database.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { DynamicBorderDirective } from '../../directives/dynamic-border.directive';
+
 
 @Component({
   selector: 'app-solicitar-turno',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule,NavbarComponent],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule,NavbarComponent,DynamicBorderDirective],
   templateUrl: './solicitar-turno.component.html',
   styleUrl: './solicitar-turno.component.css',
   animations: [

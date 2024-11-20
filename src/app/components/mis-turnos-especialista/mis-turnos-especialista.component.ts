@@ -6,12 +6,12 @@ import { AuthService } from '../../services/auth.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { UsuarioService } from '../../services/usuario.service';
 import { trigger, transition, style, animate } from '@angular/animations';
-
+import { HoverHighlightDirective } from '../../directives/hover-highlight.directive';
 
 @Component({
   selector: 'app-mis-turnos-especialista',
   standalone: true,
-  imports: [FormsModule,CommonModule,NavbarComponent],
+  imports: [FormsModule,CommonModule,NavbarComponent,HoverHighlightDirective],
   templateUrl: './mis-turnos-especialista.component.html',
   styleUrl: './mis-turnos-especialista.component.css',
   animations: [

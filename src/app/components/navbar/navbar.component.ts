@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service'; 
 import { DatabaseService } from '../../services/database.service';
 import { UsuarioService } from '../../services/usuario.service';
+import { ToggleVisibilityDirective } from '../../directives/toggle-visibility.directive';
+
 
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,ToggleVisibilityDirective],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

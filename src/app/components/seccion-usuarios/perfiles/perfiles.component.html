@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let usuario of listaUsuarios" (click)="verDetalleUsuario(usuario)" style="cursor: pointer;">
+        <tr  appHoverHighlight *ngFor="let usuario of listaUsuarios" (click)="verDetalleUsuario(usuario)" style="cursor: pointer;">
           <td>{{ usuario.nombre }}</td>
           <td>{{ usuario.apellido }}</td>
           <td>{{ usuario.email }}</td>
