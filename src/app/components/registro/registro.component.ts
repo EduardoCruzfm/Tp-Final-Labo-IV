@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,NavbarComponent],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css',
   animations: [

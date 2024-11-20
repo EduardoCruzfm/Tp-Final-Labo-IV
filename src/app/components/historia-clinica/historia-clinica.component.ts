@@ -36,7 +36,7 @@ export class HistoriaClinicaComponent {
   usuarioEspecialista:any
   turnoSeleccionado: any = null; // Para almacenar el turno actual que tiene la reseña
   mostrarLogin: boolean = true; 
-
+  especialistasConTurnos: any[] = [];
   especialistas:any
 
   constructor( private db: DatabaseService,private auth: AuthService, private usuarioService: UsuarioService) {
@@ -67,7 +67,8 @@ export class HistoriaClinicaComponent {
           turno.paciente.id === this.usuarioHistorial.id && turno.estado === "finalizado" );
         this.filtrarEspecialista();
         console.log("->> " , this.especialistas );
-        
+        this.filtrarEspecialistasConTurnos();
+
         
       }else if(this.tipoUsuarioPefil === 'especialistas'){
         this.usuarioHistorial = this.usuarioService.getPacienteHistorial();
@@ -117,9 +118,19 @@ export class HistoriaClinicaComponent {
   this.turnoSeleccionado = null; // Cancelar la acción sin guardar
   }
 
+  filtrarEspecialistasConTurnos() {
+    this.especialistasConTurnos = this.especialistas.filter((especialista: any) => 
+      this.turnosFiltrado.some(
+        (turno: any) => turno.idEspecialista === especialista.id && this.usuarioHistorial.id === turno.paciente.id
+      )
+    );
+    console.log("filtro especialistas por paceinte",this.especialistasConTurnos )
+
+  }
+
   descargarHistorialPorEspecialista(especialista: any) {
     const turnosDelEspecialista = this.turnosFiltrado.filter(
-      (turno: any) => turno.idEspecialista === especialista.id
+      (turno: any) => turno.idEspecialista === especialista.id && this.usuarioHistorial.id === turno.paciente.id
     );
   
     if (turnosDelEspecialista.length > 0) {
@@ -199,7 +210,7 @@ export class HistoriaClinicaComponent {
   }
   
 
-  descargarPDF(turno: any) {
+  descargarPDF(turno: any) {   //this.usuarioHistorial
     if (turno) {
       const doc = new jsPDF();
       const pageWidth = doc.internal.pageSize.getWidth();

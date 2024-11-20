@@ -14,7 +14,7 @@
     <div class="card-body">
       <div class="d-flex flex-wrap justify-content-center gap-2">
         <button 
-          *ngFor="let especialista of especialistas" 
+          *ngFor="let especialista of especialistasConTurnos" 
           class="btn btn-dark"
           (click)="descargarHistorialPorEspecialista(especialista)">
           Historial de Dr. {{ especialista.nombre | capitalizar }}
@@ -101,9 +101,9 @@
             
             <!-- Datos dinamicos -->
             <!-- Iterar sobre los datos dinámicos si existen -->
-        <div class="modal-body" *ngIf="turnoSeleccionado.resenia?.datosDinamicos?.length > 0">
-          <div class="row"  *ngFor="let dato of turnoSeleccionado.resenia.datosDinamicos">
+        <div class="modal-body" *ngIf="turnoSeleccionado.resenia?.datosDinamicos[0].clave !== ''">
           <h6>Datos Dinámicos:</h6>
+          <div class="row"  *ngFor="let dato of turnoSeleccionado.resenia.datosDinamicos">
           <div class="col-6 text-right font-weight-bold">{{ dato.clave }}:</div>
           <div class="col-6">{{ dato.valor  || 'No registrada' }}</div>
 
