@@ -1,16 +1,6 @@
 <app-navbar id="nav"></app-navbar>
 <br><br><br>
 
-<!-- <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-  <div *ngFor="let chart of charts">
-    <canvas baseChart
-            [data]="chart.data"
-            [options]="chart.options"
-            [type]="'bar'">
-    </canvas>
-  </div>
-</div> -->
-
 
 <div id="graficos-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
   <div *ngFor="let chart of charts" class="chart-container">

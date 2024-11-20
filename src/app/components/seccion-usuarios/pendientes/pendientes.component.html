@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let especialista of listaEspecialistas">
+        <tr appHoverHighlight *ngFor="let especialista of listaEspecialistas">
           <td>{{ especialista.nombre }}</td>
           <td>{{ especialista.apellido }}</td>
           <td>{{ especialista.email }}</td>

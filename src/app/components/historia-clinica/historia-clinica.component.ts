@@ -7,12 +7,13 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { jsPDF } from "jspdf";
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CapitalizarPipe } from '../../pipes/capitalizar.pipe';
+import { HoverHighlightDirective } from '../../directives/hover-highlight.directive';
 
 
 @Component({
   selector: 'app-historia-clinica',
   standalone: true,
-  imports: [CommonModule,NavbarComponent,CapitalizarPipe],
+  imports: [CommonModule,NavbarComponent,CapitalizarPipe,HoverHighlightDirective],
   templateUrl: './historia-clinica.component.html',
   styleUrl: './historia-clinica.component.css',
   animations: [
@@ -198,8 +199,8 @@ export class HistoriaClinicaComponent {
   }
   
 
-  descargarPDF() {
-    if (this.turnosFiltrado && this.turnosFiltrado.length > 0) {
+  descargarPDF(turno: any) {
+    if (turno) {
       const doc = new jsPDF();
       const pageWidth = doc.internal.pageSize.getWidth();
       
@@ -221,7 +222,6 @@ export class HistoriaClinicaComponent {
       let y = 90; // Ajuste de inicio de contenido
       const lineSpacing = 10;
   
-      for (const turno of this.turnosFiltrado) {
         // Datos del paciente
         doc.setFontSize(14);
         doc.text(`Paciente: ${turno.paciente.nombre} ${turno.paciente.apellido}`, 20, y);
@@ -256,7 +256,7 @@ export class HistoriaClinicaComponent {
           doc.addPage();
           y = 20; // Reiniciar posición en la nueva página
         }
-      }
+      
   
       // Guardar el PDF
       doc.save(`${this.usuarioHistorial?.nombre || 'Paciente'}_historia_clinica.pdf`);

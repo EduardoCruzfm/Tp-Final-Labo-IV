@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatabaseService } from '../../../services/database.service';
 import { NavbarComponent } from '../../navbar/navbar.component';
+import { HoverHighlightDirective } from '../../../directives/hover-highlight.directive';
 
 @Component({
   selector: 'app-pendientes',
   standalone: true,
-  imports: [CommonModule,NavbarComponent],
+  imports: [CommonModule,NavbarComponent,HoverHighlightDirective],
   templateUrl: './pendientes.component.html',
   styleUrl: './pendientes.component.css'
 })

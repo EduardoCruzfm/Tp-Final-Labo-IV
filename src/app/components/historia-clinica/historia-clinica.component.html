@@ -7,7 +7,7 @@
   <br>
   
  <!-- Sección para descargar el historial completo con cada especialista -->
-  <div *ngIf="tipoUsuarioPefil === 'especialistas'"  class="card my-4">
+  <div *ngIf="tipoUsuarioPefil === 'pacientes'"  class="card my-4">
     <div class="card-header text-center">
       <h3>Descargar historial por especialista</h3>
     </div>
@@ -44,10 +44,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let turno of turnosFiltrado; let i = index">
+        <tr appHoverHighlight *ngFor="let turno of turnosFiltrado; let i = index">
           <td *ngIf="tipoUsuarioPefil === 'especialistas'" >{{ turno.paciente.nombre}} {{ turno.paciente.apellido}}</td>
           <td>{{ turno.especialidad }}</td>
-          <td>{{ turno.fechaHora.diaCadena }} {{ turno.fechaHora.diaConFormato }}</td>
+          <td>{{ turno.fechaHora.diaCadena | capitalizar }} {{ turno.fechaHora.diaConFormato }}</td>
           <td>{{ turno.fechaHora.mesCadena }}</td>
           <td>{{ turno.fechaHora.anio }}</td>
           <td>{{ turno.fechaHora.horaInicio }}</td>
@@ -57,7 +57,7 @@
             <button *ngIf="turno.resenia" class="btn btn-info me-2" (click)="mostrarResenia(turno)">
               Ver Historial
             </button>
-            <button  *ngIf="turno.resenia" class="btn btn-primary" (click)="descargarPDF()">
+            <button  *ngIf="turno.resenia" class="btn btn-primary" (click)="descargarPDF(turno)">
               Descargar PDF
             </button>
           </td>
@@ -65,27 +65,6 @@
       </tbody>
     </table>
   </div>
-
-  <!-- Modal de confirmación para cambiar estado -->
-  <!-- <div *ngIf="turnoSeleccionado" class="modal fade show d-block" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-
-        <div class="modal-header">
-          <h5 class="modal-title"> Historial del turno asisitido</h5>
-          <button type="button" class="btn-close" aria-label="Close" (click)="cancelarAccion()"></button>
-        </div>
-
-
-                    <p>{{turnoSeleccionado.resenia}}</p>
-        
-        <div class="modal-footer">
-          <button class="btn btn-secondary" (click)="cancelarAccion()">OK</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
 
   <!-- Modal de confirmación para mostrar el historial -->
   <div *ngIf="turnoSeleccionado" class="modal fade show d-block" tabindex="-1" aria-hidden="true">

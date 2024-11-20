@@ -7,6 +7,9 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { jsPDF } from "jspdf";
 import html2canvas from 'html2canvas';
+import 'jspdf-autotable'; 
+// import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 
 
 
@@ -104,14 +107,93 @@ export class EstadisticasComponent {
   }
 
 
-  generarGraficoLogIngresos(): { data: ChartData<'bar'>, options: ChartOptions } {
+  generarGraficoLogIngresos(): { data: ChartData<'bar'>, options: ChartOptions } { 
+    // Agrupar logs por usuario
+    const logsPorUsuario: { [usuario: string]: any[] } = {};
+  
+    this.logs.forEach((log: any) => {
+      const usuario = this.obtenerNombreUsuario(log.idUsuario);
+      if (!logsPorUsuario[usuario]) {
+        logsPorUsuario[usuario] = [];
+      }
+      logsPorUsuario[usuario].push(log);
+    });
+  
+    // Preparar etiquetas y datos
+    const labels = Object.keys(logsPorUsuario);
+    const datasetsData = labels.map((usuario) => logsPorUsuario[usuario].length);
+  
+    // Preparar etiquetas personalizadas (días y horas concatenados)
+    const dataLabels = labels.map((usuario) => {
+      return logsPorUsuario[usuario]
+        .map((log: any) => `${log.dia}/${log.mes.digito} ${log.hora}`)
+        // .join('\n'); // Usar \n para salto de línea (esto es texto plano)
+    });
+  
+    // Configuración del gráfico
     const data = {
-      labels: ['Usuario 1', 'Usuario 2', 'Usuario 3'],
-      datasets: [{ data: [10, 5, 2], label: 'Log de ingresos' }]
+      labels: labels,
+      datasets: [
+        {
+          data: datasetsData,
+          label: 'Log de ingresos',
+          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }
+      ]
     };
-    const options = { responsive: true, scales: { y: { beginAtZero: true } } };
+  
+    const options: ChartOptions<'bar'> = {
+      responsive: true,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+              const index = context.dataIndex;
+              // Usamos \n para separar las líneas en el tooltip
+              const tooltipText = `Ingresos: ${datasetsData[index]}\n${dataLabels[index]}`;
+              return tooltipText;
+            }
+          },
+          // Si deseas más personalización puedes incluir 'footer' o 'beforeBody' para más detalles
+          displayColors: false, // Opcional, para quitar el color del cuadrito del tooltip
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Cantidad de ingresos'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Usuarios'
+          },
+          ticks: {
+            autoSkip: true,  // Permite que las etiquetas se salten automáticamente si hay demasiadas
+            maxTicksLimit: 10,  // Limita el número de etiquetas visibles en el eje X
+          },
+          // Rota las etiquetas si son largas
+          // angle: -45,  // Puedes ajustar el ángulo de rotación según lo necesites
+        }
+      }
+      
+    };
+  
     return { data, options };
   }
+  
+  
+
+  obtenerNombreUsuario(idUsuario: string): string {
+    const usuario = this.listaUsuarios.find((user: any) => user.id === idUsuario);
+    return usuario ? `${usuario.nombre} ${usuario.apellido}` : 'Desconocido';
+  }
+  
 
   generarGraficoTurnosPorEspecialidad():{ data: ChartData<'bar'>, options: ChartOptions } {
     // Verificar si hay turnos cargados
@@ -418,25 +500,65 @@ export class EstadisticasComponent {
   }
 
   exportarPDF() {
-    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdf: jsPDF & { autoTable?: any } = new jsPDF();
+    // const pdf = new jsPDF('p', 'mm', 'a4');
     const container = document.getElementById('graficos-container');
   
     if (container) {
+      // Captura el gráfico como una imagen
       html2canvas(container).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const imgWidth = 190; // Ajuste para la anchura de la página A4
         const pageHeight = pdf.internal.pageSize.getHeight();
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
   
+        // Agrega la imagen del gráfico al PDF
         pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
   
+        // Agregar un espacio debajo del gráfico
+        let yPosition = imgHeight + 20;
+  
+        // Preparar datos para la tabla
+        const tableData: any[] = [];
+        this.logs.forEach((log: any) => {
+          const usuario = this.obtenerNombreUsuario(log.idUsuario);
+          const diaHora = `${log.dia}/${log.mes.digito} ${log.hora}`;
+          const existingEntry = tableData.find(entry => entry.usuario === usuario);
+  
+          if (existingEntry) {
+            existingEntry.logs.push(diaHora);
+          } else {
+            tableData.push({ usuario, logs: [diaHora] });
+          }
+        });
+  
+        // Formatear los datos en filas para la tabla
+        const rows: any[] = [];
+        tableData.forEach(entry => {
+          rows.push([entry.usuario]); // Usuario como encabezado
+          rows.push([entry.logs.join('\n')]); // Logs concatenados con saltos de línea
+        });
+  
+        // Agregar la tabla
+        pdf.autoTable({
+          startY: yPosition,
+          head: [['Usuario', 'Días y horas']],
+          body: tableData.map(entry => [
+            entry.usuario,
+            entry.logs.join(', ') // Mostrar todos los logs del usuario
+          ]),
+          theme: 'striped', // Tema para la tabla
+          styles: { fontSize: 10 }, // Tamaño de fuente
+        });
+  
         // Guarda el archivo PDF
-        pdf.save('graficos.pdf');
+        pdf.save('graficos_con_tabla.pdf');
       });
     } else {
       console.error('No se encontró el contenedor de gráficos.');
     }
   }
+  
   
 }
 

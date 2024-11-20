@@ -1,42 +1,52 @@
 <app-navbar id="nav"></app-navbar>
 <br>
 <br>
-<br>
 <div class="container mt-3">
-    <h2>Lista de Usuarios</h2>
-  
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Email</th>
-          <th>Edad</th>
-          <th>DNI</th>
-          <th>Imagen</th>
-          <th>Perfil</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr  appHoverHighlight *ngFor="let usuario of listaUsuarios" (click)="verDetalleUsuario(usuario)" style="cursor: pointer;">
-          <td>{{ usuario.nombre }}</td>
-          <td>{{ usuario.apellido }}</td>
-          <td>{{ usuario.email }}</td>
-          <td>{{ usuario.edad }}</td>
-          <td>{{ usuario.dni }}</td>
-          <td>
-            <img *ngIf="usuario.imagenPerfil" [src]="usuario.imagenPerfil" alt="Imagen de usuario" width="50" height="50" class="rounded-circle" />
-          </td>
-          <td>{{ usuario.perfil }}</td>
-          <td>
-            <!-- Botón que solo se muestra si el perfil es paciente -->
-            <button *ngIf="usuario.perfil === 'paciente'" (click)="verHistorialPaciente(usuario)" class="btn btn-primary">
-              Ver Historial
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+  <h2 class="d-flex justify-content-between">
+    Lista de Usuarios
+    <button class="btn btn-success" (click)="descargarExcelUsuarios()">
+      Descargar Todos los Usuarios
+    </button>
+  </h2>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Edad</th>
+        <th>DNI</th>
+        <th>Imagen</th>
+        <th>Perfil</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr appHoverHighlight *ngFor="let usuario of listaUsuarios" style="cursor: pointer;">
+        <td>{{ usuario.nombre }}</td>
+        <td>{{ usuario.apellido }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.edad }}</td>
+        <td>{{ usuario.dni }}</td>
+        <td>
+          <img 
+            *ngIf="usuario.imagenPerfil"
+            [src]="usuario.imagenPerfil" 
+            alt="Imagen de usuario" 
+            width="50" height="50" 
+            class="rounded-circle"
+            [style.cursor]="usuario.perfil === 'paciente' ? 'pointer' : 'default'"
+            (click)="usuario.perfil === 'paciente' ? descargarExcelTurnos(usuario) : null" 
+          />
+        </td>
+        <td>{{ usuario.perfil }}</td>
+        <td>
+          <button *ngIf="usuario.perfil === 'paciente'" (click)="verHistorialPaciente(usuario)" class="btn btn-primary">
+            Ver Historial
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
